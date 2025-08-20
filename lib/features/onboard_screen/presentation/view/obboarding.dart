@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
@@ -15,11 +18,7 @@ class OnboardingScreen extends StatelessWidget {
       backgroundColor: AppColors.appBackground,
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.only(
-            left: 20.0.w,
-            right: 20.0.w,
-            bottom: 20.0.h,
-          ),
+          padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w, bottom: 20.0.h),
           child: Column(
             children: [
               // Top section with logo
@@ -27,7 +26,6 @@ class OnboardingScreen extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.only(
                     top: MediaQuery.of(context).padding.top + 50,
-                   
                   ),
                   child: Image.asset(
                     ImagePath.splash,
@@ -38,7 +36,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-          
+
               // Bottom section with title and action button
               Image.asset(
                 IconPath.lightIcon,
@@ -51,7 +49,7 @@ class OnboardingScreen extends StatelessWidget {
                 'Welcome to Light',
                 style: getTextStyle(
                   color: AppColors.grey900,
-                  fontSize: 24.sp,
+                  fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -61,66 +59,22 @@ class OnboardingScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: getTextStyle(
                   color: AppColors.grey500,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w400,
                   lineHeight: 1.5,
                 ),
               ),
 
               80.verticalSpace,
-               
-               CommonButton(title: 'Get Started', onPressed: () { 
-               AppRoute.getLoginScreen();
 
-                },)
-
+              // Action button to navigate to login screen
+              CommonButton(
+                title: 'Get Started',
+                onPressed: () {
+                  Get.toNamed(AppRoute.getLoginScreen());
+                },
+              ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-
-
-class CommonButton extends StatelessWidget {
-  final String title;
-  final VoidCallback onPressed;
-  final Color? backgroundColor;
-  final Color? textColor;
-
-  const CommonButton({
-    super.key,
-    required this.title,
-    required this.onPressed,
-    this.backgroundColor,
-    this.textColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.grey,
-      highlightColor:Colors.greenAccent,
-      borderRadius: BorderRadius.circular(24.r),
-      onTap: onPressed,
-      child: Container(
-        width: double.infinity,
-        height: 50.h,
-        decoration: BoxDecoration(
-          color: backgroundColor ?? AppColors.primary,
-          borderRadius: BorderRadius.circular(24.r),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: textColor ?? Colors.white,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-            ),
           ),
         ),
       ),
