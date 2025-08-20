@@ -20,5 +20,7 @@ class ImagePath{
   static const String reward = 'assets/image/reward_1.png';
   static const String lightBlueDress = 'assets/image/light_blue_dress.png';
   static const String cat = 'assets/image/cat.png';
+  static const String childAvatar = 'assets/image/child_profile.png';
+  static const String homeGirlAvatar = 'assets/image/home_girl_avatar.png';
 
 }

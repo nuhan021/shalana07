@@ -23,7 +23,7 @@ class IconPath{
   static const  String  navbarAddICon ='assets/icons/navbar_adding.png';
   static const  String  navbarHomeICon ='assets/icons/navbar_home.png';
   static const  String  navbarProfileICon ='assets/icons/navbar_profile.png';
-  static const  String  navbarGoalICon ='assets/icons/navbar_search.png';
+  static const  String  navbarGoalICon ='assets/icons/nav_bar_goal.png';
   static const  String  notificationIcon ='assets/icons/notification_icon.png';
   static const  String  profileAvatarIcon ='assets/icons/profile_avater_icons.png';
   static const  String  removeIcon ='assets/icons/remove_icon.png';
