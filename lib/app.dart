@@ -1,3 +1,4 @@
+import 'package:shalana07/features/onboard_screen/presentation/view/obboarding.dart';
 import 'package:shalana07/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoute.getLoginScreen(),
+          initialRoute: AppRoute.onboardScreen,
+      //  home: const OnboardingScreen(),
           getPages: AppRoute.routes,
           initialBinding: ControllerBinder(),
           themeMode: ThemeMode.light,
