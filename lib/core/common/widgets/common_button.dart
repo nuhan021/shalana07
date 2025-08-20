@@ -9,29 +9,35 @@ class CommonButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool? isLinearGradient;
+  final bool? isbporderColor;
 
   const CommonButton({
     super.key,
     required this.title,
     required this.onPressed,
     this.backgroundColor,
-    this.textColor, this.isLinearGradient,
+    this.textColor,
+    this.isLinearGradient,
+    this.isbporderColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: Colors.grey,
-      highlightColor:Colors.greenAccent,
+      highlightColor: Colors.greenAccent,
       borderRadius: BorderRadius.circular(24.r),
       onTap: onPressed,
       child: Container(
         width: double.infinity,
         height: 50.h,
         decoration: BoxDecoration(
-          gradient: isLinearGradient == true ? AppColors.linearGradient: null,
+          gradient: isLinearGradient == true ? AppColors.linearGradient : null,
           color: backgroundColor ?? AppColors.primary,
           borderRadius: BorderRadius.circular(24.r),
+          border: isbporderColor == true
+              ? Border.all(color: AppColors.primary, width: 1.0)
+              : null,
         ),
         child: Center(
           child: Text(

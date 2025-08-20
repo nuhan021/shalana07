@@ -49,7 +49,7 @@ class OnboardingScreen extends StatelessWidget {
                 'Welcome to Light',
                 style: getTextStyle(
                   color: AppColors.grey900,
-                  fontSize: 24.sp,
+                  fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -59,7 +59,7 @@ class OnboardingScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: getTextStyle(
                   color: AppColors.grey500,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w400,
                   lineHeight: 1.5,
                 ),

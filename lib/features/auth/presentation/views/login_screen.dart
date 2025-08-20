@@ -28,6 +28,7 @@ class LoginScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: Get.height * 0.66,
+              width: Get.width,
               decoration: BoxDecoration(
                 color: AppColors.appBackground,
                 borderRadius: BorderRadius.only(
@@ -85,12 +86,17 @@ class LoginScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Forgot Password?',
-                            style: getTextStyle(
-                              color: AppColors.grey600,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(AppRoute.getForgotPasswordScreen());
+                            },
+                            child: Text(
+                              'Forgot Password?',
+                              style: getTextStyle(
+                                color: AppColors.grey600,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
