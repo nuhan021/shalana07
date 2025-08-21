@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoute.appBottomNavBarScreen,
+          initialRoute: AppRoute.onboardScreen,
       //  home: const OnboardingScreen(),
           getPages: AppRoute.routes,
           initialBinding: ControllerBinder(),
