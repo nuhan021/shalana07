@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+
 import 'package:shalana07/features/avatar/presentation/screens/avatar_screen.dart';
+import 'package:shalana07/features/home/common_homescren.dart';
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
-import '';
+
 
 class AppBottomNavBar extends StatefulWidget {
   const AppBottomNavBar({super.key});
@@ -17,6 +19,7 @@ class AppBottomNavBar extends StatefulWidget {
 
 class _AppBottomNavBarState extends State<AppBottomNavBar> {
   PersistentTabController _controller = PersistentTabController();
+  
 
   int _currentIndex = 0;
 
@@ -28,7 +31,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
 
   // add screens here, do not touch anything!
   List<Widget> _buildScreens() {
-    return [Placeholder(), Placeholder(), Placeholder(), AvatarScreen()];
+    return [CommonHomeScreen(), Placeholder(), Placeholder(), AvatarScreen()];
   }
 
   List<PersistentTabConfig> _tabs() => [

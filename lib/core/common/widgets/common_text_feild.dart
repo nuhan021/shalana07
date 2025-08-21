@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final Widget? suffixIcons;
   final bool? isfilled;
+   final bool? isPassword;
 
   const CustomTextField({
     super.key,
@@ -14,14 +15,17 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.suffixIcons,
     this.isfilled,
+    this.isPassword
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      obscureText: isPassword ?? false,
       decoration: InputDecoration(
         hintText: hintText,
+        
         filled: isfilled ?? false,
         fillColor: isfilled == true ? AppColors.white100: Colors.transparent,
         hintStyle: getTextStyle(
@@ -29,7 +33,7 @@ class CustomTextField extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
-        suffixIcon: suffixIcons,
+        suffixIcon: suffixIcons  ,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(width: 0.5, color: Colors.grey.shade600),

@@ -13,7 +13,7 @@ import 'package:shalana07/routes/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  final Logincontroller _logincontroller = Get.put(Logincontroller());
+  final Logincontroller _logincontroller = Get.put(Logincontroller(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +74,29 @@ class LoginScreen extends StatelessWidget {
                       ),
 
                       30.verticalSpace,
-                      CustomTextField(
-                        controller: _logincontroller.passwordController,
-                        hintText: 'Enter Password',
-                        suffixIcons: Icon(
-                          Icons.visibility_outlined,
-                          color: AppColors.grey300,
-                        ),
-                      ),
+                      Obx(() {
+                        return CustomTextField(
+                          controller: _logincontroller.passwordController,
+                          hintText: 'Enter Password',
+
+                          //obsecure logic
+                          isPassword: _logincontroller.isObscure.value,
+                          suffixIcons: GestureDetector(
+                            onTap: () {
+                              _logincontroller.togglePasswordVisibility();
+                            },
+                            child: Icon(
+                              _logincontroller.isObscure.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: AppColors.grey300,
+                            ),
+                          ),
+                        );
+                      }),
                       10.verticalSpace,
+
+                      //forget password Section
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -108,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                       CommonButton(
                         title: 'Log in',
                         onPressed: () {
-                          Get.toNamed(AppRoute.getAppBottomNavBarScreen());
+                          _logincontroller.login();
                         },
                       ),
 
