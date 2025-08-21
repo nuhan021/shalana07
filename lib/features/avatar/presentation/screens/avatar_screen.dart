@@ -7,11 +7,14 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
+import 'package:shalana07/features/customize_avatar/presentation/screens/customize_avatar_screen.dart';
 
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
-  
-  AvatarScreenController avatarScreenController = Get.put(AvatarScreenController());
+
+  AvatarScreenController avatarScreenController = Get.put(
+    AvatarScreenController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,9 @@ class AvatarScreen extends StatelessWidget {
       backgroundColor: AppColors.appBackground, // default color
       // App Bar of this screen
       appBar: AppBar(
-        leading: Image.asset(IconPath.arrowBackIcon, scale: 4), // back button
+        leading: GestureDetector(
+            onTap: () {},
+            child: Image.asset(IconPath.arrowBackIcon, scale: 4)), // back button
 
         title: Text(
           // title of the screen
@@ -73,43 +78,55 @@ class AvatarScreen extends StatelessWidget {
 
             // navigator buttons
             for (int i = 0; i < 2; i++)
-              Container(
-                height: 52.h,
-                width: double.maxFinite,
-                padding: EdgeInsets.all(10.r),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      offset: const Offset(0, 2),
-                      blurRadius: 6,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                  border: Border.all(color: AppColors.grey200),
-                ),
-
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Screen name
-                    Text(
-                      i == 0 ? 'Change Avatar' : 'Customize Avatar',
-                      style: getTextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.grey900,
+              GestureDetector(
+                onTap: () {
+                  if (i == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomizeAvatarScreen(),
                       ),
-                    ),
+                    );
+                  }
+                },
+                child: Container(
+                  height: 52.h,
+                  width: double.maxFinite,
+                  padding: EdgeInsets.all(10.r),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.06),
+                        offset: const Offset(0, 2),
+                        blurRadius: 6,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                    border: Border.all(color: AppColors.grey200),
+                  ),
 
-                    // arrow icon
-                    Image.asset(IconPath.arrowForwardIcon, height: 20.h),
-                  ],
-                ),
-              ).paddingOnly(bottom: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Screen name
+                      Text(
+                        i == 0 ? 'Change Avatar' : 'Customize Avatar',
+                        style: getTextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.grey900,
+                        ),
+                      ),
+
+                      // arrow icon
+                      Image.asset(IconPath.arrowForwardIcon, height: 20.h),
+                    ],
+                  ),
+                ).paddingOnly(bottom: 20),
+              ),
 
             // Trending items section
             SizedBox(
@@ -149,16 +166,22 @@ class AvatarScreen extends StatelessWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: avatarScreenController.trendingItems.map((element) {
-                        return ItemCard(imgUrl: element.imgUrl, title: element.title, coin: element.coin).marginOnly(right: 10.r);
+                      children: avatarScreenController.trendingItems.map((
+                        element,
+                      ) {
+                        return ItemCard(
+                          imgUrl: element.imgUrl,
+                          title: element.title,
+                          coin: element.coin,
+                        ).marginOnly(right: 10.r);
                       }).toList(),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 10,)
+            const SizedBox(height: 10),
           ],
         ).paddingSymmetric(horizontal: 15.r),
       ),
