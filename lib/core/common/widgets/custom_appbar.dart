@@ -8,7 +8,9 @@ import 'package:shalana07/core/utils/constants/image_path.dart';
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
+ required  this.title
   });
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class CustomAppBar extends StatelessWidget {
       ),
       //title
       title: Text(
-        'Home',
+       title,
         style: getTextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,

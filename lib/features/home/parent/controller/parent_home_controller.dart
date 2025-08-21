@@ -18,7 +18,7 @@ final List<ChildMessage> messages = [
     childName: "Calista Kimimela",
     message: "",
     time: "Yesterday · 03:45 PM",
-    isRead: true,
+    isRead: false,
   ),
   ChildMessage(
     avatar: ImagePath.childAvatar,
@@ -26,7 +26,7 @@ final List<ChildMessage> messages = [
     childName: "Emma Williams",
     message: "Mom, I am stuck on the Science challenge, can you help me?",
     time: "Yesterday · 09:20 AM",
-    isRead: false,
+    isRead: true,
   ),
 ];
 

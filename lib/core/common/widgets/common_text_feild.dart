@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcons;
   final bool? isfilled;
    final bool? isPassword;
+   final int? maxlines;
 
   const CustomTextField({
     super.key,
@@ -15,7 +16,7 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.suffixIcons,
     this.isfilled,
-    this.isPassword
+    this.isPassword, this.maxlines
   });
 
   @override
@@ -23,8 +24,11 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: isPassword ?? false,
+      maxLines: maxlines ?? 1,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         hintText: hintText,
+        
         
         filled: isfilled ?? false,
         fillColor: isfilled == true ? AppColors.white100: Colors.transparent,
@@ -33,7 +37,9 @@ class CustomTextField extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
+        
         suffixIcon: suffixIcons  ,
+        
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(width: 0.5, color: Colors.grey.shade600),
