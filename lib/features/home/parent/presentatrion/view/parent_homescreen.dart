@@ -28,7 +28,7 @@ class ParentHomescreen extends StatelessWidget {
         // Custom AppBar
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0.h),
-          child: CustomAppBar(),
+          child: CustomAppBar(title: 'Home',),
         ),
 
         // Main content of the screen
@@ -39,7 +39,8 @@ class ParentHomescreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //top image section
+                //top image section,
+                20.verticalSpace,
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0.r),
                   child: Image.asset(
