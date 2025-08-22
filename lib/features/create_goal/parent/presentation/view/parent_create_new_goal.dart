@@ -83,7 +83,6 @@ class ParentCreateNewGoal extends StatelessWidget {
             }),
             20.verticalSpace,
 
-
             //goal creating section
             Obx(() {
               switch (_controller.selectedIndex.value) {
@@ -150,19 +149,28 @@ class ParentCreateNewGoal extends StatelessWidget {
 }
 
 class DailyGoalSection extends StatelessWidget {
-  const DailyGoalSection({
-    super.key,
-  });
+  const DailyGoalSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Assign to*',
-      style: getTextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: AppColors.grey900,
-      ),
+    return Column(
+      children: [
+        Text(
+          'Assign to*',
+          style: getTextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: AppColors.grey900,
+          ),
+        
+          //Drop down for selecting child
+          
+          
+          
+        ),
+
+        
+      ],
     );
   }
 }
