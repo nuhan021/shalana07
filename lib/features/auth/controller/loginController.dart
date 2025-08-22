@@ -10,11 +10,11 @@ class Logincontroller extends GetxController {
   }
 
   // Hardcoded credentials
-  final String parentEmail = "parent@test.com";
-  final String parentPass = "123456";
+  final String parentEmail = "parent@gmail.com";
+  final String parentPass = "1234";
 
-  final String childEmail = "child@test.com";
-  final String childPass = "123456";
+  final String childEmail = "child@gmail.com";
+  final String childPass = "1234";
 
   var userRole = "".obs; // parent / child
   // Text controllers for email and password fields
