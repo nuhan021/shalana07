@@ -12,7 +12,6 @@ import 'package:shalana07/features/home/common_homescren.dart';
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
 
-
 class AppBottomNavBar extends StatefulWidget {
   const AppBottomNavBar({super.key});
 
@@ -23,20 +22,23 @@ class AppBottomNavBar extends StatefulWidget {
 class _AppBottomNavBarState extends State<AppBottomNavBar> {
   // PersistentTabController _controller = PersistentTabController();
   final NavaberController navaberController = Get.put(NavaberController());
-  
 
   int _currentIndex = 0;
-  
 
   @override
   // void initState() {
   //   super.initState();
   //   _controller = PersistentTabController(initialIndex: 0);
   // }
-
   // add screens here, do not touch anything!
   List<Widget> _buildScreens() {
-    return [CommonHomeScreen(), CommonDailyGoal() ,CommonCreateGoal(), Placeholder(), AvatarScreen()];
+    return [
+      CommonHomeScreen(),
+      CommonDailyGoal(),
+      CommonCreateGoal(),
+      Placeholder(),
+      AvatarScreen(),
+    ];
   }
 
   List<PersistentTabConfig> _tabs() => [
@@ -101,14 +103,14 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
     ),
 
     PersistentTabConfig(
-      screen: _buildScreens()[3],
+      screen: _buildScreens()[4],
       item: ItemConfig(
         icon: Image.asset(
           width: 25.w,
           IconPath.navbarProfileICon,
           color: _currentIndex == 4 ? AppColors.primary : AppColors.grey900,
         ).paddingOnly(bottom: 5),
-        title: "Mission",
+        title: "Avatar",
         textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primary,
         inactiveForegroundColor: Colors.black,

@@ -7,8 +7,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
-import 'package:shalana07/features/customize_avatar/presentation/screens/customize_avatar_screen.dart';
-
+import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
 
@@ -84,7 +83,7 @@ class AvatarScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CustomizeAvatarScreen(),
+                        builder: (context) => AvatarCustomizeScreen(),
                       ),
                     );
                   }
