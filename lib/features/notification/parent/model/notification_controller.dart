@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
-import 'package:shalana07/features/notification/model/notification_model.dart';
+import 'package:shalana07/features/notification/parent/model/notification_model.dart';
 
 class NotificationController extends GetxController{
-  final List<NotificationModel> messages = [
+  final List<NotificationModel> updatesNotifications = [
   NotificationModel(
     avatar: ImagePath.childAvatar,
     challengeName: "Reading Challenge",

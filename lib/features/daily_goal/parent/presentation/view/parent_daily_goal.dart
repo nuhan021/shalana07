@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/features/create_goal/parent/presentation/widgets/daily_goal_section.dart';
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/weekly_goal_section.dart';
 
@@ -25,7 +24,7 @@ class ParentDailyGoal extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
 
-        child: CustomAppBar(title: 'Goals'),
+        child: CustomAppBar(title: 'Goals',notificationIcon: true,),
       ),
 
       //f  end drawer
