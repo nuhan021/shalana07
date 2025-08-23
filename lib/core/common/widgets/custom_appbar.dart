@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
-
+import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
+//note: This is a custom appbar widget
+// if you add to custom appbar you need to wrap it with prefferd sized widgets
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
- required  this.title
+ required  this.title, this.notificationIcon
   });
   final String title;
+  final bool? notificationIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +43,29 @@ class CustomAppBar extends StatelessWidget {
           padding: EdgeInsets.only(right: 16.0.w),
           child: Row(
             children: [
-              Image.asset(
-                IconPath.notificationIcon,
+
+              //notification icon showing not showing function
+             notificationIcon == true ? InkWell(
+                onTap: () {
+                  // Handle notification icon press
+                  Get.to(
+                    () => NotificationPage(),
+                    transition: Transition.zoom,
+                  );
+                },
+                child: Image.asset(
+                  IconPath.notificationIcon,
+                  width: 30.w,
+                  height: 30.w,
+                  color: AppColors.grey900,
+                  fit: BoxFit.cover,
+                ),
+              ):SizedBox(
                 width: 30.w,
                 height: 30.w,
-                color: AppColors.grey900,
-                fit: BoxFit.cover,
               ),
+
+              
               SizedBox(width: 10.w),
               ClipRRect(
                 borderRadius: BorderRadius.circular(50),

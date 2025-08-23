@@ -30,6 +30,7 @@ class IconPath{
   static const  String  timerIcon ='assets/icons/timer_icon.png';
   static const  String  uppArrowIcon ='assets/icons/upp_arrow.png';
   static const  String  voiceIcon ='assets/icons/voice_icon.png';
+  static const  String dropdownandup ='assets/icons/dropdown_and_up.png';
 
 
 

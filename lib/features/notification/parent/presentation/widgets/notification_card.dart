@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/features/home/parent/controller/parent_home_controller.dart';
-import 'package:shalana07/features/home/parent/model/activity_model.dart';
+
+import 'package:shalana07/features/notification/parent/model/notification_controller.dart';
+import 'package:shalana07/features/notification/parent/model/notification_model.dart';
 // import 'package:shalana07/features/home/parent/model/activity_model.dart';
 
-class ActivityLIstCard extends StatelessWidget {
-  ActivityLIstCard({super.key, required this.activity});
+class NotificationCard extends StatelessWidget {
+  NotificationCard({super.key, required this.activity});
   // Using the controller to access messages
-  final ParentHomeController controller = Get.find<ParentHomeController>();
-  final ChildMessage  activity;
-
+  final NotificationController controller = Get.find<NotificationController>();
+  final NotificationModel activity;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10.0.w),
       decoration: BoxDecoration(
-        color:activity.isRead == true ? AppColors.white100 : AppColors.green900,
+        color: activity.isRead == true
+            ? AppColors.white100
+            : AppColors.green900,
         borderRadius: BorderRadius.circular(10.0.r),
         border: Border.all(
-          color: activity.isRead == true ? AppColors.grey200 : AppColors.green900,
+          color: activity.isRead == true
+              ? AppColors.grey200
+              : AppColors.green900,
           width: 1.0.w,
         ),
       ),
@@ -49,7 +54,7 @@ class ActivityLIstCard extends StatelessWidget {
               children: [
                 //challange Name
                 Text(
-                  activity.challengeName, 
+                  activity.challengeName,
                   style: getTextStyle(
                     fontSize: 14,
                     color: AppColors.grey900,
