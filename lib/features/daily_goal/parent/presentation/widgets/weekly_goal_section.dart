@@ -65,10 +65,10 @@ class WeeklyGoalSection extends StatelessWidget {
 
           //List of goals
           child: SizedBox(
-          height: Get.height * 0.6,
+            height: Get.height * 0.5.h,
             child: ListView.builder(
               shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: _controller.goals.length,
               itemBuilder: (context, index) {
                 final goal = _controller.goals[index];
@@ -77,9 +77,12 @@ class WeeklyGoalSection extends StatelessWidget {
             ),
           ),
         ),
-        CommonButton(title: "Add New Goal", onPressed: () {
-          navaberController.jumpToScreen(2);
-        }),
+        CommonButton(
+          title: "Add New Goal",
+          onPressed: () {
+            navaberController.jumpToScreen(2);
+          },
+        ),
       ],
     );
   }

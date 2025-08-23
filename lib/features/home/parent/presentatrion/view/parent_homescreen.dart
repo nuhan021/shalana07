@@ -35,7 +35,7 @@ class ParentHomescreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w, top: 15.0.h),
           child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -3,6 +3,10 @@ import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/notification/parent/model/notification_model.dart';
 
 class NotificationController extends GetxController{
+    var isLoading = false.obs;
+
+
+    // List of notifications
   final List<NotificationModel> updatesNotifications = [
   NotificationModel(
     avatar: ImagePath.childAvatar,
@@ -30,4 +34,24 @@ NotificationModel(
   ),
 ];
 
+
+
+  void loadMore() {
+    isLoading.value = true;
+
+    // Simulate API call
+    Future.delayed(const Duration(seconds: 2), () {
+      isLoading.value = false;
+    });
+  }
+
+  void loadMoreRewards() {
+    isLoading.value = true;
+
+    // Simulate API call
+    Future.delayed(const Duration(seconds: 2), () {
+      isLoading.value = false;
+    });
+  }
 }
+
