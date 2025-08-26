@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/features/home/child/presentation/view/child_home_screen.dart';
 
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/icon_path.dart';
@@ -8,17 +10,23 @@ import '../../utils/constants/image_path.dart';
 import '../styles/global_text_style.dart';
 
 class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomChildAppBar({super.key, required this.title, this.isAvatarVisible = true});
+  const CustomChildAppBar({
+    super.key,
+    required this.title,
+    this.isAvatarVisible = true,
+    this.isAppBarTransparent = false,
+  });
 
   final String title;
   final bool isAvatarVisible;
+  final bool isAppBarTransparent;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.appBackground,
+      backgroundColor: isAppBarTransparent ?Colors.transparent : AppColors.appBackground,
       leading: GestureDetector(
-        onTap: () {},
+        onTap: () => Navigator.pop(context),
         child: Image.asset(IconPath.arrowBackIcon, scale: 4), // back button
       ),
       title: Text(
@@ -38,9 +46,9 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(width: 10.w),
         isAvatarVisible
             ? CircleAvatar(
-          backgroundImage: AssetImage(ImagePath.childAvatar),
-          backgroundColor: Colors.white,
-        ).paddingOnly(right: 10.r)
+                backgroundImage: AssetImage(ImagePath.childAvatar),
+                backgroundColor: Colors.white,
+              ).paddingOnly(right: 10.r)
             : SizedBox(),
       ],
     );

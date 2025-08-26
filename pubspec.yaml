@@ -50,6 +50,7 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^6.1.0
   flutter_otp_text_field: ^1.5.1+1
   flutter_toggle_button: ^0.0.4
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:
@@ -77,7 +78,10 @@ flutter:
   assets:
     - assets/image/
     - assets/icons/
-    - assets/avatar/hair/
+    - assets/avatar/hair/style_1/
+    - assets/avatar/hair/style_2/
+    - assets/avatar/hair/style_3/
+    - assets/avatar/hair/style_4/
     - assets/avatar/skeleton/
 
   # An image asset can refer to one or more resolution-specific "variants", see
