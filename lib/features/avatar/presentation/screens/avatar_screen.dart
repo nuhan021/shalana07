@@ -6,7 +6,9 @@ import 'package:shalana07/core/common/widgets/item_card.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
+import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
@@ -80,12 +82,9 @@ class AvatarScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if (i == 1) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AvatarCustomizeScreen(),
-                      ),
-                    );
+                    AppHelperFunctions.navigateToScreen(context, AvatarCustomizeScreen());
+                  } else {
+                    AppHelperFunctions.navigateToScreen(context, ChangeAvatarScreen());
                   }
                 },
                 child: Container(
