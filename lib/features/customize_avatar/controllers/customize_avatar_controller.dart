@@ -17,25 +17,25 @@ class CustomizeAvatarController extends GetxController {
         HairStyle(
           styleName: "curly",
           colors: [
-            "assets/avatar/hair/yellow_hair.png",
-            "assets/avatar/hair/Blue-hair.png",
-            "assets/avatar/hair/Green-hair.png",
-            "assets/avatar/hair/Light-yellow-color-hair.png",
+            "assets/avatar/hair/style_1/yellow_hair.png",
+            "assets/avatar/hair/style_1/Blue-hair.png",
+            "assets/avatar/hair/style_1/Green-hair.png",
+            "assets/avatar/hair/style_1/Light-yellow-color-hair.png",
           ],
         ),
 
-        HairStyle(
-          styleName: "purl",
-          colors: [
-            "assets/avatar/hair/Light-yellow-color-hair.png",
-            "assets/avatar/hair/Green-hair.png",
-            "assets/avatar/hair/Blue-hair.png",
-            "assets/avatar/hair/yellow_hair.png",
+        HairStyle(styleName: 'Normal', colors: [
+          "assets/avatar/hair/style_2/brown-hair.png",
+        ]),
 
-          ],
-        ),
+        HairStyle(styleName: 'Long', colors: [
+          "assets/avatar/hair/style_3/black-hair.png",
+          "assets/avatar/hair/style_3/green-hair.png",
+          "assets/avatar/hair/style_3/marun-hair.png",
+        ]),
       ],
     ),
+
   );
 
 
