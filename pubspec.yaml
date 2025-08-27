@@ -78,10 +78,15 @@ flutter:
   assets:
     - assets/image/
     - assets/icons/
+#    hair pngs and styles:
     - assets/avatar/hair/style_1/
     - assets/avatar/hair/style_2/
     - assets/avatar/hair/style_3/
-    - assets/avatar/hair/style_4/
+#    dress pngs and styles:
+    - assets/avatar/dress/dress_1/
+    - assets/avatar/dress/dress_2/
+    - assets/avatar/dress/dress_3/
+#    avatar skeleton
     - assets/avatar/skeleton/
 
   # An image asset can refer to one or more resolution-specific "variants", see

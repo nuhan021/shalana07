@@ -36,43 +36,104 @@ class CustomizeAvatarController extends GetxController {
       ],
     ),
 
+    dress: StyleElement(
+      name: 'Dress',
+      elements: [
+        DressStyle(
+          styleName: 'Basic',
+          colors: [
+            "assets/avatar/dress/dress_1/basic.png"
+          ]
+        ),
+
+        DressStyle(
+            styleName: 'Neckless',
+            colors: [
+              "assets/avatar/dress/dress_2/neckless_bright.png",
+              "assets/avatar/dress/dress_2/neckless_red.png",
+            ]
+        ),
+
+        DressStyle(
+            styleName: 'Tops',
+            colors: [
+              "assets/avatar/dress/dress_3/tops_deep_purple.png",
+              "assets/avatar/dress/dress_3/tops_green.png",
+            ]
+        ),
+      ]
+    )
+
   );
 
 
   // ----------------------------- Change hair style and color ---------------------------
 
   // currently selected hair style
-  var selectedStyleIndex = 0.obs;
+  var selectedHairStyleIndex = 0.obs;
   // currently selected hair color
-  var selectedColorIndex = 0.obs;
+  var selectedHairColorIndex = 0.obs;
 
   // change hair style
   void changeHairStyle(int index) {
-    selectedStyleIndex.value = index;
-    selectedColorIndex.value = 0;
+    selectedHairStyleIndex.value = index;
+    selectedHairColorIndex.value = 0;
   }
 
   // change selected hair color
   void changeSelectedHairColor(int index) {
-    selectedColorIndex.value = index;
+    selectedHairColorIndex.value = index;
   }
 
   // get current hair style
   String get currentHairStyle {
     return totalElements
         .hair
-        .elements[selectedStyleIndex.value]
-        .colors[selectedColorIndex.value];
+        .elements[selectedHairStyleIndex.value]
+        .colors[selectedHairColorIndex.value];
   }
 
 
 // ----------------------------- End Change hair style and color ---------------------------
+
+
+  // ----------------------------- Change dress style and color ---------------------------
+
+  // currently selected hair style
+  var selectedDressStyleIndex = 0.obs;
+  // currently selected hair color
+  var selectedDressColorIndex = 0.obs;
+
+  // change hair style
+  void changeDressStyle(int index) {
+    selectedDressStyleIndex.value = index;
+    selectedDressColorIndex.value = 0;
+  }
+
+  // change selected hair color
+  void changeSelectedDressColor(int index) {
+    selectedDressColorIndex.value = index;
+  }
+
+  // get current hair style
+  String get currentDressStyle {
+    return totalElements
+        .dress
+        .elements[selectedDressStyleIndex.value]
+        .colors[selectedDressColorIndex.value];
+  }
+
+
+// ----------------------------- End Change dress style and color ---------------------------
+
+
 }
 
 // this class is for total element of the avatar
 class TotalElements {
-  TotalElements({required this.hair});
+  TotalElements({required this.hair, required this.dress});
   final StyleElement hair;
+  final StyleElement dress;
 }
 
 //
@@ -86,6 +147,13 @@ class StyleElement {
 class HairStyle {
   HairStyle({required this.styleName, required this.colors});
 
+  final String styleName;
+  final List<String> colors;
+}
+
+// this class is for dress
+class DressStyle {
+  DressStyle({required this.styleName, required this.colors});
   final String styleName;
   final List<String> colors;
 }

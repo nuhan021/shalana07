@@ -10,6 +10,7 @@ import 'package:shalana07/features/customize_avatar/presentation/widgets/change_
 import 'package:shalana07/features/customize_avatar/presentation/widgets/change_hair_style.dart';
 
 import '../../../../core/utils/constants/colors.dart';
+import '../widgets/change_dress_style.dart';
 
 class AvatarCustomizeScreen extends StatelessWidget {
   AvatarCustomizeScreen({super.key});
@@ -35,6 +36,7 @@ class AvatarCustomizeScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Image.asset("assets/avatar/skeleton/white_skeleton.png"),
+                    Image.asset(controller.currentDressStyle),
                     Image.asset(controller.currentHairStyle),
                   ],
                 );
@@ -53,8 +55,17 @@ class AvatarCustomizeScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // change hair style
-            ChangeHairStyle(controller: controller),
+
+            Obx(() {
+              controller.selectedAvatarObject.value;
+              if (controller.selectedAvatarObject.value == 'Hair') {
+                return ChangeHairStyle(controller: controller);
+              } else if (controller.selectedAvatarObject.value == 'Dress') {
+                return ChangeDressStyle(controller: controller);
+              }
+
+              return SizedBox();
+            }),
           ],
         ).paddingSymmetric(horizontal: 16.r),
       ),
