@@ -38,7 +38,7 @@ class CustomizeAvatarController extends GetxController {
     ),
 
     dress: StyleElement(
-      name: 'Dress',
+      name: 'Dress ',
       elements: [
         DressStyle(
           styleName: 'Basic',
