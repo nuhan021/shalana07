@@ -43,8 +43,28 @@ class ChangeAllAssets extends StatelessWidget {
                               : AppColors.grey900,
                           fontWeight: FontWeight.w500,
                         ),
-                      ),
+                      ).paddingOnly(right: 10),
                     ),
+
+
+                    // dress
+                    GestureDetector(
+                      onTap: () {
+                        controller.selectedAvatarObject.value = object.dress.name;
+                      },
+                      child: Text(
+                        object.dress.name,
+                        style: getTextStyle(
+                          fontSize: 16,
+                          color:
+                          object.dress.name ==
+                              controller.selectedAvatarObject.value
+                              ? AppColors.primary
+                              : AppColors.grey900,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
