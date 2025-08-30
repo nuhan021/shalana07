@@ -7,16 +7,17 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
+import 'package:shalana07/features/profile/common_profile.dart';
 //note: This is a custom appbar widget
 // if you add to custom appbar you need to wrap it with prefferd sized widgets
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
- required  this.title, this.notificationIcon
+ required  this.title, this.notificationIcon, this.profileIcon
   });
   final String title;
   final bool? notificationIcon;
-
+  final bool? profileIcon;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -67,15 +68,20 @@ class CustomAppBar extends StatelessWidget {
 
               
               SizedBox(width: 10.w),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  ImagePath.parentProfile,
-                  width: 34.w,
-                  height:34.w,
-                  fit: BoxFit.cover,
+             profileIcon == false ? SizedBox(): InkWell(
+                onTap:(){
+                  Get.to(()=>CommonProfile());
+                },
+               child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    ImagePath.parentProfile,
+                    width: 34.w,
+                    height:34.w,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
+             ),
             ],
           ),
         ),
