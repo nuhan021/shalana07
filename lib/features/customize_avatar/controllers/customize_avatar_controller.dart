@@ -17,21 +17,22 @@ class CustomizeAvatarController extends GetxController {
         HairStyle(
           styleName: "curly",
           colors: [
-            "assets/avatar/hair/style_1/yellow_hair.png",
-            "assets/avatar/hair/style_1/Blue-hair.png",
-            "assets/avatar/hair/style_1/Green-hair.png",
-            "assets/avatar/hair/style_1/Light-yellow-color-hair.png",
+            "assets/avatar/hair/style_1/9.png",
+            "assets/avatar/hair/style_1/10.png",
+            // "assets/avatar/hair/style_1/Green-hair.png",
+            // "assets/avatar/hair/style_1/Light-yellow-color-hair.png",
           ],
         ),
 
         HairStyle(styleName: 'Normal', colors: [
-          "assets/avatar/hair/style_2/brown-hair.png",
+          "assets/avatar/hair/style_2/4.png",
+          "assets/avatar/hair/style_2/5.png",
         ]),
 
         HairStyle(styleName: 'Long', colors: [
-          "assets/avatar/hair/style_3/black-hair.png",
-          "assets/avatar/hair/style_3/green-hair.png",
-          "assets/avatar/hair/style_3/marun-hair.png",
+          "assets/avatar/hair/style_3/6.png",
+          "assets/avatar/hair/style_3/7.png",
+          "assets/avatar/hair/style_3/8.png",
         ]),
       ],
     ),
@@ -42,23 +43,24 @@ class CustomizeAvatarController extends GetxController {
         DressStyle(
           styleName: 'Basic',
           colors: [
-            "assets/avatar/dress/dress_1/basic.png"
+            "assets/avatar/dress/dress_1/15.png"
           ]
         ),
 
         DressStyle(
             styleName: 'Neckless',
             colors: [
-              "assets/avatar/dress/dress_2/neckless_bright.png",
-              "assets/avatar/dress/dress_2/neckless_red.png",
+              "assets/avatar/dress/dress_2/16.png",
+              "assets/avatar/dress/dress_2/17.png",
             ]
         ),
 
         DressStyle(
             styleName: 'Tops',
             colors: [
-              "assets/avatar/dress/dress_3/tops_deep_purple.png",
-              "assets/avatar/dress/dress_3/tops_green.png",
+              "assets/avatar/dress/dress_3/12.png",
+              "assets/avatar/dress/dress_3/13.png",
+              "assets/avatar/dress/dress_3/14.png",
             ]
         ),
       ]
