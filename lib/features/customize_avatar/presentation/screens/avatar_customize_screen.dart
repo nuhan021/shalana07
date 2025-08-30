@@ -6,8 +6,10 @@ import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/customize_avatar/controllers/customize_avatar_controller.dart';
 import 'package:shalana07/features/customize_avatar/presentation/widgets/avatar_customization_tab_bar.dart';
+import 'package:shalana07/features/customize_avatar/presentation/widgets/change_all_accessories.dart';
 import 'package:shalana07/features/customize_avatar/presentation/widgets/change_all_assets.dart';
 import 'package:shalana07/features/customize_avatar/presentation/widgets/change_hair_style.dart';
+import 'package:shalana07/features/customize_avatar/presentation/widgets/change_jewlry.dart';
 
 import '../../../../core/utils/constants/colors.dart';
 import '../widgets/change_dress_style.dart';
@@ -35,8 +37,9 @@ class AvatarCustomizeScreen extends StatelessWidget {
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset("assets/avatar/skeleton/2.png"),
+                    Image.asset(controller.totalElements.avatarImgUrl),
                     Image.asset(controller.currentDressStyle),
+                    Image.asset(controller.currentJewelryStyle),
                     Image.asset(controller.currentHairStyle),
                   ],
                 );
@@ -50,21 +53,38 @@ class AvatarCustomizeScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // change all assets
-            ChangeAllAssets(controller: controller),
+            Obx(() {
+              if (controller.selectedTab.value == 0) {
+                return // change all assets
+                ChangeAllAssets(controller: controller);
+              }
+
+              return ChangeAllAccessories(controller: controller);
+            }),
 
             const SizedBox(height: 16),
 
-
+            // avatar customize tab
             Obx(() {
-              controller.selectedAvatarObject.value;
-              if (controller.selectedAvatarObject.value == 'Hair') {
-                return ChangeHairStyle(controller: controller);
-              } else if (controller.selectedAvatarObject.value == 'Dress') {
-                return ChangeDressStyle(controller: controller);
+              if (controller.selectedTab.value == 0) {
+                return SizedBox(
+                  child: Obx(() {
+                    controller.selectedAvatarObject.value;
+                    if (controller.selectedAvatarObject.value == 'Hair') {
+                      return ChangeHairStyle(controller: controller);
+                    } else if (controller.selectedAvatarObject.value ==
+                        'Dress') {
+                      return ChangeDressStyle(controller: controller);
+                    }
+
+                    return SizedBox(
+                      child: ChangeJewelry(controller: controller),
+                    );
+                  }),
+                );
               }
 
-              return SizedBox();
+              return ChangeJewelry(controller: controller);
             }),
           ],
         ).paddingSymmetric(horizontal: 16.r),
