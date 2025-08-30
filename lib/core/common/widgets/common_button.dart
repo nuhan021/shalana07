@@ -10,6 +10,8 @@ class CommonButton extends StatelessWidget {
   final Color? textColor;
   final bool? isLinearGradient;
   final bool? isbporderColor;
+  final double? height;
+  final double? fontSize;
 
   const CommonButton({
     super.key,
@@ -18,7 +20,7 @@ class CommonButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.isLinearGradient,
-    this.isbporderColor,
+    this.isbporderColor, this.height, this.fontSize,
   });
 
   @override
@@ -30,7 +32,7 @@ class CommonButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: double.infinity,
-        height: 50.h,
+        height: height ?? 50.h,
         decoration: BoxDecoration(
           gradient: isLinearGradient == true ? AppColors.linearGradient : null,
           color: backgroundColor ?? AppColors.primary,
@@ -44,7 +46,7 @@ class CommonButton extends StatelessWidget {
             title,
             style: getTextStyle(
               color: textColor ?? Colors.white,
-              fontSize: 18,
+              fontSize: fontSize ?? 18,
               fontWeight: FontWeight.w600,
             ),
           ),
