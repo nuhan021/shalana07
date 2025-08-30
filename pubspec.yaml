@@ -78,16 +78,42 @@ flutter:
   assets:
     - assets/image/
     - assets/icons/
-#    hair pngs and styles:
-    - assets/avatar/hair/style_1/
-    - assets/avatar/hair/style_2/
-    - assets/avatar/hair/style_3/
+#    hair pngs and styles for avatar 1:
+    - assets/avatar/avatar1/hair/style_1/
+    - assets/avatar/avatar1/hair/style_2/
+    - assets/avatar/avatar1/hair/style_3/
 #    dress pngs and styles:
-    - assets/avatar/dress/dress_1/
-    - assets/avatar/dress/dress_2/
-    - assets/avatar/dress/dress_3/
+    - assets/avatar/avatar1/dress/dress_1/
+    - assets/avatar/avatar1/dress/dress_2/
+    - assets/avatar/avatar1/dress/dress_3/
+#     jewelry
+    - assets/avatar/avatar1/jewelry/
 #    avatar skeleton
-    - assets/avatar/skeleton/
+    - assets/avatar/avatar1/skeleton/
+
+    #    hair pngs and styles for avatar 2:
+    - assets/avatar/avatar2/hair/style_1/
+    - assets/avatar/avatar2/hair/style_2/
+    #    dress pngs and styles:
+    - assets/avatar/avatar2/dress/dress_1/
+    - assets/avatar/avatar2/dress/dress_2/
+    #     jewelry
+    - assets/avatar/avatar2/jewelry/
+    #    avatar skeleton
+    - assets/avatar/avatar2/skeleton/
+
+
+    #    hair pngs and styles for avatar 3:
+    - assets/avatar/avatar3/hair/style_1/
+    - assets/avatar/avatar3/hair/style_2/
+    #    dress pngs and styles:
+    - assets/avatar/avatar3/dress/dress_1/
+    - assets/avatar/avatar3/dress/dress_2/
+    #     jewelry
+    - assets/avatar/avatar3/jewelry/
+    #    avatar skeleton
+    - assets/avatar/avatar3/skeleton/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
