@@ -4,6 +4,7 @@ class StorageService {
   // Constants for preference keys
   static const String _tokenKey = 'token';
   static const String _idKey = 'userId';
+  static const String _currentAvatar = 'avatarId';
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
@@ -32,6 +33,13 @@ class StorageService {
     // Navigate to the login screen
     // Get.offAllNamed('/login');
   }
+
+  static Future<void> saveCurrentAvatar(String currentAvatarIndex) async {
+    await _preferences?.setString(_currentAvatar, currentAvatarIndex);
+  }
+
+  // getter for avatar index
+  static String? get getCurrentAvatar => _preferences?.getString(_currentAvatar);
 
   // Getter for user ID
   static String? get userId => _preferences?.getString(_idKey);

@@ -2,12 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../../customize_avatar/controllers/customize_avatar_controller.dart';
 
 class HomeChildAvatar extends StatelessWidget {
-  const HomeChildAvatar({super.key});
+  HomeChildAvatar({super.key});
+
+  final controller = Get.put(CustomizeAvatarController());
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,17 @@ class HomeChildAvatar extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Image.asset(ImagePath.homeGirlAvatar),
+                  child: Obx(() {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(controller.totalElements.value.avatarImgUrl),
+                        Image.asset(controller.currentDressStyle),
+                        Image.asset(controller.currentJewelryStyle),
+                        Image.asset(controller.currentHairStyle),
+                      ],
+                    );
+                  }),
               ),
 
               Container(

@@ -37,7 +37,7 @@ class AvatarCustomizeScreen extends StatelessWidget {
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(controller.totalElements.avatarImgUrl),
+                    Image.asset(controller.totalElements.value.avatarImgUrl),
                     Image.asset(controller.currentDressStyle),
                     Image.asset(controller.currentJewelryStyle),
                     Image.asset(controller.currentHairStyle),

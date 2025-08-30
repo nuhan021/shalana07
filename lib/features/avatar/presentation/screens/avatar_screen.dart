@@ -10,12 +10,16 @@ import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
 import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
+
+import '../../../customize_avatar/controllers/customize_avatar_controller.dart';
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
 
   AvatarScreenController avatarScreenController = Get.put(
     AvatarScreenController(),
   );
+
+  final controller = Get.put(CustomizeAvatarController());
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +73,17 @@ class AvatarScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.primary, width: 10),
               ),
               alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                // image of the avatar
-                ImagePath.homeGirlAvatar,
-              ).paddingOnly(top: 10),
+              child: Obx(() {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(controller.totalElements.value.avatarImgUrl),
+                    Image.asset(controller.currentDressStyle),
+                    Image.asset(controller.currentJewelryStyle),
+                    Image.asset(controller.currentHairStyle),
+                  ],
+                );
+              }),
             ),
 
             SizedBox(height: 30),

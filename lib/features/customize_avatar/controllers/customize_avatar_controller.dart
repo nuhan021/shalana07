@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:shalana07/core/services/storage_service.dart';
 
 class CustomizeAvatarController extends GetxController {
   RxString selectedAvatarObject = 'Hair'.obs;
   RxString selectedAccessories = 'Jewelry'.obs;
-
   RxInt selectedTab = 0.obs;
+
+  final currentAvatarIndex = int.parse(
+    StorageService.getCurrentAvatar.toString(),
+  );
 
   void toggleIsAvatarTab(int index) {
     selectedTab.value = index;
@@ -144,7 +148,6 @@ class CustomizeAvatarController extends GetxController {
           styleName: 'Style 1',
           colors: ["assets/avatar/avatar2/jewelry/51.png"],
         ),
-
       ],
     ),
   );
@@ -204,14 +207,13 @@ class CustomizeAvatarController extends GetxController {
           styleName: 'Style 1',
           colors: ["assets/avatar/avatar3/jewelry/47.png"],
         ),
-
       ],
     ),
   );
 
-  late List<dynamic> avatars = [avatar1, avatar2, avatar3];
+  late List<TotalElements> avatars = [avatar1, avatar2, avatar3];
 
-  late var totalElements = avatars[2];
+  late var totalElements = avatars[currentAvatarIndex].obs;
 
   // ----------------------------- Change hair style and color ---------------------------
 
@@ -234,6 +236,7 @@ class CustomizeAvatarController extends GetxController {
   // get current hair style
   String get currentHairStyle {
     return totalElements
+        .value
         .hair
         .elements[selectedHairStyleIndex.value]
         .colors[selectedHairColorIndex.value];
@@ -262,6 +265,7 @@ class CustomizeAvatarController extends GetxController {
   // get current hair style
   String get currentDressStyle {
     return totalElements
+        .value
         .dress
         .elements[selectedDressStyleIndex.value]
         .colors[selectedDressColorIndex.value];
@@ -290,12 +294,24 @@ class CustomizeAvatarController extends GetxController {
   // get current hair style
   String get currentJewelryStyle {
     return totalElements
+        .value
         .jewelry
         .elements[selectedJewelryStyleIndex.value]
         .colors[selectedJewelryColorIndex.value];
   }
 
   // ----------------------------- End Change Jewelry style and color ---------------------------
+
+  void resetAll() {
+    selectedHairStyleIndex.value = 0;
+    selectedHairColorIndex.value = 0;
+
+    selectedDressStyleIndex.value = 0;
+    selectedDressColorIndex.value = 0;
+
+    selectedJewelryStyleIndex.value = 0;
+    selectedJewelryColorIndex.value = 0;
+  }
 }
 
 // this class is for total element of the avatar
