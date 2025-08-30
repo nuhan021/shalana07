@@ -38,7 +38,7 @@ class ChangeJewelry extends StatelessWidget {
                 child: Obx(() {
                   return Row(
                     children: List.generate(
-                      controller.totalElements.jewelry.elements.length,
+                      controller.totalElements.value.jewelry.elements.length,
                       (index) {
                         return GestureDetector(
                           onTap: () {
@@ -63,10 +63,12 @@ class ChangeJewelry extends StatelessWidget {
                             child: Image.asset(
                               controller
                                   .totalElements
+                                  .value
                                   .jewelry
                                   .elements[index]
                                   .colors
-                                  .first, width: 100,
+                                  .first,
+                              width: 100,
                             ),
                           ),
                         );
@@ -101,6 +103,7 @@ class ChangeJewelry extends StatelessWidget {
                     children: List.generate(
                       controller
                           .totalElements
+                          .value
                           .jewelry
                           .elements[controller.selectedJewelryStyleIndex.value]
                           .colors
@@ -129,6 +132,7 @@ class ChangeJewelry extends StatelessWidget {
                             child: Image.asset(
                               controller
                                   .totalElements
+                                  .value
                                   .jewelry
                                   .elements[controller
                                       .selectedJewelryStyleIndex

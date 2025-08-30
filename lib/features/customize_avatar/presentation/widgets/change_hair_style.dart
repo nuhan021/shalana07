@@ -39,7 +39,7 @@ class ChangeHairStyle extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 return Row(
-                  children: List.generate(controller.totalElements.hair.elements.length, (
+                  children: List.generate(controller.totalElements.value.hair.elements.length, (
                       index,
                       ) {
                     return GestureDetector(
@@ -61,7 +61,7 @@ class ChangeHairStyle extends StatelessWidget {
                           ),
                         ),
                         child: Image.asset(
-                          controller.totalElements.hair.elements[index].colors.first,
+                          controller.totalElements.value.hair.elements[index].colors.first,
                         ),
                       ),
                     );
@@ -97,7 +97,7 @@ class ChangeHairStyle extends StatelessWidget {
                 child: Row(
                   children: List.generate(
                     controller
-                        .totalElements.hair.elements[controller.selectedHairStyleIndex.value]
+                        .totalElements.value.hair.elements[controller.selectedHairStyleIndex.value]
                         .colors
                         .length,
                         (index) {
@@ -121,7 +121,7 @@ class ChangeHairStyle extends StatelessWidget {
                           ),
                           child: Image.asset(
                             controller
-                                .totalElements.hair.elements[controller
+                                .totalElements.value.hair.elements[controller
                                 .selectedHairStyleIndex
                                 .value]
                                 .colors[index],

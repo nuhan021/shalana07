@@ -39,7 +39,7 @@ class ChangeDressStyle extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 return Row(
-                  children: List.generate(controller.totalElements.dress.elements.length, (
+                  children: List.generate(controller.totalElements.value.dress.elements.length, (
                       index,
                       ) {
                     return GestureDetector(
@@ -61,7 +61,7 @@ class ChangeDressStyle extends StatelessWidget {
                           ),
                         ),
                         child: Image.asset(
-                          controller.totalElements.dress.elements[index].colors.first,
+                          controller.totalElements.value.dress.elements[index].colors.first,
                         ),
                       ),
                     );
@@ -97,7 +97,7 @@ class ChangeDressStyle extends StatelessWidget {
                 child: Row(
                   children: List.generate(
                     controller
-                        .totalElements.dress.elements[controller.selectedDressStyleIndex.value]
+                        .totalElements.value.dress.elements[controller.selectedDressStyleIndex.value]
                         .colors
                         .length,
                         (index) {
@@ -122,7 +122,7 @@ class ChangeDressStyle extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Image.asset(
                             controller
-                                .totalElements.dress.elements[controller
+                                .totalElements.value.dress.elements[controller
                                 .selectedDressStyleIndex
                                 .value]
                                 .colors[index],
