@@ -6,6 +6,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
+import 'package:shalana07/features/daily_goal/parent/presentation/view/goal_details/Tast_details.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/parent_goal_card.dart';
 
 class WeeklyGoalSection extends StatelessWidget {
@@ -65,24 +66,27 @@ class WeeklyGoalSection extends StatelessWidget {
 
           //List of goals
           child: SizedBox(
-            height: Get.height * 0.5.h,
+            height:Get.height * 0.55,
             child: ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: _controller.goals.length,
               itemBuilder: (context, index) {
                 final goal = _controller.goals[index];
-                return GoalCard(goal: goal, isParentVIew: isParentVIew);
+                return InkWell(
+                    onTap: () {
+                      // Handle goal card tap
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => TastDetails(
+                      isParentVIew: isParentVIew,
+                     )));
+                    },
+                  child: GoalCard(goal: goal, isParentVIew: isParentVIew));
               },
             ),
           ),
         ),
-        CommonButton(
-          title: "Add New Goal",
-          onPressed: () {
-            navaberController.jumpToScreen(2);
-          },
-        ),
+       
+        10.verticalSpace
       ],
     );
   }

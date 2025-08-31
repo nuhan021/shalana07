@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/weekly_goal_section.dart';
 
@@ -13,6 +15,7 @@ class ParentDailyGoal extends StatelessWidget {
   final ParentDailyGoalController _controller = Get.put(
     ParentDailyGoalController(),
   );
+    final NavaberController navaberController = Get.find<NavaberController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class ParentDailyGoal extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
 
-        child: CustomAppBar(title: 'Goals',notificationIcon: true,),
+        child: CustomAppBar(title: 'Goals',notificationIcon: true,backArrowIcon: false,),
       ),
 
       //f  end drawer
@@ -41,7 +44,7 @@ class ParentDailyGoal extends StatelessWidget {
             Obx(() {
               return Container(
                 height: 50.h,
-
+        
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.grey200,
@@ -57,9 +60,9 @@ class ParentDailyGoal extends StatelessWidget {
                 ),
               );
             }),
-
+        
             30.verticalSpace,
-
+        
             //troggle Screen
             Obx(() {
               return _controller.tabIndex.value == 0
@@ -72,6 +75,15 @@ class ParentDailyGoal extends StatelessWidget {
             }),
           ],
         ),
+      ),
+      bottomNavigationBar:  Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CommonButton(
+            title: "Add New Goal",
+            onPressed: () {
+              navaberController.jumpToScreen(2);
+            },
+          ),
       ),
     );
   }

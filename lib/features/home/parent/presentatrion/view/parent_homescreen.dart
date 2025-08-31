@@ -28,7 +28,7 @@ class ParentHomescreen extends StatelessWidget {
         // Custom AppBar
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0.h),
-          child: CustomAppBar(title: 'Home', notificationIcon: true),
+          child: CustomAppBar(title: 'Home', notificationIcon: true,backArrowIcon: false,),
         ),
 
         // Main content of the screen

@@ -10,7 +10,7 @@ class GoalCard extends StatelessWidget {
   const GoalCard({super.key, required this.goal, required this.isParentVIew});
 
   final GoalModel goal;
-  final int isParentVIew;
+  final int? isParentVIew;
 
   @override
   Widget build(BuildContext context) {

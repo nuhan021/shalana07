@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shalana07/features/daily_goal/parent/model/parent_goal_model.dart';
 
 class ParentDailyGoalController extends GetxController {
-  var tabIndex = 0.obs;
+  var tabIndex = 1.obs;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 

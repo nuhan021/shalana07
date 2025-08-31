@@ -13,22 +13,29 @@ import 'package:shalana07/features/profile/common_profile.dart';
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
- required  this.title, this.notificationIcon, this.profileIcon
+ required  this.title, this.notificationIcon, this.profileIcon, this.backArrowIcon
   });
   final String title;
   final bool? notificationIcon;
   final bool? profileIcon;
+  final bool? backArrowIcon;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.appBackground,
       //icons
-      leading: IconButton(
+      leading:backArrowIcon == false ?SizedBox(): IconButton(
         icon: Icon(Icons.arrow_back, color: AppColors.grey900),
         onPressed: () {
-          // Handle menu button press
+          // Handle back button press
+          Navigator.pop(context);
+          Get.back();
         },
       ),
+
+      leadingWidth: backArrowIcon == false ? 0 : 50.w,
+
+      centerTitle:  backArrowIcon == false ? false : true,
       //title
       title: Text(
        title,
