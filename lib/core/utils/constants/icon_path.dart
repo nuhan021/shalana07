@@ -31,7 +31,7 @@ class IconPath{
   static const  String  uppArrowIcon ='assets/icons/upp_arrow.png';
   static const  String  voiceIcon ='assets/icons/voice_icon.png';
   static const  String dropdownandup ='assets/icons/dropdown_and_up.png';
-
+  static const  String search ='assets/icons/search.png';
 
 
 

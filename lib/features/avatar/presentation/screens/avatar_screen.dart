@@ -27,9 +27,7 @@ class AvatarScreen extends StatelessWidget {
       backgroundColor: AppColors.appBackground, // default color
       // App Bar of this screen
       appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () {},
-            child: Image.asset(IconPath.arrowBackIcon, scale: 4)), // back button
+        centerTitle: false,
 
         title: Text(
           // title of the screen

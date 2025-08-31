@@ -13,6 +13,10 @@ import 'package:shalana07/features/customize_avatar/controllers/customize_avatar
 class ChangeAvatarScreen extends StatelessWidget {
   ChangeAvatarScreen({super.key});
 
+  final ChangeAvatarController changeAvatarController = Get.put(
+    ChangeAvatarController(),
+  );
+
   final CustomizeAvatarController controller = Get.put(
     CustomizeAvatarController(),
   );
@@ -41,163 +45,204 @@ class ChangeAvatarScreen extends StatelessWidget {
       // app bar
       appBar: CustomChildAppBar(title: 'Change Avatar'),
 
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            52.verticalSpace,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          20.verticalSpace,
 
-            // title
-            Text(
-              'Search Avatar',
-              style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+          // title
+          Text(
+            'Search Avatar',
+            style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
 
-            20.verticalSpace,
+          20.verticalSpace,
 
-            // select gender and region
-            Row(
-              children: [
-                // gender selection
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Gender',
-                        style: getTextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ).paddingOnly(bottom: 8.r),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: AppColors.grey400),
-                        ),
-                        alignment: Alignment.centerRight,
-                        child: PopupMenuButton(
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: AppColors.grey400,
-                          ),
-                          itemBuilder: (BuildContext context) {
-                            return [
-                              const PopupMenuItem<String>(
-                                value: 'male',
-                                child: Text('Male'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'female',
-                                child: Text('Female'),
-                              ),
-                            ];
-                          },
-                        ),
+          // select gender and region
+          Row(
+            children: [
+              // gender selection
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gender',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
-                    ],
-                  ),
-                ),
-
-                20.horizontalSpace,
-
-                // country selection
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Region',
-                        style: getTextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ).paddingOnly(bottom: 8.r),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: AppColors.grey400),
-                        ),
-                        alignment: Alignment.centerRight,
-                        child: PopupMenuButton(
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: AppColors.grey400,
-                          ),
-                          itemBuilder: (BuildContext context) {
-                            return [
-                              const PopupMenuItem<String>(
-                                value: 'us',
-                                child: Text('US'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'uk',
-                                child: Text('UK'),
-                              ),
-                            ];
-                          },
-                        ),
+                    ).paddingOnly(bottom: 8.r),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.r),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(color: AppColors.grey400),
                       ),
-                    ],
-                  ),
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() {
+                            return Text(
+                              changeAvatarController.selectedGender.value
+                                  .toString(),
+                              style: getTextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: AppColors.grey300,
+                              ),
+                            );
+                          }),
+
+                          PopupMenuButton(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: AppColors.grey400,
+                            ),
+                            surfaceTintColor: AppColors.primary,
+                            onSelected: (value) {
+                              changeAvatarController.selectedGender.value =
+                                  value;
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                const PopupMenuItem<String>(
+                                  value: 'male',
+                                  child: Text('Male'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'female',
+                                  child: Text('Female'),
+                                ),
+                              ];
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-
-                // region selection
-              ],
-            ),
-
-            // find button
-            30.verticalSpace,
-
-            CommonButton(title: 'Find', onPressed: () {}),
-
-            30.verticalSpace,
-
-            Text(
-              'Best Match',
-              style: getTextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-            ),
-
-            25.verticalSpace,
-
-            Column(
-              children: AppHelperFunctions.wrapWidgets(
-                avatarCards,
-                2,
-                verticalSpacing: 24.h,
               ),
-            ),
 
-            // Container(
-            //   height: 200,
-            //   color: Colors.red,
-            //   child: GridView.builder(
-            //     physics: NeverScrollableScrollPhysics(),
-            //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //       crossAxisCount: 2, // Ensures a single row
-            //       mainAxisSpacing: 24.r,
-            //       crossAxisSpacing: 13.r,
-            //     ),
-            //
-            //     itemCount: controller.avatars.length,
-            //
-            //     itemBuilder: (context, index) {
-            //       final item = controller.avatars[index];
-            //       DressStyle currentDressStyle = item.dress.elements.first;
-            //       JewelryStyle currentJewelryStyle = item.jewelry.elements.first;
-            //       HairStyle currentHairStyle = item.hair.elements.first;
-            //       return AvatarCard(
-            //         avatarImgUrl: item.avatarImgUrl,
-            //         currentDressStyle: currentDressStyle.colors.first,
-            //         currentJewelryStyle: currentJewelryStyle.colors.first,
-            //         currentHairStyle: currentHairStyle.colors.first,
-            //       );
-            //     },
-            //   ),
-            // ),
-          ],
-        ).paddingSymmetric(horizontal: 16),
-      ),
+              20.horizontalSpace,
+
+              // country selection
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Region',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ).paddingOnly(bottom: 8.r),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.r),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(color: AppColors.grey400),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() {
+                            return Text(
+                              changeAvatarController.selectedRegion.value
+                                  .toString(),
+                              style: getTextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: AppColors.grey300,
+                              ),
+                            );
+                          }),
+                          PopupMenuButton(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_sharp,
+                              color: AppColors.grey400,
+                            ),
+                            surfaceTintColor: AppColors.primary,
+                            onSelected: (value) {
+                              changeAvatarController.selectedRegion.value =
+                                  value;
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                const PopupMenuItem<String>(
+                                  value: 'USA',
+                                  child: Text('USA'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'UK',
+                                  child: Text('UK'),
+                                ),
+                              ];
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // region selection
+            ],
+          ),
+
+          // find button
+          30.verticalSpace,
+
+          CommonButton(title: 'Find', onPressed: () {}),
+
+          30.verticalSpace,
+
+          Text(
+            'Best Match',
+            style: getTextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+
+          25.verticalSpace,
+
+          // Column(
+          //   children: AppHelperFunctions.wrapWidgets(
+          //     avatarCards,
+          //     2,
+          //     verticalSpacing: 24.h,
+          //   ),
+          // ),
+          Expanded(
+            child: GridView.builder(
+
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Ensures a single row
+                mainAxisSpacing: 24.r,
+                crossAxisSpacing: 13.r,
+              ),
+
+              itemCount: controller.avatars.length,
+
+              itemBuilder: (context, index) {
+                final item = controller.avatars[index];
+                DressStyle currentDressStyle = item.dress.elements.first;
+                JewelryStyle currentJewelryStyle =
+                    item.jewelry.elements.first;
+                HairStyle currentHairStyle = item.hair.elements.first;
+                return AvatarCard(
+                  avatarImgUrl: item.avatarImgUrl,
+                  currentDressStyle: currentDressStyle.colors.first,
+                  currentJewelryStyle: currentJewelryStyle.colors.first,
+                  currentHairStyle: currentHairStyle.colors.first,
+                  index: index,
+                );
+              },
+            ),
+          ),
+        ],
+      ).paddingSymmetric(horizontal: 16),
     );
   }
 }

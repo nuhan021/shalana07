@@ -9,6 +9,7 @@ import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.
 import 'package:shalana07/features/create_goal/common_create_goal.dart';
 import 'package:shalana07/features/daily_goal/common_daily_goal.dart';
 import 'package:shalana07/features/home/common_homescren.dart';
+import 'package:shalana07/features/store/presentation/screens/store_screen.dart';
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
 
@@ -36,7 +37,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       CommonHomeScreen(),
       CommonDailyGoal(),
       CommonCreateGoal(),
-      Placeholder(),
+      StoreScreen(),
       AvatarScreen(),
     ];
   }

@@ -25,14 +25,60 @@ class AvatarScreenController extends GetxController {
       coin: "120",
     ),
   ];
+
+  final List<TrendingItem> dress = [
+    TrendingItem(
+      imgUrl: ImagePath.yellowDress,
+      title: 'Yellow Dress',
+      coin: "150",
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.ambarDress,
+      title: 'Green Dress',
+      coin: "150",
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.lightBlueDress,
+      title: 'Blue Dress',
+      coin: "120",
+    ),
+  ];
+
+  final List<TrendingItem> hair = [
+    TrendingItem(
+      imgUrl: ImagePath.redLonghair,
+      title: 'Long Hair',
+      coin: "150",
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.longHair,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),
+  ];
+
+  final List<TrendingItem> avatar = [
+    TrendingItem(
+      imgUrl: ImagePath.grilavater_1,
+      title: 'Long Hair',
+      coin: "150",
+    ),
+
+    TrendingItem(
+      imgUrl: ImagePath.girlAvater_3,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.girlavater_4,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),
+  ];
 }
 
 class TrendingItem {
-  TrendingItem({
-    required this.imgUrl,
-    required this.title,
-    required this.coin,
-  });
+  TrendingItem({required this.imgUrl, required this.title, required this.coin});
 
   final String imgUrl;
   final String title;
