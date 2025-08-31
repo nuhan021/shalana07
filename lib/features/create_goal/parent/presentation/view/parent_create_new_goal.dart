@@ -22,7 +22,7 @@ class ParentCreateNewGoal extends StatelessWidget {
       // AppBar of create new goal screen
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0.h),
-        child: CustomAppBar(title: 'Create New Goal', notificationIcon: true,),
+        child: CustomAppBar(title: 'Create New Goal', notificationIcon: true,backArrowIcon: false,),
       ),
 
       // Body of create new goal screen

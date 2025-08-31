@@ -14,6 +14,7 @@ import 'package:shalana07/features/home/parent/presentatrion/widgets/account_car
 import 'package:shalana07/features/home/parent/presentatrion/widgets/activity_card.dart';
 import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/Edit_profile_page.dart';
+import 'package:shalana07/features/profile/parent/presentation/view/add_child_account.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/all_help_update.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/custom_switch.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/helper_card.dart';
@@ -108,11 +109,7 @@ class ParentProfile extends StatelessWidget {
                   textColor: AppColors.grey900,
                   title: 'Add Account',
                   onPressed: () {
-                    showModalBottomSheet(
-                      context: Get.context!, // or context from parent widget
-                      isScrollControlled: true,
-                      builder: (context) => const AddAccountSheet(),
-                    );
+                    Get.to(() => AddChildAccount());
                   },
                 ),
 
@@ -219,7 +216,6 @@ class ParentProfile extends StatelessWidget {
                     ],
                   );
                 }),
-                
 
                 20.verticalSpace,
                 Row(
@@ -264,12 +260,12 @@ class ParentProfile extends StatelessWidget {
     return Text(
       title,
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: getTextStyle(
         color: const Color(0xFF686868),
         fontSize: 12,
-        fontFamily: 'Poppins',
+       
         fontWeight: FontWeight.w400,
-        height: 1.83,
+      
       ),
     );
   }
