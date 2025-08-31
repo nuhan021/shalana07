@@ -58,18 +58,18 @@ class AvatarCard extends StatelessWidget {
               ),
 
               child: SizedBox(
-                height: 270.h,
-                width: double.maxFinite,
+                  height: 270.h,
+                  width: double.maxFinite,
 
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(avatarImgUrl),
-                    Image.asset(currentDressStyle),
-                    Image.asset(currentJewelryStyle),
-                    Image.asset(currentHairStyle),
-                  ],
-                )
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(avatarImgUrl),
+                      Image.asset(currentDressStyle),
+                      Image.asset(currentJewelryStyle),
+                      Image.asset(currentHairStyle),
+                    ],
+                  )
               ),
             ),
           ),

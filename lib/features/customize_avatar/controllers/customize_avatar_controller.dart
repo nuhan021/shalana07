@@ -20,6 +20,14 @@ class CustomizeAvatarController extends GetxController {
       name: 'Hair',
       elements: [
         HairStyle(
+          styleName: 'Long',
+          colors: [
+            "assets/avatar/avatar1/hair/style_3/6.png",
+            "assets/avatar/avatar1/hair/style_3/7.png",
+            "assets/avatar/avatar1/hair/style_3/8.png",
+          ],
+        ),
+        HairStyle(
           styleName: "curly",
           colors: [
             "assets/avatar/avatar1/hair/style_1/9.png",
@@ -34,15 +42,6 @@ class CustomizeAvatarController extends GetxController {
             "assets/avatar/avatar1/hair/style_2/5.png",
           ],
         ),
-
-        HairStyle(
-          styleName: 'Long',
-          colors: [
-            "assets/avatar/avatar1/hair/style_3/6.png",
-            "assets/avatar/avatar1/hair/style_3/7.png",
-            "assets/avatar/avatar1/hair/style_3/8.png",
-          ],
-        ),
       ],
     ),
 
@@ -50,17 +49,20 @@ class CustomizeAvatarController extends GetxController {
       name: 'Dress',
       elements: [
         DressStyle(
-          styleName: 'Basic',
-          colors: ["assets/avatar/avatar1/dress/dress_1/15.png"],
-        ),
-
-        DressStyle(
           styleName: 'Neckless',
           colors: [
             "assets/avatar/avatar1/dress/dress_2/16.png",
             "assets/avatar/avatar1/dress/dress_2/17.png",
           ],
         ),
+
+
+        DressStyle(
+          styleName: 'Basic',
+          colors: ["assets/avatar/avatar1/dress/dress_1/15.png"],
+        ),
+
+
 
         DressStyle(
           styleName: 'Tops',
@@ -78,16 +80,17 @@ class CustomizeAvatarController extends GetxController {
       elements: [
         JewelryStyle(
           styleName: 'Style 1',
+          colors: ["assets/avatar/avatar1/jewelry/3.png"],
+        ),
+        JewelryStyle(
+          styleName: 'Style 1',
           colors: ["assets/avatar/avatar1/jewelry/1.png"],
         ),
         JewelryStyle(
           styleName: 'Style 1',
           colors: ["assets/avatar/avatar1/jewelry/2.png"],
         ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar1/jewelry/3.png"],
-        ),
+
       ],
     ),
   );

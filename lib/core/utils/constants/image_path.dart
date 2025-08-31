@@ -16,6 +16,7 @@ class ImagePath{
   static const String homeCat = 'assets/image/home_cat.png';
   static const String parentProfile = 'assets/image/parent_profile.jpg';
   static const String redLonghair = 'assets/image/red_long_hair.png';
+  static const String longHair = 'assets/image/long_hair.png';
   static const String yellowDress = 'assets/image/yellow_dress.png';
   static const String reward = 'assets/image/reward_1.png';
   static const String lightBlueDress = 'assets/image/light_blue_dress.png';

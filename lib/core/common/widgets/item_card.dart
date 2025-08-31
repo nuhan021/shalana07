@@ -44,11 +44,14 @@ class ItemCard extends StatelessWidget {
           ClipRRect(borderRadius: BorderRadius.circular(8.r),child: Image.asset(imgUrl)),
 
           // title
-          Text(title, style: getTextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.grey900
-          ), overflow: TextOverflow.ellipsis,),
+          Align(
+            alignment: AlignmentGeometry.centerLeft,
+            child: Text(title, style: getTextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppColors.grey900
+            ), overflow: TextOverflow.ellipsis,),
+          ),
 
           const SizedBox(height: 5,),
 

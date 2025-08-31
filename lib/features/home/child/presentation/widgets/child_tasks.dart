@@ -8,10 +8,15 @@ import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
 
+import '../../../../../core/common/widgets/item_card.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../../avatar/controllers/controller.dart';
 
 class ChildTasks extends StatelessWidget {
-  const ChildTasks({super.key});
+  ChildTasks({super.key});
+  AvatarScreenController avatarScreenController = Get.put(
+    AvatarScreenController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +113,6 @@ class ChildTasks extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-
                         // coins earned weekly status
                         Container(
                           height: 42.h,
@@ -145,17 +149,75 @@ class ChildTasks extends StatelessWidget {
 
                         ChildHomeTaskTabBar(),
 
-                        SizedBox(height: 24.h,),
+                        SizedBox(height: 24.h),
 
                         // all the task will be here
                         ChildHomeDailyTask(),
 
-                        SizedBox(height: 30.h,),
-                        
+                        SizedBox(height: 30.h),
+
                         // ask parent for help-----> message section
-                        CommonButton(title: 'Ask Parent for Help', onPressed: () {})
+                        CommonButton(
+                          title: 'Ask Parent for Help',
+                          onPressed: () {},
+                        ),
+
+                        12.verticalSpace,
+
+                        Text(
+                          'Your parent will be notified with your request.',
+                          style: getTextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.grey400,
+                          ),
+                        ),
+
+                        30.verticalSpace,
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // title
+                            Text(
+                              'Trending Items',
+                              style: getTextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            // see all button
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'See All',
+                                style: getTextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
 
 
+                        // trending items
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: avatarScreenController.trendingItems.map((
+                              element,
+                            ) {
+                              return ItemCard(
+                                imgUrl: element.imgUrl,
+                                title: element.title,
+                                coin: element.coin,
+                              ).marginOnly(right: 10.r);
+                            }).toList(),
+                          ),
+                        ),
                       ],
                     ),
                   ),
