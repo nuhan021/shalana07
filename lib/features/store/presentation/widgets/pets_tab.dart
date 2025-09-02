@@ -14,25 +14,23 @@ class PetsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Ensures a single row
-          childAspectRatio: 2/2.6,
-          mainAxisSpacing: 10.h,
-          crossAxisSpacing: 10.w
-        ),
-
-        itemCount: avatarScreenController.dress.length,
-
-        itemBuilder: (context, index) {
-          return ItemCard(
-            imgUrl: avatarScreenController.dress[index].imgUrl,
-            title: avatarScreenController.dress[index].title,
-            coin: avatarScreenController.dress[index].coin,
-          );
-        },
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Ensures a single row
+        childAspectRatio: 2/2.6,
+        mainAxisSpacing: 10.h,
+        crossAxisSpacing: 10.w
       ),
-    );
+
+      itemCount: avatarScreenController.dress.length,
+
+      itemBuilder: (context, index) {
+        return ItemCard(
+          imgUrl: avatarScreenController.dress[index].imgUrl,
+          title: avatarScreenController.dress[index].title,
+          coin: avatarScreenController.dress[index].coin,
+        );
+      },
+    ).paddingOnly(top: 10.r);
   }
 }

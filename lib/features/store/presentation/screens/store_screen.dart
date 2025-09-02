@@ -39,35 +39,58 @@ class _StoreScreenState extends State<StoreScreen>
       backgroundColor: AppColors.appBackground,
 
       // app bar
-      appBar: CustomChildAppBar(title: 'Avatar Store'),
+      appBar: CustomChildAppBar(
+        title: 'Avatar Store',
+        isBackButtonVisible: false,
+        isCenterTitle: false,
+      ),
 
       body: Column(
         children: [
           15.verticalSpace,
 
           // search bar
-          Container(
+          SizedBox(
             height: 45.h,
-            padding: EdgeInsets.all(10.r),
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: AppColors.grey400),
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Search Items',
-                  style: getTextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.grey300,
-                  ),
+            child: TextField(
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                labelText: 'Search Items',
+                labelStyle: getTextStyle(
+                  color: AppColors.grey300,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
                 ),
-                Image.asset(IconPath.search),
-              ],
+
+                suffixIcon: Image.asset(IconPath.search, scale: 3,),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.grey400),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                // Optional: Remove padding/spacing that might suggest a border
+                contentPadding: EdgeInsets.symmetric(horizontal: 5.r),
+                isDense: true,
+              ),
             ),
           ).paddingSymmetric(horizontal: 16.r),
 
@@ -76,44 +99,34 @@ class _StoreScreenState extends State<StoreScreen>
           // tab bar for category
           TabBar(
             controller: _tabController,
-            labelStyle: getTextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            labelStyle: getTextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             unselectedLabelStyle: getTextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
             indicatorColor: AppColors.primary,
-            overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return AppColors.primary.withOpacity(0.1);
-                }
-                return null; // Fallback to default behavior for other states
-              },
-            ),
+            overlayColor: MaterialStateProperty.resolveWith<Color?>((
+              Set<MaterialState> states,
+            ) {
+              if (states.contains(MaterialState.pressed)) {
+                return AppColors.primary.withOpacity(0.1);
+              }
+              return null; // Fallback to default behavior for other states
+            }),
             splashBorderRadius: BorderRadius.circular(10.r),
             tabs: [
               // Each tab is a Tab widget.
               Tab(text: 'All'),
               Tab(text: 'Avatar'),
-              Tab(text: 'Pets'),
               Tab(text: 'Dress'),
+              Tab(text: 'Pets'),
             ],
           ),
-
-
 
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                AllItemsTab(),
-                AvatarTab(),
-                PetsTab(),
-                DressTab(),
-              ],
+              children: [AllItemsTab(), AvatarTab(), PetsTab(), DressTab()],
             ).paddingSymmetric(horizontal: 16.r),
           ),
         ],

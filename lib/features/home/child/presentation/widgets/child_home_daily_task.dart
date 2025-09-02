@@ -36,7 +36,7 @@ class ChildTaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 85.h,
+      height: 95.h,
       padding: EdgeInsets.symmetric(vertical: 16.r),
       width: double.maxFinite,
       decoration: BoxDecoration(
@@ -48,16 +48,38 @@ class ChildTaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // progress bar
-          CircularPercentIndicator(
-            radius: 30.0,
-            lineWidth: 5.0,
-            percent: percentage / 100,
-            center: Text(
-              "${percentage.toInt().toString()}%",
-              style: getTextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-            ),
-            progressColor: Colors.green,
+          // CircularPercentIndicator(
+          //   radius: 30.0,
+          //   lineWidth: 5.0,
+          //   percent: percentage / 100,
+          //   center: Text(
+          //     "${percentage.toInt().toString()}%",
+          //     style: getTextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+          //   ),
+          //   progressColor: Colors.green,
+          // ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 50.w,
+                height: 50.w,
+                child: CircularProgressIndicator(
+                  value: percentage / 100,
+                  strokeWidth: 4.0.w,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.green
+                  ),
+                  backgroundColor: AppColors.grey200,
+                ),
+              ),
+              Text(
+                "${percentage.toInt().toString()}%",
+                  style: getTextStyle(fontSize: 13, fontWeight: FontWeight.w500)
+              ),
+            ],
           ),
+
 
           SizedBox(width: 10.w),
 

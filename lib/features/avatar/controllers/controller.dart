@@ -65,12 +65,24 @@ class AvatarScreenController extends GetxController {
     ),
 
     TrendingItem(
-      imgUrl: ImagePath.girlAvater_3,
+      imgUrl: ImagePath.girlAvater_2,
       title: 'Red Long Hair',
       coin: "150",
     ),
     TrendingItem(
+      imgUrl: ImagePath.girlAvater_3,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),TrendingItem(
       imgUrl: ImagePath.girlavater_4,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),TrendingItem(
+      imgUrl: ImagePath.girlAvatar_5,
+      title: 'Red Long Hair',
+      coin: "150",
+    ),TrendingItem(
+      imgUrl: ImagePath.girlAvatar_7,
       title: 'Red Long Hair',
       coin: "150",
     ),

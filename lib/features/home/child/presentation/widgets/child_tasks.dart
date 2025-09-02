@@ -11,12 +11,15 @@ import 'package:shalana07/features/home/child/presentation/widgets/child_home_ta
 import '../../../../../core/common/widgets/item_card.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../../avatar/controllers/controller.dart';
+import '../../../../bottom_nav_bar/controller/navaber_controller.dart';
 
 class ChildTasks extends StatelessWidget {
   ChildTasks({super.key});
   AvatarScreenController avatarScreenController = Get.put(
     AvatarScreenController(),
   );
+
+  NavaberController navaberController = Get.find<NavaberController>();
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +192,9 @@ class ChildTasks extends StatelessWidget {
 
                             // see all button
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                navaberController.jumpToScreen(3);
+                              },
                               child: Text(
                                 'See All',
                                 style: getTextStyle(
@@ -201,7 +206,6 @@ class ChildTasks extends StatelessWidget {
                             ),
                           ],
                         ),
-
 
                         // trending items
                         SingleChildScrollView(

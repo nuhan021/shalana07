@@ -8,7 +8,7 @@ class ImagePath{
   static const String hair2 = 'assets/image/hairs(2.png';
   static const String dress = 'assets/image/dress.png';
   static const String grilavater_1 = 'assets/image/girl_avater_1.png';
-  static const String girlAvater_2 = 'assets/image/girl_avater_2.png';
+  static const String girlAvater_2 = 'assets/image/avatar_image_1.jpg';
   static const String girlAvaterWithLayer = 'assets/image/girl_avater_with_layer.png';
   static const String girlAvater_3 = 'assets/image/girl_avater3.png';
   static const String girlavater_4 = 'assets/image/girl_avater4.png';
@@ -23,5 +23,8 @@ class ImagePath{
   static const String cat = 'assets/image/cat.png';
   static const String childAvatar = 'assets/image/child_profile.png';
   static const String homeGirlAvatar = 'assets/image/home_girl_avatar.png';
+  static const String girlAvatar_5 = 'assets/image/avatar_image_2.jpg';
+  static const String girlAvatar_6 = 'assets/image/avatar_image_3.jpg';
+  static const String girlAvatar_7 = 'assets/image/avatar_image_4.jpg';
 
 }
