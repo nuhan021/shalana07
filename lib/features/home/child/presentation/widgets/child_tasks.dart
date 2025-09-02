@@ -31,7 +31,7 @@ class ChildTasks extends StatelessWidget {
         physics: ClampingScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(height: AppHelperFunctions.screenHeight() * 0.39),
+            SizedBox(height: AppHelperFunctions.screenWidth() < 365 ? AppHelperFunctions.screenHeight() * 0.27 : AppHelperFunctions.screenWidth() < 415 ? AppHelperFunctions.screenHeight() * 0.37 : AppHelperFunctions.screenHeight() * 0.39),
 
             // main section
             SizedBox(
