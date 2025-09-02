@@ -5,6 +5,8 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/features/reward_details/presentation/screens/reward_details_screen.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({
@@ -21,7 +23,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 215.h,
+      height: 230.h,
       width: 160.w,
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
@@ -41,7 +43,9 @@ class ItemCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // image
-          ClipRRect(borderRadius: BorderRadius.circular(8.r),child: Image.asset(imgUrl)),
+          GestureDetector(
+              onTap: () => AppHelperFunctions.navigateToScreen(context, RewardDetailsScreen(imgUrl: imgUrl, title: title, coin: coin,)),
+              child: ClipRRect(borderRadius: BorderRadius.circular(8.r),child: Image.asset(imgUrl))),
 
           // title
           Align(

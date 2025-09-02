@@ -116,6 +116,17 @@ flutter:
     #    avatar skeleton
     - assets/avatar/avatar3/skeleton/
 
+    #    hair pngs and styles for avatar 4:
+    - assets/avatar/avatar4/hair/style_1/
+    - assets/avatar/avatar4/hair/style_2/
+    #    dress pngs and styles:
+    - assets/avatar/avatar4/dress/dress_1/
+    - assets/avatar/avatar4/dress/dress_2/
+    #     jewelry
+    - assets/avatar/avatar4/jewelry/
+    #    avatar skeleton
+    - assets/avatar/avatar4/skeleton/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

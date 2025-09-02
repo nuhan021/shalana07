@@ -11,16 +11,16 @@ import '../../../../core/utils/constants/colors.dart';
 class AllItemsTab extends StatelessWidget {
   AllItemsTab({super.key});
 
-  final AvatarScreenController avatarScreenController = Get.find<AvatarScreenController>();
+  final AvatarScreenController avatarScreenController =
+      Get.find<AvatarScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-
           30.verticalSpace,
-      
+
           // trending items
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,12 +28,9 @@ class AllItemsTab extends StatelessWidget {
               // title
               Text(
                 'Trending Items',
-                style: getTextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
-      
+
               // see all button
               TextButton(
                 onPressed: () {},
@@ -52,9 +49,7 @@ class AllItemsTab extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: avatarScreenController.trendingItems.map((
-                  element,
-                  ) {
+              children: avatarScreenController.trendingItems.map((element) {
                 return ItemCard(
                   imgUrl: element.imgUrl,
                   title: element.title,
@@ -63,9 +58,8 @@ class AllItemsTab extends StatelessWidget {
               }).toList(),
             ),
           ),
-      
-          15.verticalSpace,
 
+          15.verticalSpace,
 
           // dress items
           Row(
@@ -74,12 +68,9 @@ class AllItemsTab extends StatelessWidget {
               // title
               Text(
                 'Dress',
-                style: getTextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
-      
+
               // see all button
               TextButton(
                 onPressed: () {},
@@ -98,9 +89,7 @@ class AllItemsTab extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: avatarScreenController.dress.map((
-                  element,
-                  ) {
+              children: avatarScreenController.dress.map((element) {
                 return ItemCard(
                   imgUrl: element.imgUrl,
                   title: element.title,
@@ -110,20 +99,15 @@ class AllItemsTab extends StatelessWidget {
             ),
           ),
 
-
           15.verticalSpace,
-
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // title
               Text(
-                'Dress',
-                style: getTextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                'Hair',
+                style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
 
               // see all button
@@ -144,9 +128,7 @@ class AllItemsTab extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: avatarScreenController.hair.map((
-                  element,
-                  ) {
+              children: avatarScreenController.hair.map((element) {
                 return ItemCard(
                   imgUrl: element.imgUrl,
                   title: element.title,
@@ -156,6 +138,47 @@ class AllItemsTab extends StatelessWidget {
             ),
           ),
 
+
+
+
+          15.verticalSpace,
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // title
+              Text(
+                'Avatar',
+                style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+
+              // see all button
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'See All',
+                  style: getTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.grey700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Avatar items
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: avatarScreenController.avatar.map((element) {
+                return ItemCard(
+                  imgUrl: element.imgUrl,
+                  title: element.title,
+                  coin: element.coin,
+                ).marginOnly(right: 10.r);
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );

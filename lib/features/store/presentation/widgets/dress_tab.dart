@@ -14,25 +14,23 @@ class DressTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Ensures a single row
-            childAspectRatio: 2/2.6,
-            mainAxisSpacing: 10.h,
-            crossAxisSpacing: 10.w
-        ),
-
-        itemCount: avatarScreenController.avatar.length,
-
-        itemBuilder: (context, index) {
-          return ItemCard(
-            imgUrl: avatarScreenController.avatar[index].imgUrl,
-            title: avatarScreenController.avatar[index].title,
-            coin: avatarScreenController.avatar[index].coin,
-          );
-        },
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Ensures a single row
+          childAspectRatio: 2/2.6,
+          mainAxisSpacing: 10.h,
+          crossAxisSpacing: 10.w
       ),
-    );
+
+      itemCount: avatarScreenController.avatar.length,
+
+      itemBuilder: (context, index) {
+        return ItemCard(
+          imgUrl: avatarScreenController.avatar[index].imgUrl,
+          title: avatarScreenController.avatar[index].title,
+          coin: avatarScreenController.avatar[index].coin,
+        );
+      },
+    ).paddingOnly(top: 10.r);
   }
 }

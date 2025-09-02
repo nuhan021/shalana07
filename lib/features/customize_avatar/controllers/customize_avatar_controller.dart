@@ -214,7 +214,66 @@ class CustomizeAvatarController extends GetxController {
     ),
   );
 
-  late List<TotalElements> avatars = [avatar1, avatar2, avatar3];
+  TotalElements avatar4 = TotalElements(
+    avatarImgUrl: "assets/avatar/avatar4/skeleton/3.png",
+    hair: StyleElement(
+      name: 'Hair',
+      elements: [
+        HairStyle(
+          styleName: "curly",
+          colors: [
+            "assets/avatar/avatar4/hair/style_1/4.png",
+            "assets/avatar/avatar4/hair/style_1/5.png",
+          ],
+        ),
+
+        HairStyle(
+          styleName: 'Normal',
+          colors: [
+            "assets/avatar/avatar4/hair/style_2/12.png",
+            "assets/avatar/avatar4/hair/style_2/13.png",
+          ],
+        ),
+      ],
+    ),
+
+    dress: StyleElement(
+      name: 'Dress',
+      elements: [
+        DressStyle(
+          styleName: 'Basic',
+          colors: [
+            "assets/avatar/avatar4/dress/dress_1/14.png",
+            "assets/avatar/avatar4/dress/dress_1/15.png",
+          ],
+        ),
+
+        DressStyle(
+          styleName: 'Neckless',
+          colors: [
+            "assets/avatar/avatar4/dress/dress_2/6.png",
+            "assets/avatar/avatar4/dress/dress_2/7.png",
+          ],
+        ),
+      ],
+    ),
+
+    jewelry: StyleElement(
+      name: 'Jewelry',
+      elements: [
+        JewelryStyle(
+          styleName: 'Style 1',
+          colors: ["assets/avatar/avatar4/jewelry/8.png"],
+        ),
+        JewelryStyle(
+          styleName: 'Style 1',
+          colors: ["assets/avatar/avatar4/jewelry/11.png"],
+        ),
+      ],
+    ),
+  );
+
+  late List<TotalElements> avatars = [avatar1, avatar2, avatar3, avatar4];
 
   late var totalElements = avatars[currentAvatarIndex].obs;
 

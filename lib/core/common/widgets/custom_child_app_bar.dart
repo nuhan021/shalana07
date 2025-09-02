@@ -16,21 +16,24 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isBackButtonVisible = true,
     this.isAvatarVisible = true,
     this.isAppBarTransparent = false,
+    this.isCenterTitle = true,
   });
 
   final String title;
   final bool isBackButtonVisible;
   final bool isAvatarVisible;
   final bool isAppBarTransparent;
+  final bool isCenterTitle;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: isAppBarTransparent ?Colors.transparent : AppColors.appBackground,
+      centerTitle: isCenterTitle,
       leading: isBackButtonVisible ? GestureDetector(
         onTap: () => Navigator.pop(context),
         child: Image.asset(IconPath.arrowBackIcon, scale: 4), // back button
-      ) : SizedBox(),
+      ) : null,
       title: Text(
         title,
         style: getTextStyle(
