@@ -33,7 +33,7 @@ class Logincontroller extends GetxController {
     // Navigate to child dashboard
     else if (email == childEmail && pass == childPass) {
       userRole.value = "child";
-      Get.toNamed(AppRoute.getAppBottomNavBarScreen());
+      Get.offAllNamed(AppRoute.getAppBottomNavBarScreen());
     }
     // Navigate to child dashboard
     else if (email.isEmpty || pass.isEmpty) {

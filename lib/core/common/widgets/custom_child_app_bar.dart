@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/home/child/presentation/view/child_home_screen.dart';
-import 'package:shalana07/features/notification/child/presentation/view/notification_page.dart';
+import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
+import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/icon_path.dart';
@@ -29,12 +30,19 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: isAppBarTransparent ?Colors.transparent : AppColors.appBackground,
+      backgroundColor: isAppBarTransparent
+          ? Colors.transparent
+          : AppColors.appBackground,
       centerTitle: isCenterTitle,
-      leading: isBackButtonVisible ? GestureDetector(
-        onTap: () => Navigator.pop(context),
-        child: Image.asset(IconPath.arrowBackIcon, scale: 4), // back button
-      ) : null,
+      leading: isBackButtonVisible
+          ? GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Image.asset(
+                IconPath.arrowBackIcon,
+                scale: 4,
+              ), // back button
+            )
+          : null,
       title: Text(
         title,
         style: getTextStyle(
@@ -46,7 +54,10 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         InkWell(
           onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  ChildNotificationPage()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChildNotificationPage()),
+            );
           },
           child: Image.asset(
             IconPath.notificationIcon,
@@ -56,10 +67,15 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         SizedBox(width: 10.w),
         isAvatarVisible
-            ? CircleAvatar(
-                backgroundImage: AssetImage(ImagePath.childAvatar),
-                backgroundColor: Colors.white,
-              ).paddingOnly(right: 10.r)
+            ? GestureDetector(
+                onTap: () {
+                  AppHelperFunctions.navigateToScreen(context, ChildProfile());
+                },
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(ImagePath.childAvatar),
+                  backgroundColor: Colors.white,
+                ).paddingOnly(right: 10.r),
+              )
             : SizedBox(),
       ],
     );

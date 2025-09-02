@@ -10,8 +10,11 @@ import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
 import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
+import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
+import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
 import '../../../customize_avatar/controllers/customize_avatar_controller.dart';
+
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
 
@@ -41,19 +44,34 @@ class AvatarScreen extends StatelessWidget {
 
         actions: [
           // notification icon button
-          Image.asset(
-            IconPath.notificationIcon,
-            height: 32.h,
-            color: AppColors.grey900,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChildNotificationPage(),
+                ),
+              );
+            },
+            child: Image.asset(
+              IconPath.notificationIcon,
+              height: 32.h,
+              color: AppColors.grey900,
+            ),
           ),
 
           SizedBox(width: 10.w),
 
           // profile picture
-          CircleAvatar(
-            backgroundImage: AssetImage(ImagePath.childAvatar),
-            backgroundColor: Colors.white,
-          ).paddingOnly(right: 10.r),
+          GestureDetector(
+            onTap: () {
+              AppHelperFunctions.navigateToScreen(context, ChildProfile());
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage(ImagePath.childAvatar),
+              backgroundColor: Colors.white,
+            ).paddingOnly(right: 10.r),
+          ),
         ],
       ),
 
@@ -91,9 +109,15 @@ class AvatarScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if (i == 1) {
-                    AppHelperFunctions.navigateToScreen(context, AvatarCustomizeScreen());
+                    AppHelperFunctions.navigateToScreen(
+                      context,
+                      AvatarCustomizeScreen(),
+                    );
                   } else {
-                    AppHelperFunctions.navigateToScreen(context, ChangeAvatarScreen());
+                    AppHelperFunctions.navigateToScreen(
+                      context,
+                      ChangeAvatarScreen(),
+                    );
                   }
                 },
                 child: Container(

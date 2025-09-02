@@ -14,7 +14,7 @@ final List<ChildMessage> messages = [
   ),
   ChildMessage(
     avatar: ImagePath.childAvatar,
-    challengeName: "Calista Kimimela Completed “Writing Challenge” Earned 10 Coins",
+    challengeName: "Avater challenge 50 points 😊",
     childName: "Calista Kimimela",
     message: "",
     time: "Yesterday · 03:45 PM",
