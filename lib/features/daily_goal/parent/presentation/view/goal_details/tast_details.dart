@@ -15,7 +15,7 @@ import 'package:shalana07/features/home/parent/presentatrion/widgets/account_car
 class TastDetails extends StatelessWidget {
   final int? isParentVIew;
    TastDetails({super.key, this.isParentVIew});
-  final _controller = Get.find<ParentDailyGoalController>();
+  final _controller = Get.put(ParentDailyGoalController());
   final NavaberController navaberController = Get.find<NavaberController>();
   @override
 Widget build(BuildContext context) {

@@ -5,8 +5,8 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/common/widgets/view_more.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/features/notification/child/controller/notification_controller.dart';
-import 'package:shalana07/features/notification/child/presentation/widgets/notification_card.dart';
+import 'package:shalana07/features/notification/child/controller/child_notification_controller.dart';
+import 'package:shalana07/features/notification/child/presentation/widgets/child_notification_card.dart';
 
 
 
@@ -104,7 +104,7 @@ class ChildNotificationPage extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     final notification =
-                        notificationController.updatesNotifications[index];
+                        notificationController.rewardsNotifications[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: 10.0),
                       child: ChildNotificationCard(activity: notification),
@@ -112,12 +112,12 @@ class ChildNotificationPage extends StatelessWidget {
                   },
                 ),
                  Obx(() {
-                  if (notificationController.isLoading.value) {
+                  if (notificationController.isLoadingRewards.value) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     return ViewMoreButtton(
                       onTap: () {
-                        notificationController.loadMore();
+                      notificationController.loadMoreRewards();
                       },
                     );
                   }

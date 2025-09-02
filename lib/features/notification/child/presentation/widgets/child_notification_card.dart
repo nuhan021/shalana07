@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/features/notification/child/controller/notification_controller.dart';
-import 'package:shalana07/features/notification/child/model/notification_model.dart' show ChildNotificationModel;
+import 'package:shalana07/features/notification/child/controller/child_notification_controller.dart';
+import 'package:shalana07/features/notification/child/model/child_notification_model.dart' show ChildNotificationModel;
 
 
 

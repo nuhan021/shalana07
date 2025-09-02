@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomToggle extends StatefulWidget {
   final bool value; // controlled value
@@ -32,8 +33,8 @@ class _CustomToggleState extends State<CustomToggle> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
-        width: widget.width ?? 60,
-        height: widget.height ?? 32,
+        width: widget.width ?? 60.w,
+        height: widget.height ?? 32.h,
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: widget.value
@@ -48,8 +49,8 @@ class _CustomToggleState extends State<CustomToggle> {
               ? Alignment.centerRight
               : Alignment.centerLeft,
           child: Container(
-            width:widget.toggle ?? 24,
-            height: widget.toggle ?? 24,
+            width:widget.toggle ?? 24.w,
+            height: widget.toggle ?? 24.w,
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
