@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/features/notification/child/controller/notification_controller.dart';
+import 'package:shalana07/features/notification/child/model/notification_model.dart' show ChildNotificationModel;
 
-import 'package:shalana07/features/notification/parent/controller/notification_controller.dart';
-import 'package:shalana07/features/notification/parent/model/notification_model.dart';
-// import 'package:shalana07/features/home/parent/model/activity_model.dart';
 
-class NotificationCard extends StatelessWidget {
-  NotificationCard({super.key, required this.activity});
+
+class ChildNotificationCard extends StatelessWidget {
+  ChildNotificationCard({super.key, required this.activity});
   // Using the controller to access messages
-  final NotificationController controller = Get.find<NotificationController>();
-  final NotificationModel activity;
+  final ChildNotificationController controller = Get.find<ChildNotificationController>();
+  final   ChildNotificationModel activity;
 
   @override
   Widget build(BuildContext context) {

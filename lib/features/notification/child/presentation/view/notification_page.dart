@@ -5,15 +5,16 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/common/widgets/view_more.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/features/notification/parent/controller/notification_controller.dart';
-import 'package:shalana07/features/notification/parent/presentation/widgets/notification_card.dart';
+import 'package:shalana07/features/notification/child/controller/notification_controller.dart';
+import 'package:shalana07/features/notification/child/presentation/widgets/notification_card.dart';
+
 
 
 //note plese read the comment for understand code
-class NotificationPage extends StatelessWidget {
-  NotificationPage({super.key});
-  final NotificationController notificationController = Get.put(
-    NotificationController(),
+class ChildNotificationPage extends StatelessWidget {
+  ChildNotificationPage({super.key});
+  final ChildNotificationController notificationController = Get.put(
+    ChildNotificationController(),
   );
 
   @override
@@ -65,7 +66,7 @@ class NotificationPage extends StatelessWidget {
                         notificationController.updatesNotifications[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: 10.0),
-                      child: NotificationCard(activity: notification),
+                      child: ChildNotificationCard(activity: notification),
                     );
                   },
                 ),
@@ -106,7 +107,7 @@ class NotificationPage extends StatelessWidget {
                         notificationController.updatesNotifications[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: 10.0),
-                      child: NotificationCard(activity: notification),
+                      child: ChildNotificationCard(activity: notification),
                     );
                   },
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/home/child/presentation/view/child_home_screen.dart';
+import 'package:shalana07/features/notification/child/presentation/view/notification_page.dart';
 
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/icon_path.dart';
@@ -40,10 +41,15 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        Image.asset(
-          IconPath.notificationIcon,
-          height: 32.h,
-          color: AppColors.grey900,
+        InkWell(
+          onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  ChildNotificationPage()));
+          },
+          child: Image.asset(
+            IconPath.notificationIcon,
+            height: 32.h,
+            color: AppColors.grey900,
+          ),
         ),
         SizedBox(width: 10.w),
         isAvatarVisible
