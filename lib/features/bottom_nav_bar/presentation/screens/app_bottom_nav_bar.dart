@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
+import 'package:shalana07/features/avatar/common_avater_screen.dart';
 
 import 'package:shalana07/features/avatar/presentation/screens/avatar_screen.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
@@ -42,7 +43,9 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       CommonDailyGoal(),
       CommonCreateGoal(),
       StoreScreen(),
-     logincontroller.userRole.value == "parent" ? ParentProfile() : AvatarScreen(),
+      // AvatarScreen(),
+      
+     CommonAvatarScreen(),
     ];
   }
 
@@ -115,7 +118,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
           IconPath.navbarProfileICon,
           color: _currentIndex == 4 ? AppColors.primary : AppColors.grey900,
         ).paddingOnly(bottom: 5),
-        title:logincontroller.userRole.value == "parent" ? "Profile" : "Avatar",
+        title: logincontroller.userRole.value == "parent" ? "Profile" : "Avatar",
         textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primary,
         inactiveForegroundColor: Colors.black,
