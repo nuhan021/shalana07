@@ -76,7 +76,8 @@ class ParentProfile extends StatelessWidget {
                 ///////////======edit profile button==========//
                 CommonButton(
                   height: 40.h,
-                  fontSize: 14,
+                  fontSize: 12,
+               
                   textColor: AppColors.grey900,
                   backgroundColor: AppColors.green900,
                   title: "Edit Profile",
@@ -92,7 +93,7 @@ class ParentProfile extends StatelessWidget {
                 Text(
                   'Linked Accounts',
                   style: getTextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -104,6 +105,9 @@ class ParentProfile extends StatelessWidget {
 
                 ///==========add account button==========//
                 CommonButton(
+                  height: 40.h,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                   backgroundColor: Colors.transparent,
                   isbporderColor: true,
                   textColor: AppColors.grey900,
@@ -263,9 +267,8 @@ class ParentProfile extends StatelessWidget {
       style: getTextStyle(
         color: const Color(0xFF686868),
         fontSize: 12,
-       
+
         fontWeight: FontWeight.w400,
-      
       ),
     );
   }

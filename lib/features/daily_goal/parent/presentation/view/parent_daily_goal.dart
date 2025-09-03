@@ -31,9 +31,7 @@ class ParentDailyGoal extends StatelessWidget {
       ),
 
       //f  end drawer
-     endDrawer: Drawer(
-    child: Center(child: Text("Filter options here")),
-  ),
+    
 
       body: Padding(
         padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w, top: 15.0.h),

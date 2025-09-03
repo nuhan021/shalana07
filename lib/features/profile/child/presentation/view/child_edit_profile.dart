@@ -169,7 +169,9 @@ class ChildEditProfile extends StatelessWidget {
                   20.horizontalSpace,
                   Expanded(child: CommonButton(title: "Save", onPressed: (){})),
                 ],
-              )
+              ),
+          
+              50.verticalSpace
             ],
           ),
         ),

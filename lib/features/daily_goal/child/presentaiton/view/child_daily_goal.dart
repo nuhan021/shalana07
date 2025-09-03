@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
@@ -25,7 +26,6 @@ class ChildDailyGoal extends StatelessWidget {
       backgroundColor: AppColors.appBackground,
 
       //  Define your end drawer
-      endDrawer: Drawer(child: Center(child: Text("Filter options here"))),
 
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0.h),
@@ -34,64 +34,82 @@ class ChildDailyGoal extends StatelessWidget {
 
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-
-          children: [
-            20.verticalSpace,
-            Row(
-              children: [
-                Text(
-                  'Weekly Goals',
-                  style: getTextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.grey900,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              20.verticalSpace,
+              Row(
+                children: [
+                  Text(
+                    'Weekly Goals',
+                    style: getTextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.grey900,
+                    ),
                   ),
-                ),
-                const Spacer(),
+                  const Spacer(),
 
-                // Open end drawer on tap
-                InkWell(
-                  onTap: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                  child: Image.asset(
-                    IconPath.filterIcon,
-                    color: AppColors.grey900,
-                    height: 25.h,
-                    width: 25.w,
+                  // Open end drawer on tap
+                  InkWell(
+                    onTap: () {
+                      _scaffoldKey.currentState!.openEndDrawer();
+                    },
+                    child: Image.asset(
+                      IconPath.filterIcon,
+                      color: AppColors.grey900,
+                      height: 25.h,
+                      width: 25.w,
+                    ),
                   ),
-                ),
-              ],
-            ),
-                Divider(
-                  height: 40.h,
-                  color: AppColors.grey200,
-                ),
-            //////////////=///daily goal section====/
-            ///
-           Expanded(
-             child: RefreshIndicator(
+                ],
+              ),
+              Divider(height: 40.h, color: AppColors.grey200),
+              //////////////=///daily goal section====/
+              ///
+              RefreshIndicator(
                 color: AppColors.primary,
                 onRefresh: () async {
                   // Logic to refresh the page can be added here
                   await Future.delayed(const Duration(seconds: 1));
                 },
-                child: 
-                ListView.builder(
+                child: ListView.builder(
                   itemCount: controller.goals.length,
-                  physics: const BouncingScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemBuilder: (_, index) =>
-                      InkWell(
-                          onTap: () {
-                        AppHelperFunctions.navigateToScreen(context, TastDetails());
-                          },
-                        child: ChildGoalCard(goal: controller.goals[index])),
+                  itemBuilder: (_, index) => InkWell(
+                    onTap: () {
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        TastDetails(),
+                      );
+                    },
+                    child: ChildGoalCard(goal: controller.goals[index]),
+                  ),
                 ),
               ),
-           ),
-          ],
+
+              30.verticalSpace,
+              SizedBox(
+                height: 50.h,
+
+                child: CommonButton(
+                  title: "Ask Parent for Help",
+                  onPressed: () {},
+                ),
+              ),
+              10.verticalSpace,
+              Text(
+                "Your parent will be notified with your request.",
+                style: getTextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: AppColors.grey400,
+                ),
+              ),
+              50.verticalSpace
+            ],
+          ),
         ),
       ),
     );
