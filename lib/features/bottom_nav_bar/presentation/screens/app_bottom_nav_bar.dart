@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/features/auth/controller/loginController.dart';
 
 import 'package:shalana07/features/avatar/presentation/screens/avatar_screen.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
@@ -23,6 +24,7 @@ class AppBottomNavBar extends StatefulWidget {
 class _AppBottomNavBarState extends State<AppBottomNavBar> {
   // PersistentTabController _controller = PersistentTabController();
   final NavaberController navaberController = Get.put(NavaberController());
+  final Logincontroller logincontroller = Get.find<Logincontroller>();
 
   int _currentIndex = 0;
 
@@ -75,17 +77,17 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       ),
     ),
 
-    PersistentTabConfig(
-      screen: _buildScreens()[2],
-      item: ItemConfig(
-        icon: Icon(Icons.add, color: AppColors.grey900),
-        title: "Add",
-        textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        activeForegroundColor: AppColors.primary,
-        inactiveForegroundColor: Colors.black,
-        activeColorSecondary: AppColors.primary,
+      PersistentTabConfig(
+        screen: _buildScreens()[2],
+        item: ItemConfig(
+          icon: Icon(Icons.add, color: AppColors.grey900),
+          title: "Add",
+          textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          activeForegroundColor: AppColors.primary,
+          inactiveForegroundColor: Colors.black,
+          activeColorSecondary: AppColors.primary,
+        ),
       ),
-    ),
 
     PersistentTabConfig(
       screen: _buildScreens()[3],
@@ -126,8 +128,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       controller: navaberController.controller,
 
       tabs: _tabs(),
-      navBarBuilder: (navBarConfig) =>
-          Style15BottomNavBar(navBarConfig: navBarConfig, height: 60.h),
+      navBarBuilder: (navBarConfig) => Style15BottomNavBar(navBarConfig: navBarConfig, height: 60.h),
       onTabChanged: (index) {
         setState(() {
           _currentIndex = index;

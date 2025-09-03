@@ -13,6 +13,7 @@ import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
 import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
+import '../../../bottom_nav_bar/controller/navaber_controller.dart';
 import '../../../customize_avatar/controllers/customize_avatar_controller.dart';
 
 class AvatarScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class AvatarScreen extends StatelessWidget {
   );
 
   final controller = Get.put(CustomizeAvatarController());
+  NavaberController navaberController = Get.find<NavaberController>();
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +182,7 @@ class AvatarScreen extends StatelessWidget {
 
                       // see all button
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {navaberController.jumpToScreen(2);},
                         child: Text(
                           'See All',
                           style: getTextStyle(
