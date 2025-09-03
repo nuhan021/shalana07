@@ -19,7 +19,7 @@ class CommonCreateGoal extends StatelessWidget {
    if ( role == "parent" ) {
       return  ParentCreateNewGoal(); 
     } else if (role == "child") {
-      return ChildCreateNewGoal(); 
+      return ParentCreateNewGoal();
     } else {
       return ChildCreateNewGoal(); 
     }

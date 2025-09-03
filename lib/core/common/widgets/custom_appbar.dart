@@ -37,7 +37,6 @@ class CustomAppBar extends StatelessWidget {
               onPressed: () {
                 // Handle back button press
                 Navigator.pop(context);
-                Get.back();
               },
             ),
 

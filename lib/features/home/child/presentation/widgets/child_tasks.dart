@@ -199,7 +199,7 @@ class ChildTasks extends StatelessWidget {
                             // see all button
                             TextButton(
                               onPressed: () {
-                                navaberController.jumpToScreen(2);
+                                navaberController.jumpToScreen(3);
                               },
                               child: Text(
                                 'See All',
