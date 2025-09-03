@@ -12,7 +12,7 @@ class AllItemsTab extends StatelessWidget {
   AllItemsTab({super.key});
 
   final AvatarScreenController avatarScreenController =
-      Get.find<AvatarScreenController>();
+      Get.put(AvatarScreenController());
 
   @override
   Widget build(BuildContext context) {

@@ -10,19 +10,20 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
+import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
-import 'package:shalana07/features/home/parent/presentatrion/widgets/activity_card.dart';
+
 import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/Edit_profile_page.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/add_child_account.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/all_help_update.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/custom_switch.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/helper_card.dart';
-import 'package:shalana07/features/profile/parent/presentation/widgets/show_add_account.dart';
 
 class ParentProfile extends StatelessWidget {
   ParentProfile({super.key});
   final ParentProfileController controller = Get.put(ParentProfileController());
+  final  NavaberController navaberController = Get.put(NavaberController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class ParentProfile extends StatelessWidget {
           preferredSize: Size.fromHeight(50.h),
           child: CustomAppBar(
             title: "Parent Profile",
+            backArrowIcon: navaberController.controller.index == 4 ? false : true  ,
             notificationIcon: true,
             profileIcon: false,
           ),
