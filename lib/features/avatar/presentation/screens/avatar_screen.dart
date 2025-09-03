@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/item_card.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
@@ -99,6 +100,7 @@ class AvatarScreen extends StatelessWidget {
                     Image.asset(controller.currentDressStyle),
                     Image.asset(controller.currentJewelryStyle),
                     Image.asset(controller.currentHairStyle),
+
                   ],
                 );
               }),
