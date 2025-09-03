@@ -44,6 +44,30 @@ class AvatarScreenController extends GetxController {
     ),
   ];
 
+  final List<TrendingItem> pets = [
+    TrendingItem(
+      imgUrl: ImagePath.cat2,
+      title: 'German Dog',
+      coin: "150"
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.cat3,
+      title: 'Indian Cat',
+      coin: "150"
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.cat4,
+      title: 'UK Cat',
+      coin: "150"
+    ),
+    TrendingItem(
+      imgUrl: ImagePath.cat5,
+      title: 'US Cat',
+      coin: "150"
+    ),
+
+  ];
+
   final List<TrendingItem> hair = [
     TrendingItem(
       imgUrl: ImagePath.redLonghair,

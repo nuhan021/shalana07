@@ -27,4 +27,10 @@ class ImagePath{
   static const String girlAvatar_6 = 'assets/image/avatar_image_3.jpg';
   static const String girlAvatar_7 = 'assets/image/avatar_image_4.jpg';
 
+  static const String cat1 = 'assets/image/11.png';
+  static const String cat2 = 'assets/image/22.png';
+  static const String cat3 = 'assets/image/33.jpg';
+  static const String cat4 = 'assets/image/44.jpg';
+  static const String cat5 = 'assets/image/555.jpg';
+
 }

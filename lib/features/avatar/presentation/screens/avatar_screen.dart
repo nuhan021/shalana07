@@ -100,7 +100,6 @@ class AvatarScreen extends StatelessWidget {
                     Image.asset(controller.currentDressStyle),
                     Image.asset(controller.currentJewelryStyle),
                     Image.asset(controller.currentHairStyle),
-
                   ],
                 );
               }),

@@ -126,7 +126,7 @@ class _StoreScreenState extends State<StoreScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [AllItemsTab(), AvatarTab(), PetsTab(), DressTab()],
+              children: [AllItemsTab(), AvatarTab(), DressTab(), PetsTab(),],
             ).paddingSymmetric(horizontal: 16.r),
           ),
         ],

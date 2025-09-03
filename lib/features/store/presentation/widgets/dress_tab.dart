@@ -22,13 +22,13 @@ class DressTab extends StatelessWidget {
           crossAxisSpacing: 10.w
       ),
 
-      itemCount: avatarScreenController.avatar.length,
+      itemCount: avatarScreenController.dress.length,
 
       itemBuilder: (context, index) {
         return ItemCard(
-          imgUrl: avatarScreenController.avatar[index].imgUrl,
-          title: avatarScreenController.avatar[index].title,
-          coin: avatarScreenController.avatar[index].coin,
+          imgUrl: avatarScreenController.dress[index].imgUrl,
+          title: avatarScreenController.dress[index].title,
+          coin: avatarScreenController.dress[index].coin,
         );
       },
     ).paddingOnly(top: 10.r);

@@ -29,7 +29,7 @@ class ChildDailyGoal extends StatelessWidget {
 
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0.h),
-        child: CustomChildAppBar(title: 'Goals'),
+        child: CustomChildAppBar(title: 'Goals', isCenterTitle: false , isBackButtonVisible: false,),
       ),
 
       body: Padding(

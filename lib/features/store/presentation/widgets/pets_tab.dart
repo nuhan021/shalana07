@@ -22,13 +22,13 @@ class PetsTab extends StatelessWidget {
         crossAxisSpacing: 10.w
       ),
 
-      itemCount: avatarScreenController.dress.length,
+      itemCount: avatarScreenController.pets.length,
 
       itemBuilder: (context, index) {
         return ItemCard(
-          imgUrl: avatarScreenController.dress[index].imgUrl,
-          title: avatarScreenController.dress[index].title,
-          coin: avatarScreenController.dress[index].coin,
+          imgUrl: avatarScreenController.pets[index].imgUrl,
+          title: avatarScreenController.pets[index].title,
+          coin: avatarScreenController.pets[index].coin,
         );
       },
     ).paddingOnly(top: 10.r);
