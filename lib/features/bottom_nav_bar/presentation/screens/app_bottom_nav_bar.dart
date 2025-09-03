@@ -10,12 +10,14 @@ import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.
 import 'package:shalana07/features/create_goal/common_create_goal.dart';
 import 'package:shalana07/features/daily_goal/common_daily_goal.dart';
 import 'package:shalana07/features/home/common_homescren.dart';
+import 'package:shalana07/features/profile/parent/presentation/view/parent_profile_screen.dart';
 import 'package:shalana07/features/store/presentation/screens/store_screen.dart';
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
 
 class AppBottomNavBar extends StatefulWidget {
-  const AppBottomNavBar({super.key});
+ const  AppBottomNavBar({super.key});
+
 
   @override
   State<AppBottomNavBar> createState() => _AppBottomNavBarState();
@@ -40,7 +42,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       CommonDailyGoal(),
       CommonCreateGoal(),
       StoreScreen(),
-      AvatarScreen(),
+     logincontroller.userRole.value == "parent" ? ParentProfile() : AvatarScreen(),
     ];
   }
 
@@ -113,7 +115,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
           IconPath.navbarProfileICon,
           color: _currentIndex == 4 ? AppColors.primary : AppColors.grey900,
         ).paddingOnly(bottom: 5),
-        title: "Avatar",
+        title:logincontroller.userRole.value == "parent" ? "Profile" : "Avatar",
         textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primary,
         inactiveForegroundColor: Colors.black,
