@@ -92,12 +92,13 @@ class GoalCard extends StatelessWidget {
           ),
 
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               ////////Goal status
               Text(
                 goal.status,
                 style: getTextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: goal.status == "Active"
                       ? AppColors.primary

@@ -12,6 +12,7 @@ class CommonButton extends StatelessWidget {
   final bool? isbporderColor;
   final double? height;
   final double? fontSize;
+  final FontWeight? fontWeight;
 
   const CommonButton({
     super.key,
@@ -20,7 +21,7 @@ class CommonButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.isLinearGradient,
-    this.isbporderColor, this.height, this.fontSize,
+    this.isbporderColor, this.height, this.fontSize, this.fontWeight,
   });
 
   @override
@@ -47,7 +48,7 @@ class CommonButton extends StatelessWidget {
             style: getTextStyle(
               color: textColor ?? Colors.white,
               fontSize: fontSize ?? 18,
-              fontWeight: FontWeight.w600,
+              fontWeight:fontWeight ?? FontWeight.w600,
             ),
           ),
         ),
