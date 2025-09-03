@@ -31,7 +31,13 @@ class ChildTasks extends StatelessWidget {
         physics: ClampingScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(height: AppHelperFunctions.screenWidth() < 365 ? AppHelperFunctions.screenHeight() * 0.27 : AppHelperFunctions.screenWidth() < 415 ? AppHelperFunctions.screenHeight() * 0.37 : AppHelperFunctions.screenHeight() * 0.39),
+            SizedBox(
+              height: AppHelperFunctions.screenWidth() < 365
+                  ? AppHelperFunctions.screenHeight() * 0.27
+                  : AppHelperFunctions.screenWidth() < 415
+                  ? AppHelperFunctions.screenHeight() * 0.37
+                  : AppHelperFunctions.screenHeight() * 0.39,
+            ),
 
             // main section
             SizedBox(
@@ -193,7 +199,7 @@ class ChildTasks extends StatelessWidget {
                             // see all button
                             TextButton(
                               onPressed: () {
-                                navaberController.jumpToScreen(3);
+                                navaberController.jumpToScreen(2);
                               },
                               child: Text(
                                 'See All',
