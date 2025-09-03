@@ -182,7 +182,7 @@ class AvatarScreen extends StatelessWidget {
 
                       // see all button
                       TextButton(
-                        onPressed: () {navaberController.jumpToScreen(2);},
+                        onPressed: () {navaberController.jumpToScreen(3);},
                         child: Text(
                           'See All',
                           style: getTextStyle(

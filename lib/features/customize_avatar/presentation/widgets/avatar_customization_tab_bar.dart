@@ -46,7 +46,7 @@ class AvatarCustomizationTabBar extends StatelessWidget {
           }),
 
           // Text Tabs (Always on top)
-          Container(
+          SizedBox(
             width: double.maxFinite,
             height: double.maxFinite,
             child: Row(
