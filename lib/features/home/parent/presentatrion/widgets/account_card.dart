@@ -7,7 +7,10 @@ import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 
 class LinkAccountCard extends StatelessWidget {
-  const LinkAccountCard({super.key});
+  const LinkAccountCard({super.key, required this.name, required this.relation});
+
+  final String name;
+  final String relation;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class LinkAccountCard extends StatelessWidget {
             children: [
               // Name
               Text(
-                'Calista Kimimela',
+                name,
                 style: getTextStyle(
                   fontSize: 14,
                   color: AppColors.grey900,
@@ -44,7 +47,7 @@ class LinkAccountCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Daughter · child profile',
+                    '$relation · child profile',
                     style: getTextStyle(
                       fontSize: 12,
                       color: AppColors.grey500,

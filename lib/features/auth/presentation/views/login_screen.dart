@@ -13,7 +13,10 @@ import 'package:shalana07/routes/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  final Logincontroller _logincontroller = Get.put(Logincontroller(), permanent: true);
+  final Logincontroller _logincontroller = Get.put(
+    Logincontroller(),
+    permanent: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +122,29 @@ class LoginScreen extends StatelessWidget {
                       40.verticalSpace,
 
                       // Login button
-                      CommonButton(
-                        title: 'Log in',
-                        onPressed: () {
-                          _logincontroller.login();
-                        },
-                      ),
+                      Obx(() {
+                        if(_logincontroller.isLoginLoading.value) {
+                          return Container(
+                            height: 50.h,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(24.r),
+                            ),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        }
+                        return CommonButton(
+                          title: 'Log in',
+                          onPressed: () {
+                            _logincontroller.login();
+                          },
+                        );
+                      }),
 
                       //sign up section
                       40.verticalSpace,

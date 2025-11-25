@@ -10,6 +10,12 @@ class CustomizeAvatarController extends GetxController {
     StorageService.getCurrentAvatar.toString(),
   );
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
   void toggleIsAvatarTab(int index) {
     selectedTab.value = index;
   }

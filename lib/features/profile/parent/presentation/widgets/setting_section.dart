@@ -116,9 +116,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.addAccount.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.addAccount.value = value;
-                     }
+                     controller.addAccount.value = value;
                    },
                  ),
                ],
@@ -146,9 +144,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.accessOtherAccount.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.accessOtherAccount.value = value;
-                     }
+                     controller.accessOtherAccount.value = value;
                    },
                  ),
                ],
@@ -176,9 +172,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.editProfile.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.editProfile.value = value;
-                     }
+                     controller.editProfile.value = value;
                    },
                  ),
                ],
@@ -206,9 +200,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.createGoal.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.createGoal.value = value;
-                     }
+                     controller.createGoal.value = value;
                    },
                  ),
                ],
@@ -236,9 +228,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.taskApprovals.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.taskApprovals.value = value;
-                     }
+                     controller.taskApprovals.value = value;
                    },
                  ),
                ],
@@ -266,9 +256,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.giveFeedback.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.giveFeedback.value = value;
-                     }
+                     controller.giveFeedback.value = value;
                    },
                  ),
                ],
@@ -296,9 +284,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.customizeAvatar.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.customizeAvatar.value = value;
-                     }
+                     controller.customizeAvatar.value = value;
                    },
                  ),
                ],
@@ -326,9 +312,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.deleteGoals.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.deleteGoals.value = value;
-                     }
+                     controller.deleteGoals.value = value;
                    },
                  ),
                ],
@@ -356,9 +340,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.unlockRewards.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.unlockRewards.value = value;
-                     }
+                     controller.unlockRewards.value = value;
                    },
                  ),
                ],
@@ -386,9 +368,7 @@ class SettingSection extends StatelessWidget {
                    color: AppColors.green100,
                    value: controller.deleteAccount.value,
                    onChanged: (value) {
-                     if (controller.custom.value == true) {
-                       controller.deleteAccount.value = value;
-                     }
+                     controller.deleteAccount.value = value;
                    },
                  ),
                ],

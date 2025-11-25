@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
+import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
@@ -71,6 +72,7 @@ class OnboardingScreen extends StatelessWidget {
               CommonButton(
                 title: 'Get Started',
                 onPressed: () {
+                  StorageService.setFirstTimer(); // false by default
                   Get.toNamed(AppRoute.getLoginScreen());
                 },
               ),

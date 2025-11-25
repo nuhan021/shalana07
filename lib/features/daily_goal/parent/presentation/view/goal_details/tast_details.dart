@@ -240,7 +240,7 @@ Widget build(BuildContext context) {
                 24.verticalSpace,
             
                 // Linked accounts list
-                LinkAccountCard(),
+                LinkAccountCard(name: "nuhan", relation: "Mother",),
             
                 24.verticalSpace,
             

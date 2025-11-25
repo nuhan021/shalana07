@@ -6,9 +6,12 @@ import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
+import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/features/auth/controller/loginController.dart';
+import 'package:shalana07/features/auth/model/user_model.dart';
 import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
@@ -23,7 +26,8 @@ import 'package:shalana07/features/profile/parent/presentation/widgets/helper_ca
 class ParentProfile extends StatelessWidget {
   ParentProfile({super.key});
   final ParentProfileController controller = Get.put(ParentProfileController());
-  final  NavaberController navaberController = Get.put(NavaberController());
+  final Logincontroller loginController = Get.put(Logincontroller());
+  final NavaberController navaberController = Get.put(NavaberController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,9 @@ class ParentProfile extends StatelessWidget {
           preferredSize: Size.fromHeight(50.h),
           child: CustomAppBar(
             title: "Parent Profile",
-            backArrowIcon: navaberController.controller.index == 4 ? false : true  ,
+            backArrowIcon: navaberController.controller.index == 4
+                ? false
+                : true,
             notificationIcon: true,
             profileIcon: false,
           ),
@@ -79,7 +85,7 @@ class ParentProfile extends StatelessWidget {
                 CommonButton(
                   height: 40.h,
                   fontSize: 12,
-               
+
                   textColor: AppColors.grey900,
                   backgroundColor: AppColors.green900,
                   title: "Edit Profile",
@@ -100,9 +106,23 @@ class ParentProfile extends StatelessWidget {
                   ),
                 ),
                 24.verticalSpace,
-
-                // Linked accounts list
-                LinkAccountCard(),
+                Column(
+                  children: [
+                    ...?loginController
+                        .userModel
+                        .value
+                        ?.data
+                        .user
+                        .profile
+                        .children
+                        .map(
+                          (child) => LinkAccountCard(
+                            name: child.name,
+                            relation: child.relation,
+                          ).paddingOnly(bottom: 20.h),
+                        ),
+                  ],
+                ),
                 20.verticalSpace,
 
                 ///==========add account button==========//
@@ -229,6 +249,7 @@ class ParentProfile extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
+                        StorageService.logoutUser();
                         Get.offAll(() => LoginScreen());
                       },
                       child: Text(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
@@ -18,6 +19,21 @@ class AddChildAccount extends StatelessWidget {
   final AddChildAccountController controller = Get.put(
     AddChildAccountController(),
   );
+
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: controller.date.value ?? DateTime.now(), // default date
+      firstDate: DateTime(1900), // earliest selectable date
+      lastDate: DateTime(2100), // latest selectable date
+    );
+
+    if (picked != null) {
+      controller.date.value = picked;
+      controller.dateOfBirthController.text = picked.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +51,7 @@ class AddChildAccount extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /////////////============add Image section=============////////////
-             AddImageOption(controller: controller),
+              AddImageOption(controller: controller),
               20.verticalSpace,
               //////////////////Textfeild section//////////////
               _addAccount("Account Name*"),
@@ -43,7 +59,7 @@ class AddChildAccount extends StatelessWidget {
               CustomTextField(
                 hintText: "Calista Kimimela",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.nameController,
               ),
               24.verticalSpace,
 
@@ -52,7 +68,7 @@ class AddChildAccount extends StatelessWidget {
               CustomTextField(
                 hintText: "(262) 724-3679",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.phoneNumberController,
               ),
               20.verticalSpace,
 
@@ -61,7 +77,17 @@ class AddChildAccount extends StatelessWidget {
               CustomTextField(
                 hintText: "calista.kimi@gmail.com",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.emailController,
+              ),
+
+              20.verticalSpace,
+
+              _addAccount("Account Password*"),
+              10.verticalSpace,
+              CustomTextField(
+                hintText: "123456",
+                isfilled: true,
+                controller: controller.passwordController,
               ),
 
               20.verticalSpace,
@@ -70,8 +96,11 @@ class AddChildAccount extends StatelessWidget {
               CustomTextField(
                 hintText: "23 January, 2012",
                 isfilled: true,
-                suffixIcons: Icon(Icons.calendar_month_outlined),
-                controller: TextEditingController(),
+                suffixIcons: GestureDetector(
+                  onTap: () => _pickDate(context),
+                  child: Icon(Icons.calendar_month_outlined),
+                ),
+                controller: controller.dateOfBirthController,
               ),
 
               20.verticalSpace,
@@ -80,7 +109,7 @@ class AddChildAccount extends StatelessWidget {
               CustomTextField(
                 hintText: "Mother",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.relationShipController,
               ),
 
               20.verticalSpace,
@@ -114,6 +143,39 @@ class AddChildAccount extends StatelessWidget {
                       onChanged: (value) {
                         if (value != null) {
                           controller.selectedAccountType.value = value;
+                        }
+                      },
+                    );
+                  }),
+
+                  20.verticalSpace,
+
+                  _addAccount("Gender"),
+                  10.verticalSpace,
+
+                  Obx(() {
+                    return DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(),
+                      ),
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      hint: const Text("Select Account Type"),
+                      value: controller.selectGender.value.isEmpty
+                          ? null
+                          : controller.selectGender.value,
+                      items: controller.gender
+                          .map(
+                            (type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          controller.selectGender.value = value;
                         }
                       },
                     );
@@ -165,15 +227,21 @@ class AddChildAccount extends StatelessWidget {
               ),
               20.verticalSpace,
 
-
-
-
-
               /////////////setting section//////////////
-              
+
               ////////////////////////////full access////////////
-             SettingSection(controller: controller),
-              50.verticalSpace,
+              SettingSection(controller: controller),
+              20.verticalSpace,
+
+              CommonButton(
+                title: 'Create',
+                onPressed: () {
+                  controller.createChildAccount();
+                },
+              ),
+
+
+
             ],
           ),
         ),
@@ -194,5 +262,3 @@ class AddChildAccount extends StatelessWidget {
     );
   }
 }
-
-

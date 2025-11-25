@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
+import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
@@ -59,7 +60,10 @@ class ChildProfile extends StatelessWidget {
                 title: "Edit Profile",
                 fontSize: 14,
                 onPressed: () {
-                  AppHelperFunctions.navigateToScreen(context, ChildEditProfile());
+                  AppHelperFunctions.navigateToScreen(
+                    context,
+                    ChildEditProfile(),
+                  );
                 },
               ),
 
@@ -132,7 +136,7 @@ class ChildProfile extends StatelessWidget {
               _buildInfromation("Age", '10 years'),
               20.verticalSpace,
               _buildInfromation('Email', 'm2P4o@example.com'),
-20.verticalSpace,
+              20.verticalSpace,
               //notificvation
               Row(
                 children: [
@@ -144,7 +148,7 @@ class ChildProfile extends StatelessWidget {
                       color: AppColors.grey500,
                     ),
                   ),
-                
+
                   Spacer(),
                   Obx(() {
                     return CustomToggle(
@@ -156,52 +160,55 @@ class ChildProfile extends StatelessWidget {
                   }),
                 ],
               ),
-30.verticalSpace,
+              30.verticalSpace,
               InkWell(
                 onTap: () {
                   Get.defaultDialog(
-                      title: "Log Out",
-                      content: Text(
-                        "Are you sure you want to logout?",
-                        style: getTextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.grey500,
-                        ),
+                    title: "Log Out",
+                    content: Text(
+                      "Are you sure you want to logout?",
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey500,
                       ),
-                      actions: [
-                        CommonButton(
-                          textColor: Colors.white,
-                          backgroundColor: AppColors.danger,
-                          title: "Log Out",
-                          fontSize: 14,
-                          onPressed: () {
-                           Get.offAll(
-                             () => LoginScreen(),
-                           );
-                          },
-                        ),
-                        CommonButton(
-                          textColor: AppColors.grey900,
-                          backgroundColor: AppColors.primary,
-                          title: "Cancel",
-                          fontSize: 14,
-                          onPressed: () {
-                            Get.back();
-                          },
-                        ),
-                  ]);
+                    ),
+                    actions: [
+                      CommonButton(
+                        textColor: Colors.white,
+                        backgroundColor: AppColors.danger,
+                        title: "Log Out",
+                        fontSize: 14,
+                        onPressed: () async {
+                          await StorageService.logoutUser();
+                          Get.offAll(() => LoginScreen());
+                        },
+                      ),
+                      CommonButton(
+                        textColor: AppColors.grey900,
+                        backgroundColor: AppColors.primary,
+                        title: "Cancel",
+                        fontSize: 14,
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                    ],
+                  );
                 },
-                child: Text(
-                  'Log Out',
-                  style: getTextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.danger,
+                child: GestureDetector(
+
+                  child: Text(
+                    'Log Out',
+                    style: getTextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.danger,
+                    ),
                   ),
                 ),
               ),
-              50.verticalSpace
+              50.verticalSpace,
             ],
           ),
         ),

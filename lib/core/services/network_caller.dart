@@ -19,9 +19,7 @@ class NetworkCaller {
           'Authorization': token.toString(),
           'Content-type': 'application/json',
         },
-      ).timeout(
-        Duration(seconds: timeoutDuration),
-      );
+      ).timeout(Duration(seconds: timeoutDuration));
 
       return _handleResponse(response);
     } catch (e) {
@@ -29,17 +27,27 @@ class NetworkCaller {
     }
   }
 
-  // POST method
-  Future<ResponseData> postRequest(String url,
-      {Map<String, String>? body, String? token}) async {
+  Future<ResponseData> postRequest(
+      String url, {
+        Map<String, String>? body,
+        String? token,
+        bool isCookie = false, // Add this parameter
+      }) async {
     log('POST Request: $url');
     log('Request Body: ${jsonEncode(body)}');
 
     try {
-      final Response response = await post(Uri.parse(url),
-          headers: {'Content-type': 'application/json'},
-          body: jsonEncode(body))
-          .timeout(Duration(seconds: timeoutDuration));
+      final Response response = await post(
+        Uri.parse(url),
+        headers: {
+          'Content-type': 'application/json',
+          if (token != null && isCookie)
+            'Cookie': 'refreshToken=$token',  // Send as cookie
+          if (token != null && !isCookie)
+            'Authorization': token,  // Send as Authorization for other requests
+        },
+        body: jsonEncode(body),
+      ).timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
     } catch (e) {
       return _handleError(e);
