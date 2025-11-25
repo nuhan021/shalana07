@@ -63,7 +63,7 @@ class ParentHomescreen extends StatelessWidget {
                 24.verticalSpace,
 
                 // Linked accounts list
-                LinkAccountCard(),
+                LinkAccountCard(name: "nuhan", relation: "mother",),
 
                 24.verticalSpace,
 

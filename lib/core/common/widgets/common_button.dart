@@ -14,7 +14,7 @@ class CommonButton extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
 
-  const CommonButton({
+  const  CommonButton({
     super.key,
     required this.title,
     required this.onPressed,
