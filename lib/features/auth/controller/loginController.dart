@@ -4,10 +4,8 @@ import 'package:shalana07/core/services/network_caller.dart';
 import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/api_constants.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/core/utils/helpers/app_helper.dart';
-import 'package:shalana07/core/utils/logging/logger.dart';
-import 'package:shalana07/features/auth/model/ChildModel.dart';
-import 'package:shalana07/features/auth/model/user_model.dart';
+import 'package:shalana07/features/auth/model/child_login_model.dart';
+import 'package:shalana07/features/auth/model/user_login_model.dart';
 import 'package:shalana07/routes/app_routes.dart';
 
 NetworkCaller networkCaller = NetworkCaller();
@@ -21,9 +19,9 @@ class Logincontroller extends GetxController {
   }
 
 
-  Rx<UserModel?> userModel = Rx<UserModel?>(null);
+  Rx<UserLoginModel?> loginUserModel = Rx<UserLoginModel?>(null);
 
-  Rx<ChildModel?> childModel = Rx<ChildModel?>(null);
+  Rx<ChildLoginModel?> loginChildModel = Rx<ChildLoginModel?>(null);
 
 
   RxBool isLoginLoading = false.obs;
@@ -37,12 +35,6 @@ class Logincontroller extends GetxController {
     isObscure.value = !isObscure.value;
   }
 
-  // Hardcoded credentials
-  // final String parentEmail = "parent@gmail.com";
-  // final String parentPass = "1234";
-  //
-  // final String childEmail = "child@gmail.com";
-  // final String childPass = "1234";
 
   var userRole = "".obs; // parent / child
   // Text controllers for email and password fields
@@ -61,8 +53,8 @@ class Logincontroller extends GetxController {
       "${Api.baseUrl}/auth/login",
       body: {
         // "email": 'child3@gmail.com',
-        "email": "289ydgc9cv@daouse.com",
-        "password": "123456",
+        "email": email,
+        "password": pass,
       }
     );
 
@@ -76,17 +68,17 @@ class Logincontroller extends GetxController {
 
 
     if(response.responseData['data']['user']['role'] == 'CHILD') {
-      final model = ChildModel.fromJson(response.responseData);
+      final model = ChildLoginModel.fromJson(response.responseData);
 
-      childModel.value = model;
+      loginChildModel.value = model;
 
       await StorageService.saveRefreshToken(model.data.refreshToken, model.data.user.id);
       await StorageService.saveToken(model.data.accessToken, model.data.user.id);
       await StorageService.setRole(model.data.user.role.toLowerCase());
 
     } else {
-      final model = UserModel.fromJson(response.responseData);
-      userModel.value = model;
+      final model = UserLoginModel.fromJson(response.responseData);
+      loginUserModel.value = model;
 
       await StorageService.saveRefreshToken(model.data.refreshToken, model.data.user.id);
       await StorageService.saveToken(model.data.accessToken, model.data.user.id);

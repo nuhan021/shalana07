@@ -1,16 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
-import 'package:shalana07/core/utils/constants/image_path.dart';
 
 class LinkAccountCard extends StatelessWidget {
-  const LinkAccountCard({super.key, required this.name, required this.relation});
+  const LinkAccountCard({super.key, required this.name, required this.relation, this.img, this.gender});
 
   final String name;
   final String relation;
+  final String? img;
+  final String? gender;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +22,18 @@ class LinkAccountCard extends StatelessWidget {
         //avater
         ClipRRect(
           borderRadius: BorderRadius.circular(50.0.r),
-          child: Image.asset(
-            ImagePath.childAvatar,
-            width: 50.w,
-            height: 50.w,
+          child:CachedNetworkImage(
+            imageUrl: img ?? "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
             fit: BoxFit.cover,
+            height: 50.h,
+            width: 50.w,
+            placeholder: (context, url) => Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: AppColors.primary,
+                size: 25.h,
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         // Name and other details

@@ -11,7 +11,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
-import 'package:shalana07/features/auth/model/user_model.dart';
+import 'package:shalana07/features/auth/model/user_login_model.dart';
 import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
@@ -108,14 +108,8 @@ class ParentProfile extends StatelessWidget {
                 24.verticalSpace,
                 Column(
                   children: [
-                    ...?loginController
-                        .userModel
-                        .value
-                        ?.data
-                        .user
-                        .profile
-                        .children
-                        .map(
+                    ...?controller.parentModel.value?.data.parentProfile.children.
+                        map(
                           (child) => LinkAccountCard(
                             name: child.name,
                             relation: child.relation,
