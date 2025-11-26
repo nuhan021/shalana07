@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final userModel = userModelFromJson(jsonString);
+//     final parentModel = parentModelFromJson(jsonString);
 
 import 'dart:convert';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+ParentModel parentModelFromJson(String str) => ParentModel.fromJson(json.decode(str));
 
-String userModelToJson(UserModel data) => json.encode(data.toJson());
+String parentModelToJson(ParentModel data) => json.encode(data.toJson());
 
-class UserModel {
+class ParentModel {
   bool success;
   String message;
   Data data;
 
-  UserModel({
+  ParentModel({
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory ParentModel.fromJson(Map<String, dynamic> json) => ParentModel(
     success: json["success"],
     message: json["message"],
     data: Data.fromJson(json["data"]),
@@ -33,58 +33,66 @@ class UserModel {
 }
 
 class Data {
-  User user;
-  String accessToken;
-  String refreshToken;
+  String id;
+  String email;
+  String password;
+  String role;
+  DateTime createdAt;
+  dynamic otp;
+  bool isDeleted;
+  dynamic otpExpiresAt;
+  bool isVerified;
+  dynamic passwordResetOtp;
+  dynamic passwordResetExpires;
+  ParentProfile parentProfile;
 
   Data({
-    required this.user,
-    required this.accessToken,
-    required this.refreshToken,
+    required this.id,
+    required this.email,
+    required this.password,
+    required this.role,
+    required this.createdAt,
+    required this.otp,
+    required this.isDeleted,
+    required this.otpExpiresAt,
+    required this.isVerified,
+    required this.passwordResetOtp,
+    required this.passwordResetExpires,
+    required this.parentProfile,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    user: User.fromJson(json["user"]),
-    accessToken: json["accessToken"],
-    refreshToken: json["refreshToken"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "user": user.toJson(),
-    "accessToken": accessToken,
-    "refreshToken": refreshToken,
-  };
-}
-
-class User {
-  String id;
-  String email;
-  String role;
-  Profile profile;
-
-  User({
-    required this.id,
-    required this.email,
-    required this.role,
-    required this.profile,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     email: json["email"],
+    password: json["password"],
     role: json["role"],
-    profile: Profile.fromJson(json["profile"]),
+    createdAt: DateTime.parse(json["createdAt"]),
+    otp: json["otp"],
+    isDeleted: json["isDeleted"],
+    otpExpiresAt: json["otp_expires_at"],
+    isVerified: json["is_verified"],
+    passwordResetOtp: json["password_reset_otp"],
+    passwordResetExpires: json["password_reset_expires"],
+    parentProfile: ParentProfile.fromJson(json["parentProfile"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "email": email,
+    "password": password,
     "role": role,
-    "profile": profile.toJson(),
+    "createdAt": createdAt.toIso8601String(),
+    "otp": otp,
+    "isDeleted": isDeleted,
+    "otp_expires_at": otpExpiresAt,
+    "is_verified": isVerified,
+    "password_reset_otp": passwordResetOtp,
+    "password_reset_expires": passwordResetExpires,
+    "parentProfile": parentProfile.toJson(),
   };
 }
 
-class Profile {
+class ParentProfile {
   String id;
   String userId;
   String name;
@@ -101,7 +109,7 @@ class Profile {
   bool childTaskUpdates;
   List<Child> children;
 
-  Profile({
+  ParentProfile({
     required this.id,
     required this.userId,
     required this.name,
@@ -119,7 +127,7 @@ class Profile {
     required this.children,
   });
 
-  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+  factory ParentProfile.fromJson(Map<String, dynamic> json) => ParentProfile(
     id: json["id"],
     userId: json["userId"],
     name: json["name"],
@@ -134,11 +142,7 @@ class Profile {
     pushNotification: json["pushNotification"],
     dailyReminders: json["dailyReminders"],
     childTaskUpdates: json["childTaskUpdates"],
-    children: json["children"] == null
-        ? <Child>[]
-        : List<Child>.from(
-        (json["children"] as List<dynamic>).map((x) => Child.fromJson(x as Map<String, dynamic>))
-    ),
+    children: List<Child>.from(json["children"].map((x) => Child.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -160,8 +164,6 @@ class Profile {
   };
 }
 
-// child_model.dart
-
 class Child {
   String id;
   String userId;
@@ -171,7 +173,7 @@ class Child {
   String gender;
   String phone;
   String email;
-  String dateOfBirth;
+  DateTime dateOfBirth;
   String location;
   String? image;
   String? imagePath;
@@ -182,7 +184,7 @@ class Child {
   bool approveTasks;
   bool deleteGoals;
   bool deleteAccount;
-  String? avatarId;
+  dynamic avatarId;
   bool isDeleted;
 
   Child({
@@ -196,8 +198,8 @@ class Child {
     required this.email,
     required this.dateOfBirth,
     required this.location,
-    this.image,
-    this.imagePath,
+    required this.image,
+    required this.imagePath,
     required this.coins,
     required this.relation,
     required this.editProfile,
@@ -205,7 +207,7 @@ class Child {
     required this.approveTasks,
     required this.deleteGoals,
     required this.deleteAccount,
-    this.avatarId,
+    required this.avatarId,
     required this.isDeleted,
   });
 
@@ -218,7 +220,7 @@ class Child {
     gender: json["gender"],
     phone: json["phone"],
     email: json["email"],
-    dateOfBirth: json["dateOfBirth"],
+    dateOfBirth: DateTime.parse(json["dateOfBirth"]),
     location: json["location"],
     image: json["image"],
     imagePath: json["imagePath"],
@@ -242,7 +244,7 @@ class Child {
     "gender": gender,
     "phone": phone,
     "email": email,
-    "dateOfBirth": dateOfBirth,
+    "dateOfBirth": dateOfBirth.toIso8601String(),
     "location": location,
     "image": image,
     "imagePath": imagePath,
@@ -257,5 +259,3 @@ class Child {
     "isDeleted": isDeleted,
   };
 }
-
-

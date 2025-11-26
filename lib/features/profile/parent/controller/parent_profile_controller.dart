@@ -1,9 +1,55 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shalana07/core/services/network_caller.dart';
+import 'package:shalana07/core/services/storage_service.dart';
+import 'package:shalana07/core/utils/constants/api_constants.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/features/auth/model/child_login_model.dart';
+import 'package:shalana07/features/home/parent/model/parentModel.dart';
 import 'package:shalana07/features/profile/model/parent_helper.dart';
 
+
 class ParentProfileController extends GetxController {
+  final NetworkCaller _networkCaller = NetworkCaller();
+
+  Rx<ParentModel?> parentModel = Rx<ParentModel?>(null);
+
+  RxBool isParentProfileLoading = false.obs;
+  RxBool isParentProfileError = false.obs;
+
+  @override
+  void onInit() async {
+    super.onInit();
+    getUserData();
+  }
+
+  Future<void> getUserData() async {
+    isParentProfileLoading.value = true;
+
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      "${Api.baseUrl}/auth/get-profile",
+      token: token,
+    );
+
+    isParentProfileLoading.value = false;
+
+    if (!response.isSuccess) {
+      Get.snackbar("Error", response.errorMessage);
+      isParentProfileError.value = true;
+      return;
+    }
+
+    if (response.responseData['data']['role'] == 'CHILD') {
+      final model = ChildLoginModel.fromJson(response.responseData);
+    } else {
+      final model = ParentModel.fromJson(response.responseData);
+      parentModel.value = model;
+    }
+    isParentProfileError.value = false;
+  }
+
   var pushNotifications = true.obs;
   var dailyReminders = true.obs;
   var childTaskUpdates = true.obs;
@@ -20,11 +66,6 @@ class ParentProfileController extends GetxController {
       Get.snackbar("Error", "No image selected");
     }
   }
-
-
-
-
-
 
   // Future<void> pickImageFromCamera() async {
   //   final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
