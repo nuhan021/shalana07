@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
@@ -15,75 +16,107 @@ class ParentDailyGoal extends StatelessWidget {
   final ParentDailyGoalController _controller = Get.put(
     ParentDailyGoalController(),
   );
-    final NavaberController navaberController = Get.find<NavaberController>();
+  final NavaberController navaberController = Get.find<NavaberController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _controller.scaffoldKey,
-      backgroundColor: AppColors.appBackground,
+    return Obx(() {
+      if (_controller.isGoalLoading.value) {
+        return Center(
+          child: LoadingAnimationWidget.bouncingBall(
+            color: AppColors.primary,
+            size: 25.h,
+          ),
+        );
+      }
 
-      //daily goal app bar
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+      if (_controller.isGoalError.value) {
+        return Center(
+          child: TextButton(
+            onPressed: () {
+              _controller.getGoal();
+            },
+            child: Text(
+              'Error!\nTry again',
+              textAlign: TextAlign.center,
+              style: getTextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.error,
+              ),
+            ),
+          ),
+        );
+      }
+      return Scaffold(
+        key: _controller.scaffoldKey,
+        backgroundColor: AppColors.appBackground,
 
-        child: CustomAppBar(title: 'Goals',notificationIcon: true,backArrowIcon: false,),
-      ),
+        //daily goal app bar
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.h),
 
-      //f  end drawer
-    
-
-      body: Padding(
-        padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w, top: 15.0.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //toggle button
-            Obx(() {
-              return Container(
-                height: 50.h,
-        
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.grey200,
-                  borderRadius: BorderRadius.circular(30.0.r),
-                  border: Border.all(color: AppColors.grey200, width: 1.0.w),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildToggle(0, "Child view"),
-                    _buildToggle(1, "Parent view"),
-                  ],
-                ),
-              );
-            }),
-        
-            30.verticalSpace,
-        
-            //troggle Screen
-            Obx(() {
-              return _controller.tabIndex.value == 0
-                  ? WeeklyGoalSection(
-                  isParentVIew:  0,
-                  )
-                  : WeeklyGoalSection(
-                      isParentVIew: 1,
-                  );
-            }),
-          ],
+          child: CustomAppBar(
+            title: 'Goals',
+            notificationIcon: true,
+            backArrowIcon: false,
+          ),
         ),
-      ),
-      bottomNavigationBar:  Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CommonButton(
+
+        //f  end drawer
+        body: Padding(
+          padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w, top: 15.0.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //toggle button
+              Obx(() {
+                return Container(
+                  height: 50.h,
+
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey200,
+                    borderRadius: BorderRadius.circular(30.0.r),
+                    border: Border.all(color: AppColors.grey200, width: 1.0.w),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildToggle(0, "Child view"),
+                      _buildToggle(1, "Parent view"),
+                    ],
+                  ),
+                );
+              }),
+
+              IconButton(
+                onPressed: () async {
+                  await _controller.getGoal();
+                },
+                icon: Icon(Icons.refresh),
+              ),
+
+              //troggle Screen
+              Obx(() {
+                return _controller.tabIndex.value == 0
+                    ? WeeklyGoalSection(isParentVIew: 0)
+                    : WeeklyGoalSection(isParentVIew: 1);
+              }),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CommonButton(
             title: "Add New Goal",
             onPressed: () {
               navaberController.jumpToScreen(2);
             },
           ),
-      ),
-    );
+        ),
+      );
+    });
   }
 
   _buildToggle(int index, String title) {

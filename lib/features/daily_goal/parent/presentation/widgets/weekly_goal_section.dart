@@ -29,7 +29,7 @@ class WeeklyGoalSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Weekly Goal",
+                "Goal",
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -59,30 +59,21 @@ class WeeklyGoalSection extends StatelessWidget {
           //goal list section with refresh indicator
           //Refrsh indicator
           Expanded(
-            child: RefreshIndicator(
-              color: AppColors.primary,
-              onRefresh: () async {
-                // Add your refresh logic here
-                await Future.delayed(const Duration(seconds: 1));
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: _controller.goals.length,
+              itemBuilder: (context, index) {
+                final goal = _controller.goals[index];
+                return InkWell(
+                    onTap: () {
+                      // Handle goal card tap
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => TastDetails(
+                      isParentVIew: isParentVIew,
+                     )));
+                    },
+                  child: GoalCard(goal: goal, isParentVIew: isParentVIew));
               },
-                  
-              //List of goals
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: _controller.goals.length,
-                itemBuilder: (context, index) {
-                  final goal = _controller.goals[index];
-                  return InkWell(
-                      onTap: () {
-                        // Handle goal card tap
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => TastDetails(
-                        isParentVIew: isParentVIew,
-                       )));
-                      },
-                    child: GoalCard(goal: goal, isParentVIew: isParentVIew));
-                },
-              ),
             ),
           ),
          
