@@ -10,6 +10,7 @@ import 'package:shalana07/features/profile/parent/controller/Edit_profile_contro
 import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/parent_profile_screen.dart';
 import 'package:awesome_location_picker/awesome_location_picker.dart';
+
 class EditProfile extends StatelessWidget {
   EditProfile({super.key});
 
@@ -54,7 +55,7 @@ class EditProfile extends StatelessWidget {
                 child: Center(
                   child: Column(
                     children: [
-                      Profilesection(controller: controller),
+                      Profilesection(controller: editController),
                       10.verticalSpace,
                       Center(
                         child: Text(
@@ -62,7 +63,7 @@ class EditProfile extends StatelessWidget {
                           style: getTextStyle(
                             color: AppColors.grey400,
                             fontSize: 16,
-          
+
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -71,7 +72,7 @@ class EditProfile extends StatelessWidget {
                   ),
                 ),
               ),
-          
+
               /////////////==============All text section===============//////////////
               20.verticalSpace,
               _title("Name"),
@@ -79,97 +80,120 @@ class EditProfile extends StatelessWidget {
               CustomTextField(
                 hintText: "Shalana",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: editController.nameController,
               ),
-          
+
               20.verticalSpace,
               _title("Phone Number"),
               10.verticalSpace,
               CustomTextField(
                 hintText: "(262) 724-3679",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: editController.phoneNumberController,
               ),
-          
+
               20.verticalSpace,
               _title("Email"),
               10.verticalSpace,
               CustomTextField(
                 hintText: "laurel@gmail.com",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: editController.emailController,
               ),
-          
+
               20.verticalSpace,
               _title("Password"),
               10.verticalSpace,
               CustomTextField(
                 hintText: "**************",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: editController.passwordController,
               ),
-          
+
+              // 20.verticalSpace,
+              // _title("Parent "),
+              // 10.verticalSpace,
+              // CustomTextField(
+              //   hintText: "Shalana",
+              //   isfilled: true,
+              //   controller: TextEditingController(),
+              // ),
               20.verticalSpace,
-              _title("Parent "),
+              _title("Location"),
               10.verticalSpace,
-              CustomTextField(
-                hintText: "Shalana",
-                isfilled: true,
-                controller: TextEditingController(),
+
+              Center(
+                child: Obx(() {
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    hint: Text(
+                      'Select a Location',
+                      style: getTextStyle(
+                        color: AppColors.grey400,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    value: editController.selectedCity.value.isEmpty
+                        ? null
+                        : editController.selectedCity.value,
+                    icon: Icon(Icons.keyboard_arrow_down_rounded),
+                    items: editController.cities.map((city) {
+                      return DropdownMenuItem<String>(
+                        value: city,
+                        child: Text(city),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      editController.selectedCity.value = value ?? '';
+                    },
+                  );
+                }),
               ),
 
- 
-  20.verticalSpace,
-  _title("City"),
-  10.verticalSpace,
-   
-   Center(
-        child: Obx(() {
-          return DropdownButtonFormField<String>(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white
-            ),
-            hint: Text('Select a city',
-                style: getTextStyle(
-                  color: AppColors.grey400,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                )),
-            value: editController.selectedCity.value.isEmpty
-                ? null
-                : editController.selectedCity.value,
-            icon: Icon(Icons.keyboard_arrow_down_rounded),
-            items: editController.cities.map((city) {
-              return DropdownMenuItem<String>(
-                value: city,
-                child: Text(city),
-              );
-            }).toList(),
-            onChanged: (value) {
-              editController.selectedCity.value = value ?? '';
-            },
-          );
-        }),
-      ),
-     
-
-          
-          50.verticalSpace,
+              50.verticalSpace,
               Row(
                 children: [
-                  Expanded(child: CommonButton(
-                    
-                    backgroundColor: Colors.transparent,
-                    textColor: AppColors.primary,
-                    isbporderColor: true,
-                    title: "Cancel", onPressed: (){
-                    Get.back();
-                  })),
+                  Expanded(
+                    child: CommonButton(
+                      backgroundColor: Colors.transparent,
+                      textColor: AppColors.primary,
+                      isbporderColor: true,
+                      title: "Cancel",
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ),
                   20.horizontalSpace,
-                  Expanded(child: CommonButton(title: "Save", onPressed: (){})),
+                  Expanded(
+                    child: Obx(() {
+                      if (editController.isUpdateLoading.value) {
+                        return Container(
+                          height: 50.h,
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(24.r),
+                          ),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+                      return CommonButton(
+                        title: "Save",
+                        onPressed: () => editController.updateProfile(),
+                      );
+                    }),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

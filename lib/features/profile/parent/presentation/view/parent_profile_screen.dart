@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
@@ -15,6 +17,7 @@ import 'package:shalana07/features/auth/model/user_login_model.dart';
 import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
+import 'package:shalana07/features/profile/parent/controller/Edit_profile_controller.dart';
 
 import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/Edit_profile_page.dart';
@@ -28,6 +31,8 @@ class ParentProfile extends StatelessWidget {
   final ParentProfileController controller = Get.put(ParentProfileController());
   final Logincontroller loginController = Get.put(Logincontroller());
   final NavaberController navaberController = Get.put(NavaberController());
+  final EditProfileController editProfileController = Get.put(EditProfileController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +61,12 @@ class ParentProfile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ////========profile image===========
-                Profilesection(controller: controller),
+                Profilesection(controller: editProfileController),
                 10.verticalSpace,
                 ////////-----------profile details section------------//
                 Center(
                   child: Text(
-                    "Laurel Lynn",
+                    controller.parentModel.value!.data.parentProfile.name,
                     style: getTextStyle(
                       fontSize: 16,
                       color: AppColors.grey900,
@@ -69,17 +74,17 @@ class ParentProfile extends StatelessWidget {
                     ),
                   ),
                 ),
-                10.verticalSpace,
-                Center(
-                  child: Text(
-                    "Mother",
-                    style: getTextStyle(
-                      fontSize: 15,
-                      color: AppColors.grey500,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+                // 10.verticalSpace,
+                // Center(
+                //   child: Text(
+                //     "Mother",
+                //     style: getTextStyle(
+                //       fontSize: 15,
+                //       color: AppColors.grey500,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                // ),
                 20.verticalSpace,
                 ///////////======edit profile button==========//
                 CommonButton(
@@ -108,11 +113,17 @@ class ParentProfile extends StatelessWidget {
                 24.verticalSpace,
                 Column(
                   children: [
-                    ...?controller.parentModel.value?.data.parentProfile.children.
-                        map(
+                    ...?controller
+                        .parentModel
+                        .value
+                        ?.data
+                        .parentProfile
+                        .children
+                        .map(
                           (child) => LinkAccountCard(
                             name: child.name,
                             relation: child.relation,
+                            img: child.image,
                           ).paddingOnly(bottom: 20.h),
                         ),
                   ],
@@ -294,7 +305,7 @@ class ParentProfile extends StatelessWidget {
 class Profilesection extends StatelessWidget {
   const Profilesection({super.key, required this.controller});
 
-  final ParentProfileController controller;
+  final EditProfileController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -307,9 +318,29 @@ class Profilesection extends StatelessWidget {
           child: Stack(
             children: [
               controller.selectedImagePath.value.isEmpty
-                  ? CircleAvatar(
-                      radius: 60.r,
-                      backgroundImage: AssetImage(ImagePath.parentProfile),
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(60),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            Get.find<ParentProfileController>()
+                                .parentModel
+                                .value!
+                                .data
+                                .parentProfile
+                                .image ??
+                            "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                        width: 120.w,
+                        height: 120.w,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                            color: AppColors.primary,
+                            size: 25.h,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     )
                   : CircleAvatar(
                       radius: 60.r,

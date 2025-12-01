@@ -5,8 +5,11 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/auth/presentation/widgets/backgroun.dart';
 import 'package:shalana07/routes/app_routes.dart';
+
+import 'otp_page.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
@@ -79,7 +82,7 @@ class ForgetPassword extends StatelessWidget {
                     ),
                     30.verticalSpace,
                     CommonButton(title: "Send", onPressed: () {
-                      Get.toNamed(AppRoute.forgetOTPScreen);
+                      AppHelperFunctions.navigateToScreen(context, OtpPage(isFromSignUpScreen: false,));
                     }),
                     34.verticalSpace,
 

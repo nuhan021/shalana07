@@ -5,6 +5,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/create_goal/parent/controller/create_newgoal_Controller.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/widgets/daily_goal_section.dart';
 //importent note:  This is the parent create new goal screen
@@ -142,7 +143,7 @@ class ParentCreateNewGoal extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          _controller.changeIndex(index);
+          _controller.changeIndex(index, title.toUpperCase());
         },
         child: Container(
           padding: EdgeInsets.all(5.0.w),

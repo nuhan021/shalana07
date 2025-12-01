@@ -5,6 +5,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/create_goal/parent/controller/create_newgoal_Controller.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/widgets/add_remove_button.dart';
 
@@ -56,11 +57,16 @@ class DailyGoalSection extends StatelessWidget {
                 : controller.selectedChild.value,
             hint: const Text('Select Child'),
             items: controller.assignTo
-                .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+                .map(
+                  (item) => DropdownMenuItem(
+                    value: item["name"],
+                    child: Text(item["name"]!),
+                  ),
+                )
                 .toList(),
-            onChanged: (newvalue) {
-              if (newvalue != null) {
-                controller.changeIndex(newvalue.indexOf(newvalue));
+            onChanged: (newValue) {
+              if (newValue != null) {
+                controller.selectedChild.value = newValue;
               }
             },
           ),
@@ -127,7 +133,7 @@ class DailyGoalSection extends StatelessWidget {
 
         //Select time section
         Text(
-          'Select Date *',
+          'Select Time *',
           style: getTextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -158,7 +164,9 @@ class DailyGoalSection extends StatelessWidget {
                   // Date display
                   Text(
                     controller.selectedTime.value != null
-                        ? '${controller.selectedTime.value!}'.split(' ')[0]
+                        ? controller.formatTimeOfDay(
+                            controller.selectedTime.value!,
+                          ) // <-- USE THE FORMAT FUNCTION HERE
                         : '00:00',
                     style: getTextStyle(
                       fontSize: 16,
@@ -262,7 +270,7 @@ class DailyGoalSection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                 "${controller.rewardPoints.value} Points",
+                  "${controller.rewardPoints.value} Points",
                   style: getTextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -299,23 +307,38 @@ class DailyGoalSection extends StatelessWidget {
 
                 onPressed: () {
                   // Clear all fields
-                  controller.goalTitleController.clear();
-                  controller.descriptionController.clear();
-                  controller.selectedChild.value = '';
-                  controller.selectedDate.value = null;
-                  controller.selectedTime.value = null;
-                  controller.selectedDuration.value = '';
-                  controller.changeIndex(0);
+                  // controller.goalTitleController.clear();
+                  // controller.descriptionController.clear();
+                  // controller.selectedChild.value = '';
+                  // controller.selectedDate.value = null;
+                  // controller.selectedTime.value = null;
+                  // controller.selectedDuration.value = '';
+                  // controller.changeIndex(0);
                 },
               ),
             ),
             10.horizontalSpace,
             Expanded(
-              child: CommonButton(title: 'Create', onPressed: () {
-                Get.snackbar('Created', 'Goal Created Successfully',
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: AppColors.primary,
-                    colorText: Colors.white);
+              child: Obx(() {
+                if (controller.isCreateNewGoalLoading.value) {
+                  return Container(
+                    height: 50.h,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(24.r),
+                    ),
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.white),
+                    ),
+                  );
+                }
+                return CommonButton(
+                  title: 'Create',
+                  onPressed: () {
+                    controller.createDailyNewGoad();
+                  },
+                );
               }),
             ),
           ],
@@ -326,4 +349,3 @@ class DailyGoalSection extends StatelessWidget {
     );
   }
 }
-

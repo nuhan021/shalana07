@@ -29,7 +29,7 @@ class NetworkCaller {
 
   Future<ResponseData> postRequest(
       String url, {
-        Map<String, String>? body,
+        Map<String, dynamic>? body,
         String? token,
         bool isCookie = false, // Add this parameter
       }) async {
