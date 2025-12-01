@@ -54,6 +54,33 @@ class NetworkCaller {
     }
   }
 
+  Future<ResponseData> patchRequest(
+      String url, {
+        Map<String, dynamic>? body,
+        String? token,
+        bool isCookie = false, // Add this parameter
+      }) async {
+    log('POST Request: $url');
+    log('Request Body: ${jsonEncode(body)}');
+
+    try {
+      final Response response = await patch(
+        Uri.parse(url),
+        headers: {
+          'Content-type': 'application/json',
+          if (token != null && isCookie)
+            'Cookie': 'refreshToken=$token',  // Send as cookie
+          if (token != null && !isCookie)
+            'Authorization': token,  // Send as Authorization for other requests
+        },
+        body: jsonEncode(body),
+      ).timeout(Duration(seconds: timeoutDuration));
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
   // Handle response
   ResponseData _handleResponse(Response response) {
     log('Response Status: ${response.statusCode}');

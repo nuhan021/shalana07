@@ -36,7 +36,7 @@ class WeeklyGoalSection extends StatelessWidget {
                   color: AppColors.grey900,
                 ),
               ),
-      
+
               //filter icon
               GestureDetector(
                 onTap: () {
@@ -55,7 +55,7 @@ class WeeklyGoalSection extends StatelessWidget {
               ),
             ],
           ),
-      
+
           //goal list section with refresh indicator
           //Refrsh indicator
           Expanded(
@@ -65,19 +65,24 @@ class WeeklyGoalSection extends StatelessWidget {
               itemCount: _controller.goals.length,
               itemBuilder: (context, index) {
                 final goal = _controller.goals[index];
-                return InkWell(
-                    onTap: () {
-                      // Handle goal card tap
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => TastDetails(
-                      isParentVIew: isParentVIew,
-                     )));
-                    },
-                  child: GoalCard(goal: goal, isParentVIew: isParentVIew));
+                return isParentVIew == 0 ? GoalCard(goal: goal, isParentVIew: isParentVIew) : InkWell(
+                  onTap: () {
+                    // Handle goal card tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            TastDetails(isParentVIew: isParentVIew, goal: goal),
+                      ),
+                    );
+                  },
+                  child: GoalCard(goal: goal, isParentVIew: isParentVIew),
+                );
               },
             ),
           ),
-         
-          10.verticalSpace
+
+          10.verticalSpace,
         ],
       ),
     );
