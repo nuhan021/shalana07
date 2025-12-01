@@ -4,9 +4,12 @@ import 'package:shalana07/core/services/network_caller.dart';
 import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/api_constants.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/auth/model/child_login_model.dart';
 import 'package:shalana07/features/home/parent/model/parentModel.dart';
 import 'package:shalana07/features/profile/model/parent_helper.dart';
+
+import '../../../../core/common/service/token_service.dart';
 
 
 class ParentProfileController extends GetxController {
@@ -28,10 +31,21 @@ class ParentProfileController extends GetxController {
 
     final token = StorageService.token;
 
-    final response = await _networkCaller.getRequest(
+    var response = await _networkCaller.getRequest(
       "${Api.baseUrl}/auth/get-profile",
       token: token,
     );
+
+    if(response.statusCode == 401) {
+      final tokenService = Get.find<TokenService>();
+      if(await tokenService.refreshToken()) {
+        response = await _networkCaller.getRequest(
+          "${Api.baseUrl}/auth/get-profile",
+          token: token,
+        );
+      }
+
+    }
 
     isParentProfileLoading.value = false;
 
@@ -54,6 +68,7 @@ class ParentProfileController extends GetxController {
   var dailyReminders = true.obs;
   var childTaskUpdates = true.obs;
   var selectedImagePath = ''.obs;
+  final Rxn<XFile> image = Rxn<XFile>();
 
   Future<void> pickImageFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -61,6 +76,7 @@ class ParentProfileController extends GetxController {
     );
 
     if (pickedFile != null) {
+      image.value = pickedFile;
       selectedImagePath.value = pickedFile.path;
     } else {
       Get.snackbar("Error", "No image selected");

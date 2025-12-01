@@ -1,14 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
 import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
 import 'package:shalana07/features/profile/common_profile.dart';
+import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 
 //note: This is a custom appbar widget
 // if you add to custom appbar you need to wrap it with prefferd sized widgets
@@ -18,12 +22,13 @@ class CustomAppBar extends StatelessWidget {
     required this.title,
     this.notificationIcon,
     this.profileIcon,
-    this.backArrowIcon,
+    this.backArrowIcon, this.image,
   });
   final String title;
   final bool? notificationIcon;
   final bool? profileIcon;
   final bool? backArrowIcon;
+  final String? image;
   final Logincontroller loginController = Get.put(Logincontroller());
   @override
   Widget build(BuildContext context) {
@@ -87,13 +92,18 @@ class CustomAppBar extends StatelessWidget {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          Logincontroller().userRole.value == "parent"
-                              ? ImagePath.parentProfile
-                              : ImagePath.childAvatar,
+                        child: CachedNetworkImage(
+                          imageUrl:  image ?? "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
                           width: 34.w,
                           height: 34.w,
                           fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: AppColors.primary,
+                              size: 25.h,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
                         ),
                       ),
                     ),

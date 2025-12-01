@@ -6,6 +6,7 @@ import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
 import 'package:shalana07/features/home/parent/controller/parent_home_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart'
@@ -29,7 +30,7 @@ class ParentHomescreen extends StatelessWidget {
       // Refresh indicator to allow pull-to-refresh functionality
       color: AppColors.primary,
       onRefresh: () async {
-        await Future.delayed(const Duration(seconds: 1));
+        await parentProfileController.getUserData();
       },
       child: Obx(() {
         if (parentProfileController.isParentProfileLoading.value) {
@@ -54,6 +55,7 @@ class ParentHomescreen extends StatelessWidget {
             ),
           );
         }
+
         return Scaffold(
           backgroundColor: AppColors.appBackground,
           // Custom AppBar
@@ -63,6 +65,7 @@ class ParentHomescreen extends StatelessWidget {
               title: 'Home',
               notificationIcon: true,
               backArrowIcon: false,
+              image: parentProfileController.parentModel.value?.data.parentProfile.image,
             ),
           ),
 

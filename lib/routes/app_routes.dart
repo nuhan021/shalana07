@@ -32,9 +32,9 @@ class AppRoute {
     GetPage(name: loginScreen, page: () =>  LoginScreen()),
     GetPage(name: onboardScreen, page: () => const OnboardingScreen()),
     GetPage(name: appBottomNavBarScreen, page: () => const AppBottomNavBar()),
-    GetPage(name: signupScreen, page: () => const SignupScreen()),
+    GetPage(name: signupScreen, page: () =>  SignupScreen()),
     GetPage(name: forgotPasswordScreen, page: () => const ForgetPassword()),
-    GetPage(name: forgetOTPScreen, page: () => const OtpPage()),
+    GetPage(name: forgetOTPScreen, page: () =>  OtpPage()),
     GetPage(name: setNewPasswordScreen, page: () => const SetNewPassword()),
 
   ];
