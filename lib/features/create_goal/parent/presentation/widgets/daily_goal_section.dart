@@ -10,7 +10,10 @@ import 'package:shalana07/features/create_goal/parent/controller/create_newgoal_
 import 'package:shalana07/features/create_goal/parent/presentation/widgets/add_remove_button.dart';
 
 class DailyGoalSection extends StatelessWidget {
-  DailyGoalSection({super.key});
+  DailyGoalSection({super.key, this.isFromUpdateSection = false});
+
+  final bool isFromUpdateSection;
+
   final CreateNewgoalController controller =
       Get.find<CreateNewgoalController>();
 
@@ -307,13 +310,13 @@ class DailyGoalSection extends StatelessWidget {
 
                 onPressed: () {
                   // Clear all fields
-                  // controller.goalTitleController.clear();
-                  // controller.descriptionController.clear();
-                  // controller.selectedChild.value = '';
-                  // controller.selectedDate.value = null;
-                  // controller.selectedTime.value = null;
-                  // controller.selectedDuration.value = '';
-                  // controller.changeIndex(0);
+                  controller.goalTitleController.clear();
+                  controller.descriptionController.clear();
+                  controller.selectedChild.value = '';
+                  controller.selectedDate.value = null;
+                  controller.selectedTime.value = null;
+                  controller.selectedDuration.value = '';
+                  controller.selectedDuration.value = '';
                 },
               ),
             ),
@@ -334,9 +337,13 @@ class DailyGoalSection extends StatelessWidget {
                   );
                 }
                 return CommonButton(
-                  title: 'Create',
+                  title: isFromUpdateSection ? 'Update' : 'Create',
                   onPressed: () {
-                    controller.createDailyNewGoad();
+                    if(isFromUpdateSection) {
+                      controller.updateGoal(controller.goalId.value);
+                    } else {
+                      controller.createDailyNewGoad();
+                    }
                   },
                 );
               }),

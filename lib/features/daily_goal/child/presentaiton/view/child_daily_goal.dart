@@ -79,10 +79,10 @@ class ChildDailyGoal extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (_, index) => InkWell(
                     onTap: () {
-                      AppHelperFunctions.navigateToScreen(
-                        context,
-                        TastDetails(),
-                      );
+                      // AppHelperFunctions.navigateToScreen(
+                      //   context,
+                      //   TastDetails(),
+                      // );
                     },
                     child: ChildGoalCard(goal: controller.goals[index]),
                   ),

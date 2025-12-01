@@ -8,7 +8,9 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/create_goal/parent/controller/create_newgoal_Controller.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/widgets/daily_goal_section.dart';
+import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
 
+import '../../../../daily_goal/parent/model/ParentGoalModel.dart';
 import '../../../../daily_goal/parent/model/parent_goal_model.dart';
 //importent note:  This is the parent create new goal screen
 // It allows parents to create new goals for their children
@@ -26,10 +28,44 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
     CreateNewgoalController(),
   );
 
+  final ParentDailyGoalController _dailyGoalController = Get.find<ParentDailyGoalController>();
+
   @override
   void initState() {
     super.initState();
 
+    // 1. ডেটা তালিকা নিরাপদে নিন
+    final dataList = _dailyGoalController.parentGoals.value?.data;
+
+    // 2. তালিকা বিদ্যমান কিনা পরীক্ষা করুন
+    if (dataList != null) {
+      // 3. নির্দিষ্ট Goal ID খুঁজে বের করুন
+      final Datum? findOne = dataList.where(
+            (goal) => goal.id == widget.goal.id,
+      ).firstOrNull;
+
+      // 4. WidgetsBinding ব্যবহার করে Rx ভেরিয়েবল আপডেট করা বিলম্বিত করুন
+      // এই অংশের কোড বর্তমান ফ্রেমের UI বিল্ড শেষ হওয়ার পরে চলবে।
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (findOne != null) {
+          // টেক্সট কন্ট্রোলার (Rx নয়) সরাসরি সেট করা যেতে পারে, তবে স্পষ্টতার জন্য এখানে রাখা হলো।
+          _controller.goalTitleController.text = findOne.title;
+          _controller.descriptionController.text = findOne.description;
+
+          // Rx ভেরিয়েবলগুলির মান পরিবর্তন (ত্রুটির কারণ):
+          _controller.selectedChild.value = findOne.assignedChildren[0].child.name;
+          _controller.selectedDate.value = findOne.startDate;
+          _controller.rewardPoints.value = findOne.rewardCoins;
+
+          // অন্যান্য মান সেট করুন:
+          _controller.goalType = findOne.type;
+          _controller.selectedDuration.value = "${(findOne.durationMin / 60).toString().split('.')[0]} hour";
+          _controller.goalId.value = findOne.id;
+        } else {
+          // ডেটা খুঁজে না পেলে এখানে ত্রুটি বা ডিফল্ট মান সেট করা যেতে পারে
+        }
+      });
+    }
   }
 
   @override
@@ -77,48 +113,48 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
                 20.verticalSpace,
 
                 //goal type
-                Text(
-                  'Goal Type *',
-                  style: getTextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.grey900,
-                  ),
-
-                  //troggle button
-                ),
-                10.verticalSpace,
-                Obx(() {
-                  return Container(
-                    height: 50.h,
-
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.grey200,
-                      borderRadius: BorderRadius.circular(30.0.r),
-                      border: Border.all(
-                        color: AppColors.grey200,
-                        width: 1.0.w,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildToggle(0, "Daily"),
-                        _buildToggle(1, "Weekly"),
-                        _buildToggle(3, "Monthly"),
-                      ],
-                    ),
-                  );
-                }),
-                20.verticalSpace,
+                // Text(
+                //   'Goal Type *',
+                //   style: getTextStyle(
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.w600,
+                //     color: AppColors.grey900,
+                //   ),
+                //
+                //   //troggle button
+                // ),
+                // 10.verticalSpace,
+                // Obx(() {
+                //   return Container(
+                //     height: 50.h,
+                //
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //       color: AppColors.grey200,
+                //       borderRadius: BorderRadius.circular(30.0.r),
+                //       border: Border.all(
+                //         color: AppColors.grey200,
+                //         width: 1.0.w,
+                //       ),
+                //     ),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //       children: [
+                //         _buildToggle(0, "Daily"),
+                //         _buildToggle(1, "Weekly"),
+                //         _buildToggle(3, "Monthly"),
+                //       ],
+                //     ),
+                //   );
+                // }),
+                // 20.verticalSpace,
 
                 //goal creating section
                 Obx(() {
                   switch (_controller.selectedIndex.value) {
                   // Daily goal section ,if you work on it go to here
                     case 0:
-                      return DailyGoalSection(); //this is the daily goal section widget
+                      return DailyGoalSection(isFromUpdateSection: true,); //this is the daily goal section widget
 
                   // Weekly goal section
                     case 1:

@@ -33,6 +33,8 @@ class CreateNewgoalController extends GetxController {
 
   RxBool isCreateNewGoalLoading = false.obs;
 
+  RxString goalId = ''.obs;
+
   //observable for selected goal type
   var selectedIndex = 0.obs;
   //observable for selected duration
@@ -61,12 +63,11 @@ class CreateNewgoalController extends GetxController {
 
   //duration dropdown
   final List<String> duration = [
-    "30 minutes",
     "1 hour",
-    "2 hours",
-    "3 hours",
-    "4 hours",
-    "5 hours",
+    "2 hour",
+    "3 hour",
+    "4 hour",
+    "5 hour",
   ];
   //observable for selected child
   var selectedChild = ''.obs;
@@ -129,7 +130,63 @@ class CreateNewgoalController extends GetxController {
   }
 
 
+  void _showErrorSnackbar(String message) {
+    isCreateNewGoalLoading.value = false; // Stop loading if validation fails
+    Get.snackbar(
+      "Validation Error",
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.amber,
+      colorText: Colors.black,
+    );
+  }
+
+  bool validCreateNewGoal() {
+    if (goalTitleController.text.trim().isEmpty) {
+      _showErrorSnackbar("Goal title cannot be empty.");
+      return false;
+    }
+
+    // Check 2: Description
+    if (descriptionController.text.trim().isEmpty) {
+      _showErrorSnackbar("Description cannot be empty.");
+      return false;
+    }
+
+    // Check 3: Reward Points (Assuming 0 is not a valid reward)
+    if (rewardPoints.value <= 0) {
+      _showErrorSnackbar("Reward points must be greater than zero.");
+      return false;
+    }
+
+    // Check 4: Selected Date
+    if (selectedDate.value == null) {
+      _showErrorSnackbar("Please select a start date.");
+      return false;
+    }
+
+    // Check 5: Selected Duration
+    if (selectedDuration.value.isEmpty) {
+      _showErrorSnackbar("Please select a duration for the goal.");
+      return false;
+    }
+
+    // Check 6: Assigned Child
+    final childId = addSelectedChildId(selectedChild.value);
+    if (selectedChild.value.isEmpty || childId == null) {
+      _showErrorSnackbar("Please select a child to assign the goal to.");
+      return false;
+    }
+
+    return true;
+  }
+
   Future<void> createDailyNewGoad() async {
+
+    if(!validCreateNewGoal()) {
+      return;
+    }
+
     isCreateNewGoalLoading.value = true;
     final param = {
       "title": goalTitleController.text,
@@ -146,9 +203,9 @@ class CreateNewgoalController extends GetxController {
 
 
     var response = await _networkCaller.postRequest(
-      "${Api.baseUrl}/goals/create-goal",
-      body: param,
-      token: token
+        "${Api.baseUrl}/goals/create-goal",
+        body: param,
+        token: token
     );
 
     if(response.statusCode == 401) {
@@ -178,6 +235,68 @@ class CreateNewgoalController extends GetxController {
       Get.snackbar(
         "Error",
         "Failed to create goal",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+
+  Future<void> updateGoal(String id) async {
+
+    if(!validCreateNewGoal()) {
+      return;
+    }
+
+    isCreateNewGoalLoading.value = true;
+    final param = {
+      "title": goalTitleController.text,
+      "description": descriptionController.text,
+      "type": goalType,
+      "rewardCoins": rewardPoints.value,
+      "startDate": selectedDate.value!.toUtc().toIso8601String(),
+      "endDate": selectedDate.value!.toUtc().toIso8601String(),
+      "durationMin": int.parse(selectedDuration.value.split(' ')[0]) * 60,
+      "assignedChildIds": [addSelectedChildId(selectedChild.value)]
+    };
+
+    final token = StorageService.token;
+
+
+    var response = await _networkCaller.patchRequest(
+        "${Api.baseUrl}/goals/update-goal/$id",
+        body: param,
+        token: token
+    );
+
+    if(response.statusCode == 401) {
+      final tokenService = Get.find<TokenService>();
+      if(await tokenService.refreshToken()) {
+        response = await _networkCaller.patchRequest(
+            "${Api.baseUrl}/goals/update-goal/$id",
+            body: param,
+            token: token
+        );
+      }
+    }
+
+    isCreateNewGoalLoading.value = false;
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // Success message
+      Get.snackbar(
+        "Success",
+        "Update Goal Success",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } else {
+      // Error message
+      Get.snackbar(
+        "Error",
+        "Failed to update goal",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
