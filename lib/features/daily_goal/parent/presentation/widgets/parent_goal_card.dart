@@ -4,6 +4,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/view/parent_create_new_goal.dart';
+import 'package:shalana07/features/create_goal/parent/presentation/view/parent_update_goal.dart';
 import 'package:shalana07/features/daily_goal/parent/model/parent_goal_model.dart';
 
 class GoalCard extends StatelessWidget {
@@ -116,7 +117,7 @@ class GoalCard extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           // Handle edit icon press
-                         Navigator.push(context, MaterialPageRoute(builder: (context) =>  ParentCreateNewGoal()));
+                         Navigator.push(context, MaterialPageRoute(builder: (context) =>  ParentUpdateGoal(goal: goal,)));
                         },
                         child: Row(
                           children: [
