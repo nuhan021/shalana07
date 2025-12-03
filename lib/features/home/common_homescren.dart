@@ -19,9 +19,9 @@ class CommonHomeScreen extends StatelessWidget {
       if (role == "parent") {
         return  ParentHomescreen();
       } else if (role == "child") {
-        return const ChildHomeScreen();
+        return ChildHomeScreen();
       } else {
-         return const ChildHomeScreen();
+         return ChildHomeScreen();
       }
     });
   }

@@ -10,11 +10,16 @@ import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/weekly_goal_section.dart';
 
+import '../../../../profile/parent/controller/parent_profile_controller.dart';
+
 class ParentDailyGoal extends StatelessWidget {
   ParentDailyGoal({super.key});
 
   final ParentDailyGoalController _controller = Get.put(
     ParentDailyGoalController(),
+  );
+  final ParentProfileController parentProfileController = Get.put(
+    ParentProfileController(),
   );
   final NavaberController navaberController = Get.find<NavaberController>();
 
@@ -60,6 +65,7 @@ class ParentDailyGoal extends StatelessWidget {
             title: 'Goals',
             notificationIcon: true,
             backArrowIcon: false,
+            image: parentProfileController.parentModel.value?.data.parentProfile.image,
           ),
         ),
 

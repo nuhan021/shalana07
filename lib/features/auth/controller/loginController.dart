@@ -69,7 +69,6 @@ class Logincontroller extends GetxController {
 
     if(response.responseData['data']['user']['role'] == 'CHILD') {
       final model = ChildLoginModel.fromJson(response.responseData);
-
       loginChildModel.value = model;
 
       await StorageService.saveRefreshToken(model.data.refreshToken, model.data.user.id);
