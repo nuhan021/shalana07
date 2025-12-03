@@ -1,38 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.dart';
 import 'package:shalana07/features/create_goal/child/presentation/view/child_create_new_goal.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/view/parent_create_new_goal.dart';
 import 'package:shalana07/features/create_goal/parent/presentation/view/parent_update_goal.dart';
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
+import 'package:shalana07/features/daily_goal/parent/model/ParentGoalModel.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/parent_goal_card.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
 
+import '../../../../../profile/parent/controller/parent_profile_controller.dart';
 import '../../../model/parent_goal_model.dart';
 
-class TastDetails extends StatelessWidget {
-  TastDetails({super.key, this.isParentVIew, required this.goal,});
+class TastDetails extends StatefulWidget {
+  TastDetails({super.key, this.isParentVIew, required this.goal});
 
   final int? isParentVIew;
   final GoalModel goal;
 
+  @override
+  State<TastDetails> createState() => _TastDetailsState();
+}
+
+class _TastDetailsState extends State<TastDetails> {
+  late Datum actualGoal;
+
+  @override
+  void initState() {
+    super.initState();
+    actualGoal = _controller.parentGoals.value!.data.firstWhere(
+      (element) => element.id == widget.goal.id,
+    );
+  }
+
   final _controller = Get.put(ParentDailyGoalController());
+
+  final ParentProfileController parentProfileController = Get.put(
+    ParentProfileController(),
+  );
+
   final NavaberController navaberController = Get.find<NavaberController>();
+
   @override
   Widget build(BuildContext context) {
+    AppLoggerHelper.debug(actualGoal.endDate.toString());
     return Scaffold(
       backgroundColor: AppColors.appBackground,
 
       ////app bar
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
-        child: CustomAppBar(title: 'Task Detail', notificationIcon: true),
+        child: CustomAppBar(title: 'Task Detail', notificationIcon: true, image: parentProfileController.parentModel.value?.data.parentProfile.image,),
       ),
 
       /////////=====body=============////
@@ -67,7 +93,7 @@ class TastDetails extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Active',
+                        actualGoal.status.toString(),
                         style: getTextStyle(
                           color: const Color(0xFFF7FBF7),
                           fontSize: 12,
@@ -78,7 +104,7 @@ class TastDetails extends StatelessWidget {
                     ),
 
                     //////////////======edit and delete button==========//////
-                    if (isParentVIew == 1)
+                    if (widget.isParentVIew == 1)
                       Row(
                         children: [
                           Padding(
@@ -90,7 +116,7 @@ class TastDetails extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        ParentUpdateGoal(goal: goal,),
+                                        ParentUpdateGoal(goal: widget.goal),
                                   ),
                                 );
                               },
@@ -152,7 +178,7 @@ class TastDetails extends StatelessWidget {
 
                 //////////////////////////---------ttile -------------------//////////////
                 Text(
-                  'Writing Challenge',
+                  actualGoal.title.toString(),
                   style: getTextStyle(
                     color: const Color(0xFF161616),
                     fontSize: 22,
@@ -162,7 +188,7 @@ class TastDetails extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 Text(
-                  'Write a short story about an adventure.',
+                  actualGoal.description,
                   style: getTextStyle(
                     color: const Color(0xFF60B242),
                     fontSize: 14,
@@ -175,7 +201,7 @@ class TastDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Duration: 3 days',
+                      'Duration: ${(actualGoal.durationMin / 60).toString().split('.')[0]} h',
                       style: getTextStyle(
                         color: const Color(0xFF686868),
                         fontSize: 14,
@@ -184,7 +210,7 @@ class TastDetails extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Due: August 20, 2025',
+                      'Due: ${DateFormat('yyyy-MM-dd').format(actualGoal.endDate.toLocal())}',
                       style: getTextStyle(
                         color: AppColors.grey600,
                         fontSize: 14,
@@ -212,7 +238,7 @@ class TastDetails extends StatelessWidget {
                       width: 14.w,
                     ),
                     Text(
-                      '10 points',
+                      '${actualGoal.rewardCoins} points',
                       style: getTextStyle(
                         color: AppColors.grey600,
                         fontSize: 14,
@@ -226,7 +252,7 @@ class TastDetails extends StatelessWidget {
 
                 ////////////========linear progress bar==========//////////
                 Text(
-                  '50% Completed',
+                  '${actualGoal.averageProgress}% Completed',
                   style: getTextStyle(
                     color: AppColors.grey800,
                     fontSize: 14,
@@ -235,7 +261,7 @@ class TastDetails extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 LinearProgressIndicator(
-                  value: 0.5,
+                  value: actualGoal.averageProgress / 100,
                   minHeight: 8.h,
                   borderRadius: BorderRadius.circular(10.r),
                   backgroundColor: AppColors.grey200,
@@ -255,7 +281,11 @@ class TastDetails extends StatelessWidget {
                 24.verticalSpace,
 
                 // Linked accounts list
-                LinkAccountCard(name: "nuhan", relation: "Mother"),
+                LinkAccountCard(
+                  img: actualGoal.assignedChildren.first.child.image,
+                  name: actualGoal.assignedChildren.first.child.name,
+                  relation: actualGoal.assignedChildren.first.child.relation,
+                ),
 
                 24.verticalSpace,
 
@@ -275,7 +305,7 @@ class TastDetails extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GoalCard(
                       goal: _controller.goals[index],
-                      isParentVIew: isParentVIew,
+                      isParentVIew: widget.isParentVIew,
                     );
                   },
                 ),

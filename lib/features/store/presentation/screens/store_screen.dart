@@ -3,12 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
+import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/store/presentation/widgets/all_items_tab.dart';
 import 'package:shalana07/features/store/presentation/widgets/avatar_tab.dart';
 import 'package:shalana07/features/store/presentation/widgets/dress_tab.dart';
 import 'package:shalana07/features/store/presentation/widgets/pets_tab.dart';
+
+import '../../../../core/common/widgets/custom_appbar.dart';
+import '../../../profile/parent/controller/parent_profile_controller.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
@@ -21,16 +26,28 @@ class _StoreScreenState extends State<StoreScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  final ParentProfileController parentProfileController = Get.put(
+    ParentProfileController(),
+  );
+
+  String role = "";
+
+  void getRole() async {
+    role = await StorageService.role();
+    AppLoggerHelper.debug(role);
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: 4);
+    getRole();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -39,7 +56,15 @@ class _StoreScreenState extends State<StoreScreen>
       backgroundColor: AppColors.appBackground,
 
       // app bar
-      appBar: CustomChildAppBar(
+      appBar: role == "parent" ?  PreferredSize(
+        preferredSize: Size.fromHeight(50.0.h),
+        child: CustomAppBar(
+          title: 'Avatar Store',
+          notificationIcon: true,
+          backArrowIcon: false,
+          image: parentProfileController.parentModel.value?.data.parentProfile.image,
+        ),
+      ) : CustomChildAppBar(
         title: 'Avatar Store',
         isBackButtonVisible: false,
         isCenterTitle: false,
