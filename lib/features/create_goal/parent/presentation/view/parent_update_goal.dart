@@ -34,35 +34,31 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
   void initState() {
     super.initState();
 
-    // 1. ডেটা তালিকা নিরাপদে নিন
+
     final dataList = _dailyGoalController.parentGoals.value?.data;
 
-    // 2. তালিকা বিদ্যমান কিনা পরীক্ষা করুন
+
     if (dataList != null) {
-      // 3. নির্দিষ্ট Goal ID খুঁজে বের করুন
+
       final Datum? findOne = dataList.where(
             (goal) => goal.id == widget.goal.id,
       ).firstOrNull;
 
-      // 4. WidgetsBinding ব্যবহার করে Rx ভেরিয়েবল আপডেট করা বিলম্বিত করুন
-      // এই অংশের কোড বর্তমান ফ্রেমের UI বিল্ড শেষ হওয়ার পরে চলবে।
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (findOne != null) {
-          // টেক্সট কন্ট্রোলার (Rx নয়) সরাসরি সেট করা যেতে পারে, তবে স্পষ্টতার জন্য এখানে রাখা হলো।
+
           _controller.goalTitleController.text = findOne.title;
           _controller.descriptionController.text = findOne.description;
 
-          // Rx ভেরিয়েবলগুলির মান পরিবর্তন (ত্রুটির কারণ):
           _controller.selectedChild.value = findOne.assignedChildren[0].child.name;
           _controller.selectedDate.value = findOne.startDate;
           _controller.rewardPoints.value = findOne.rewardCoins;
 
-          // অন্যান্য মান সেট করুন:
           _controller.goalType = findOne.type;
           _controller.selectedDuration.value = "${(findOne.durationMin / 60).toString().split('.')[0]} hour";
           _controller.goalId.value = findOne.id;
         } else {
-          // ডেটা খুঁজে না পেলে এখানে ত্রুটি বা ডিফল্ট মান সেট করা যেতে পারে
+
         }
       });
     }

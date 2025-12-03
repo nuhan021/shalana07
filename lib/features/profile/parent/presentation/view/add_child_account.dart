@@ -14,10 +14,15 @@ import 'package:shalana07/features/profile/parent/presentation/widgets/add_child
 import 'package:shalana07/features/profile/parent/presentation/widgets/custom_switch.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/setting_section.dart';
 
+import '../../controller/parent_profile_controller.dart';
+
 class AddChildAccount extends StatelessWidget {
   AddChildAccount({super.key});
   final AddChildAccountController controller = Get.put(
     AddChildAccountController(),
+  );
+  final ParentProfileController parentProfileController = Get.put(
+    ParentProfileController(),
   );
 
   Future<void> _pickDate(BuildContext context) async {
@@ -40,7 +45,7 @@ class AddChildAccount extends StatelessWidget {
       backgroundColor: AppColors.appBackground,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
-        child: CustomAppBar(title: "Add Account", notificationIcon: true),
+        child: CustomAppBar(title: "Add Account", notificationIcon: true, image: parentProfileController.parentModel.value?.data.parentProfile.image,),
       ),
 
       body: Padding(
