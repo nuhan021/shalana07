@@ -1,8 +1,10 @@
 // otp_verification_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:shalana07/core/services/network_caller.dart';
 import 'package:shalana07/core/utils/constants/api_constants.dart';
+import 'package:shalana07/features/auth/controller/forgotPassword_controller.dart';
 import 'package:shalana07/routes/app_routes.dart';
 
 class OtpVerificationController extends GetxController {
@@ -10,21 +12,24 @@ class OtpVerificationController extends GetxController {
   final TextEditingController otpController = TextEditingController();
   final NetworkCaller _networkCaller = NetworkCaller();
   final RxBool isOtpLoading = false.obs;
+  final ForgetPasswordController forgetPasswordController = Get.put(
+    ForgetPasswordController(),
+  );
 
   Future<void> verifyOtp(bool isFromSignUpScreen) async {
-    final email = emailController.text.trim();
+    // final email = emailController.text.trim();
     final otpValue = otpController.text.trim();
 
     // ✅ Validation with direct Get.snackbar()
-    if (email.isEmpty) {
-      Get.snackbar('Error', 'Email is required.');
-      return;
-    }
+    // if (email.isEmpty) {
+    //   Get.snackbar('Error', 'Email is required.');
+    //   return;
+    // }
 
-    if (!GetUtils.isEmail(email)) {
-      Get.snackbar('Error', 'Please enter a valid email.');
-      return;
-    }
+    // if (!GetUtils.isEmail(email)) {
+    //   Get.snackbar('Error', 'Please enter a valid email.');
+    //   return;
+    // }
 
     if (otpValue.isEmpty || otpValue.length < 5) {
       Get.snackbar('Error', 'Please enter a valid 5-digit OTP.');
@@ -36,7 +41,7 @@ class OtpVerificationController extends GetxController {
     final response = await _networkCaller.postRequest(
       '${Api.baseUrl}/auth/verify-otp',
       body: {
-        'email': email,
+        'email': forgetPasswordController.emailController.text,
         'otp': otpValue,
       },
     );
@@ -54,7 +59,9 @@ class OtpVerificationController extends GetxController {
       );
 
       try {
-        await Get.offNamed(AppRoute.setNewPasswordScreen); // ✅ AppRoutes (plural)
+        await Get.offNamed(
+          AppRoute.setNewPasswordScreen,
+        ); // ✅ AppRoutes (plural)
       } catch (e) {
         Get.snackbar('Navigation Error', 'Target screen not found.');
       }
