@@ -1,3 +1,4 @@
+// forget_password.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,24 +6,20 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/features/auth/controller/forgotPassword_controller.dart';
 import 'package:shalana07/features/auth/presentation/widgets/backgroun.dart';
-import 'package:shalana07/routes/app_routes.dart';
-
-import 'otp_page.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ForgetPasswordController());
+
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Background(),
-
-          //forget password form
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -35,7 +32,6 @@ class ForgetPassword extends StatelessWidget {
                   topRight: Radius.circular(24.0.r),
                 ),
               ),
-
               child: Padding(
                 padding: EdgeInsets.only(
                   left: 15.0.w,
@@ -77,16 +73,21 @@ class ForgetPassword extends StatelessWidget {
                     ),
                     10.verticalSpace,
                     CustomTextField(
-                      controller: TextEditingController(),
+                      controller: controller.emailController,
                       isfilled: true,
                     ),
                     30.verticalSpace,
-                    CommonButton(title: "Send", onPressed: () {
-                      AppHelperFunctions.navigateToScreen(context, OtpPage(isFromSignUpScreen: false,));
-                    }),
+                    Obx(
+                      () => CommonButton(
+                        title: controller.isLoading ? "Sending..." : "Send",
+                        onPressed: () {
+                          if (!controller.isLoading) {
+                            controller.sendOtp();
+                          }
+                        },
+                      ),
+                    ),
                     34.verticalSpace,
-
-                    //divider
                     Row(
                       children: [
                         Expanded(
@@ -115,16 +116,12 @@ class ForgetPassword extends StatelessWidget {
                       ],
                     ),
                     34.verticalSpace,
-
-                    //Login button
                     CommonButton(
                       backgroundColor: AppColors.appBackground,
                       isbporderColor: true,
                       textColor: AppColors.grey900,
                       title: "Login",
-                      onPressed: () {
-                        Get.back();
-                      },
+                      onPressed: () => Get.back(),
                     ),
                   ],
                 ),
@@ -133,7 +130,6 @@ class ForgetPassword extends StatelessWidget {
           ),
         ],
       ),
-    
     );
   }
 }

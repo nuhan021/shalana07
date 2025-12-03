@@ -1,33 +1,28 @@
+// otp_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
+import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
-import 'package:shalana07/core/utils/logging/logger.dart';
-import 'package:shalana07/features/auth/controller/signup_controller.dart';
+import 'package:shalana07/features/auth/controller/otp_verification_controller.dart';
 import 'package:shalana07/features/auth/presentation/widgets/backgroun.dart';
-import 'package:shalana07/routes/app_routes.dart';
 
 class OtpPage extends StatelessWidget {
-   OtpPage({super.key, this.isFromSignUpScreen = false});
-
   final bool isFromSignUpScreen;
 
-  final SignupController controller = Get.put(SignupController());
-
-
+  const OtpPage({super.key, this.isFromSignUpScreen = false});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OtpVerificationController());
+
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Background(),
-
-          //forget password form
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -40,7 +35,6 @@ class OtpPage extends StatelessWidget {
                   topRight: Radius.circular(24.0.r),
                 ),
               ),
-
               child: Padding(
                 padding: EdgeInsets.only(
                   left: 15.0.w,
@@ -51,7 +45,7 @@ class OtpPage extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
-                        'Varification',
+                        'Verification',
                         style: getTextStyle(
                           color: AppColors.grey900,
                           fontSize: 22,
@@ -60,6 +54,20 @@ class OtpPage extends StatelessWidget {
                       ),
                     ),
                     40.verticalSpace,
+                    Text(
+                      'Email Address',
+                      style: getTextStyle(
+                        color: AppColors.grey900,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    10.verticalSpace,
+                    CustomTextField(
+                      controller: controller.emailController,
+                      isfilled: true,
+                    ),
+                    30.verticalSpace,
                     Text(
                       "Enter Verification Code",
                       textAlign: TextAlign.center,
@@ -72,73 +80,75 @@ class OtpPage extends StatelessWidget {
                     ),
                     24.verticalSpace,
 
-                    //otp feild
+                    // OTP Input
                     OtpTextField(
-                      contentPadding: EdgeInsets.zero,
-                      focusedBorderColor: AppColors.primary,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       numberOfFields: 5,
-                      borderRadius: BorderRadius.circular(10.0.r),
+                      focusedBorderColor: AppColors.primary,
+                      borderColor: AppColors.grey600,
                       filled: true,
                       fillColor: AppColors.white100,
                       fieldHeight: 42.0.w,
                       fieldWidth: 42.0.w,
-                      borderColor: AppColors.grey600,
+                      borderRadius: BorderRadius.circular(10.0.r),
                       showFieldAsBox: true,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      contentPadding: EdgeInsets.zero,
                       onCodeChanged: (code) {
+                        // Optional: sync live if needed (not required for onSubmit)
                       },
-                      onSubmit: (verificationCode) {
-                        controller.otpController.text = verificationCode;// when all fields are filled
-                        AppLoggerHelper.debug(controller.otpController.text);
+                      onSubmit: (code) {
+                        controller.otpController.text = code;
+                        controller.verifyOtp(isFromSignUpScreen); // ✅ Fixed: removed 'widget.'
                       },
                     ),
                     30.verticalSpace,
-                    // button
-                    Obx(
-                            () {
-                              if (controller.isOtpLoading.value) {
-                                return Container(
-                                  height: 50.h,
-                                  width: double.maxFinite,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(24.r),
-                                  ),
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              }
-                        return CommonButton(
-                          title: "Continue",
-                          onPressed: () => controller.verifyOtp(isFromSignUpScreen),
-                        );
-                      }
-                    ),
 
-                    //fotter
+                    // Continue Button (with loading)
+                    Obx(
+                      () => controller.isOtpLoading.value
+                          ? Container(
+                              height: 50.h,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(24.r),
+                              ),
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : CommonButton(
+                              title: "Continue",
+                              onPressed: () => controller.verifyOtp(isFromSignUpScreen), // ✅ Also fixed here
+                            ),
+                    ),
                     34.verticalSpace,
+
+                    // Resend OTP
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "If you didn’t receive a code,",
+                          "If you didn’t receive a code, ",
                           style: getTextStyle(
                             color: AppColors.grey900,
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            lineHeight: 1.2,
                           ),
                         ),
-                        Text(
-                          "Resend",
-                          style: getTextStyle(
-                            color: AppColors.primary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            lineHeight: 1.2,
+                        GestureDetector(
+                          onTap: () {
+                            Get.snackbar('Info', 'Resend OTP feature coming soon.');
+                          },
+                          child: Text(
+                            "Resend",
+                            style: getTextStyle(
+                              color: AppColors.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
