@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
@@ -15,7 +17,10 @@ import '../../../../avatar/controllers/controller.dart';
 import '../../../../bottom_nav_bar/controller/navaber_controller.dart';
 
 class ChildTasks extends StatelessWidget {
-  ChildTasks({super.key});
+  ChildTasks({super.key, required this.controller});
+
+  final ChildHomeScreenController controller;
+
   AvatarScreenController avatarScreenController = Get.put(
     AvatarScreenController(),
   );
@@ -170,7 +175,31 @@ class ChildTasks extends StatelessWidget {
                         SizedBox(height: 24.h),
 
                         // all the task will be here
-                        ChildHomeDailyTask(),
+                        Obx(() {
+                          if(controller.isChildLoading.value) {
+                            return Center(child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 25.h),);
+                          }
+
+                          if (controller.isChildError.value) {
+                            return Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  controller.getChildGoals();
+                                },
+                                child: Text(
+                                  'Error!\nTry again',
+                                  textAlign: TextAlign.center,
+                                  style: getTextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.error,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return ChildHomeDailyTask(controller: controller);
+                        }),
 
                         SizedBox(height: 30.h),
 

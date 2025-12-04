@@ -49,26 +49,35 @@ class ChildHomeTaskTabBar extends StatelessWidget {
             width: double.maxFinite,
             height: double.maxFinite,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
                   onTap: () => controller.toggleIsAvatarTab(0),
-                  child: Text(
-                    'Daily Task',
-                    style: getTextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                  child: Container(
+                    height: double.maxFinite,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Daily Task',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () => controller.toggleIsAvatarTab(1),
-                  child: Text(
-                    'Weekly Goals',
-                    style: getTextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                  child: Container(
+                    height: double.maxFinite,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Weekly Goals',
+                      textAlign: TextAlign.center,
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

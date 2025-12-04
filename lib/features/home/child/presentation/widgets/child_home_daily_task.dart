@@ -5,19 +5,48 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
+import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 
 class ChildHomeDailyTask extends StatelessWidget {
-  const ChildHomeDailyTask({super.key});
+  const ChildHomeDailyTask({super.key, required this.controller});
+
+  final ChildHomeScreenController controller;
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      ChildTaskCard(taskName: 'Reading For 30 Min. ', coin: '10', percentage: 60),
-      ChildTaskCard(taskName: 'Reading For 30 Min. ', coin: '10', percentage: 0),
-      ChildTaskCard(taskName: 'Reading For 30 Min. ', coin: '10', percentage: 100),
-      ChildTaskCard(taskName: 'Reading For 30 Min. ', coin: '10', percentage: 55),
-      ChildTaskCard(taskName: 'Reading For 30 Min. ', coin: '10', percentage: 5),
-    ]);
+    return Obx(() {
+      final goals = controller.childGoalModel.value?.data;
+
+      AppLoggerHelper.debug(controller.childGoalModel.toString());
+
+      // 2. Add a check for null or empty data within the Obx
+      if (goals == null || goals.isEmpty) {
+        // This handles the case where loading is false, but data is empty
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(32.0),
+            child: Text("No daily tasks found yet!"),
+          ),
+        );
+      }
+
+      // 3. Render the list using the safely extracted 'goals' list
+      return Column(
+        children: [
+          ...goals.map(
+                (goal) => ChildTaskCard(
+              taskName: goal.goal.title,
+              coin: goal.goal.rewardCoins.toString(),
+              // Ensure the progress is correctly treated as a double
+              percentage: (goal.goal.progress is double)
+                  ? goal.goal.progress as double
+                  : double.parse(goal.goal.progress.toString()),
+            ),
+          )
+        ],
+      );
+    });
   }
 }
 
