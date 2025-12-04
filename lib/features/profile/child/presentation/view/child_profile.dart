@@ -1,6 +1,8 @@
+// child_profile.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart'; // ✅ For date formatting
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
@@ -18,8 +20,24 @@ import 'package:shalana07/features/profile/parent/presentation/widgets/custom_sw
 class ChildProfile extends StatelessWidget {
   ChildProfile({super.key});
   final ChildProfileController controller = Get.put(ChildProfileController());
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // ✅ Helper: Calculate age from birth date
+  int _calculateAge(DateTime birthDate) {
+    final today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age;
+  }
+
+  // ✅ Helper: Format date like "23 January, 2012"
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMMM, yyyy').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,172 +50,187 @@ class ChildProfile extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //////=======profile section =========////////////
-              Profilepicture(controller: controller),
+        child: Obx(() {
+          // ✅ Show loading or error if needed
+          if (controller.isChildProfileLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-              10.verticalSpace,
+          final model = controller.childModel.value;
+          if (model == null) {
+            return const Center(child: Text('Failed to load profile.'));
+          }
 
-              ///////name
-              Center(
-                child: Text(
-                  "Calista Kimimela",
-                  style: getTextStyle(
-                    fontSize: 18,
-                    color: AppColors.grey900,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+          final childProfile = model.data.childProfile;
+          final parent = childProfile.parent;
 
-              20.verticalSpace,
-              CommonButton(
-                textColor: AppColors.grey900,
-                backgroundColor: AppColors.green900,
-                title: "Edit Profile",
-                fontSize: 14,
-                onPressed: () {
-                  AppHelperFunctions.navigateToScreen(
-                    context,
-                    ChildEditProfile(),
-                  );
-                },
-              ),
+          // ✅ Dynamic data from API
+          final String formattedDob = _formatDate(childProfile.dateOfBirth);
+          final String age = '${_calculateAge(childProfile.dateOfBirth)} years';
+          final String email = childProfile.email;
+          final String completedTasks = '15'; // ← Replace with real data if API provides
+          final String activeTasks = '12';   // ← Replace later
+          final String earnedCoins = childProfile.coins.toString();
 
-              20.verticalSpace,
-              //////////body details
-              Row(
-                children: [
-                  Text(
-                    'Weekly Overview',
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //////=======profile section =========////////////
+                Profilepicture(controller: controller),
+
+                10.verticalSpace,
+
+                ///////name
+                Center(
+                  child: Text(
+                    childProfile.name,
                     style: getTextStyle(
                       fontSize: 18,
+                      color: AppColors.grey900,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.grey900,
                     ),
                   ),
-                  const Spacer(),
-
-                  // Open end drawer on tap
-                  InkWell(
-                    onTap: () {
-                      _scaffoldKey.currentState!.openEndDrawer();
-                    },
-                    child: Image.asset(
-                      IconPath.filterIcon,
-                      color: AppColors.grey900,
-                      height: 25.h,
-                      width: 25.w,
-                    ),
-                  ),
-                ],
-              ),
-
-              20.verticalSpace,
-              //////////======weekly Overview section =========////////////
-              ///
-              ///
-              Row(
-                children: [
-                  Expanded(
-                    child: WeeeklyOVerview(title: 'Completed Task', sub: '15'),
-                  ),
-
-                  10.horizontalSpace,
-                  Expanded(
-                    child: WeeeklyOVerview(title: 'Attive Task', sub: '12'),
-                  ),
-
-                  10.horizontalSpace,
-                  Expanded(
-                    child: WeeeklyOVerview(title: 'Earn coint', sub: '1000'),
-                  ),
-                ],
-              ),
-
-              //////////BAsic Information
-              30.verticalSpace,
-              Text(
-                'Basic Information',
-                style: getTextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
                 ),
-              ),
 
-              //////////////==profdile details=========/////////////
-              20.verticalSpace,
-              _buildInfromation('Date of Birth', '23 January, 2012'),
-              20.verticalSpace,
-              _buildInfromation("Age", '10 years'),
-              20.verticalSpace,
-              _buildInfromation('Email', 'm2P4o@example.com'),
-              20.verticalSpace,
-              //notificvation
-              Row(
-                children: [
-                  Text(
-                    "push notification",
-                    style: getTextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.grey500,
-                    ),
-                  ),
-
-                  Spacer(),
-                  Obx(() {
-                    return CustomToggle(
-                      value: controller.toggle.value,
-                      onChanged: (value) {
-                        controller.toggle.value = !controller.toggle.value;
-                      },
+                20.verticalSpace,
+                CommonButton(
+                  textColor: AppColors.grey900,
+                  backgroundColor: AppColors.green900,
+                  title: "Edit Profile",
+                  fontSize: 14,
+                  onPressed: () {
+                    AppHelperFunctions.navigateToScreen(
+                      context,
+                      ChildEditProfile(),
                     );
-                  }),
-                ],
-              ),
-              30.verticalSpace,
-              InkWell(
-                onTap: () {
-                  Get.defaultDialog(
-                    title: "Log Out",
-                    content: Text(
-                      "Are you sure you want to logout?",
+                  },
+                ),
+
+                20.verticalSpace,
+                //////////body details
+                Row(
+                  children: [
+                    Text(
+                      'Weekly Overview',
+                      style: getTextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.grey900,
+                      ),
+                    ),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        _scaffoldKey.currentState!.openEndDrawer();
+                      },
+                      child: Image.asset(
+                        IconPath.filterIcon,
+                        color: AppColors.grey900,
+                        height: 25.h,
+                        width: 25.w,
+                      ),
+                    ),
+                  ],
+                ),
+
+                20.verticalSpace,
+                //////////======weekly Overview section =========////////////
+                Row(
+                  children: [
+                    Expanded(
+                      child: WeeeklyOVerview(title: 'Completed Task', sub: completedTasks),
+                    ),
+                    10.horizontalSpace,
+                    Expanded(
+                      child: WeeeklyOVerview(title: 'Active Task', sub: activeTasks),
+                    ),
+                    10.horizontalSpace,
+                    Expanded(
+                      child: WeeeklyOVerview(title: 'Earn Coin', sub: earnedCoins),
+                    ),
+                  ],
+                ),
+
+                //////////BAsic Information
+                30.verticalSpace,
+                Text(
+                  'Basic Information',
+                  style: getTextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
+
+                //////////////==profdile details=========/////////////
+                20.verticalSpace,
+                _buildInfromation('Date of Birth', formattedDob),
+                20.verticalSpace,
+                _buildInfromation("Age", age),
+                20.verticalSpace,
+                _buildInfromation('Email', email),
+                20.verticalSpace,
+
+                //notificvation
+                Row(
+                  children: [
+                    Text(
+                      "Push Notification",
                       style: getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: AppColors.grey500,
                       ),
                     ),
-                    actions: [
-                      CommonButton(
-                        textColor: Colors.white,
-                        backgroundColor: AppColors.danger,
-                        title: "Log Out",
-                        fontSize: 14,
-                        onPressed: () async {
-                          await StorageService.logoutUser();
-                          Get.offAll(() => LoginScreen());
+                    Spacer(),
+                    Obx(() {
+                      return CustomToggle(
+                        value: controller.toggle.value,
+                        onChanged: (value) {
+                          controller.toggle.value = value;
+                          // TODO: Sync toggle with API if needed
                         },
+                      );
+                    }),
+                  ],
+                ),
+                30.verticalSpace,
+                InkWell(
+                  onTap: () {
+                    Get.defaultDialog(
+                      title: "Log Out",
+                      content: Text(
+                        "Are you sure you want to logout?",
+                        style: getTextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.grey500,
+                        ),
                       ),
-                      CommonButton(
-                        textColor: AppColors.grey900,
-                        backgroundColor: AppColors.primary,
-                        title: "Cancel",
-                        fontSize: 14,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                    ],
-                  );
-                },
-                child: GestureDetector(
-
+                      actions: [
+                        CommonButton(
+                          textColor: Colors.white,
+                          backgroundColor: AppColors.danger,
+                          title: "Log Out",
+                          fontSize: 14,
+                          onPressed: () async {
+                            await StorageService.logoutUser();
+                            Get.offAll(() => LoginScreen());
+                          },
+                        ),
+                        CommonButton(
+                          textColor: AppColors.grey900,
+                          backgroundColor: AppColors.primary,
+                          title: "Cancel",
+                          fontSize: 14,
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                      ],
+                    );
+                  },
                   child: Text(
                     'Log Out',
                     style: getTextStyle(
@@ -207,16 +240,16 @@ class ChildProfile extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              50.verticalSpace,
-            ],
-          ),
-        ),
+                50.verticalSpace,
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Row _buildInfromation(title, sub) {
+  Row _buildInfromation(String title, String sub) {
     return Row(
       children: [
         Text(
