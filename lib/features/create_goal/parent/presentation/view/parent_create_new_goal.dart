@@ -89,7 +89,7 @@ class ParentCreateNewGoal extends StatelessWidget {
                       children: [
                         _buildToggle(0, "Daily"),
                         _buildToggle(1, "Weekly"),
-                        _buildToggle(3, "Monthly"),
+                        _buildToggle(2, "Monthly"),
                       ],
                     ),
                   );
@@ -105,16 +105,9 @@ class ParentCreateNewGoal extends StatelessWidget {
 
                     // Weekly goal section
                     case 1:
-                      return Text('Assign to Child *', style: getTextStyle());
+                      return DailyGoalSection();
                     case 2:
-                      return Text(
-                        'Assign to Child *',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.grey900,
-                        ),
-                      );
+                      return DailyGoalSection();
 
                     // Monthly goal section
                     default:
