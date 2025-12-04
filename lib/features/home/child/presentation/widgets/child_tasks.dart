@@ -7,6 +7,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
+import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 
 import '../../../../../core/common/widgets/item_card.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
@@ -20,6 +21,8 @@ class ChildTasks extends StatelessWidget {
   );
 
   NavaberController navaberController = Get.find<NavaberController>();
+  ChildProfileController childProfileController =
+      Get.find<ChildProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,13 @@ class ChildTasks extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '210',
+                              childProfileController
+                                  .childModel
+                                  .value!
+                                  .data
+                                  .childProfile
+                                  .coins
+                                  .toString(),
                               style: getTextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
