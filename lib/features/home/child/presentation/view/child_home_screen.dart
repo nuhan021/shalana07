@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
@@ -31,6 +32,24 @@ class ChildHomeScreen extends StatelessWidget {
               if (childProfileController.isChildProfileLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
+               if (childProfileController.isChildProfileError.value) {
+          return Center(
+            child: TextButton(
+              onPressed: () {
+                childProfileController.getUserData();
+              },
+              child: Text(
+                'Error!\nTry again',
+                textAlign: TextAlign.center,
+                style: getTextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.error,
+                ),
+              ),
+            ),
+          );
+        }
         return Scaffold(
           backgroundColor: AppColors.appBackground,
           extendBodyBehindAppBar: true,
