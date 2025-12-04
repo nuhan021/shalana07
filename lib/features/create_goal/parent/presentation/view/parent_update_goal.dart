@@ -12,6 +12,7 @@ import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goa
 
 import '../../../../daily_goal/parent/model/ParentGoalModel.dart';
 import '../../../../daily_goal/parent/model/parent_goal_model.dart';
+import '../../../../profile/parent/controller/parent_profile_controller.dart';
 //importent note:  This is the parent create new goal screen
 // It allows parents to create new goals for their children
 class ParentUpdateGoal extends StatefulWidget {
@@ -29,6 +30,10 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
   );
 
   final ParentDailyGoalController _dailyGoalController = Get.find<ParentDailyGoalController>();
+
+  final ParentProfileController parentProfileController = Get.put(
+    ParentProfileController(),
+  );
 
   @override
   void initState() {
@@ -72,7 +77,7 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
       // AppBar of create new goal screen
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0.h),
-        child: CustomAppBar(title: 'Update Goal', notificationIcon: true,backArrowIcon: false,),
+        child: CustomAppBar(title: 'Update Goal', notificationIcon: true,backArrowIcon: false, image: parentProfileController.parentModel.value?.data.parentProfile.image,),
       ),
 
       // Body of create new goal screen
@@ -108,42 +113,42 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
 
                 20.verticalSpace,
 
-                //goal type
-                // Text(
-                //   'Goal Type *',
-                //   style: getTextStyle(
-                //     fontSize: 16,
-                //     fontWeight: FontWeight.w600,
-                //     color: AppColors.grey900,
-                //   ),
-                //
-                //   //troggle button
-                // ),
-                // 10.verticalSpace,
-                // Obx(() {
-                //   return Container(
-                //     height: 50.h,
-                //
-                //     width: double.infinity,
-                //     decoration: BoxDecoration(
-                //       color: AppColors.grey200,
-                //       borderRadius: BorderRadius.circular(30.0.r),
-                //       border: Border.all(
-                //         color: AppColors.grey200,
-                //         width: 1.0.w,
-                //       ),
-                //     ),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //       children: [
-                //         _buildToggle(0, "Daily"),
-                //         _buildToggle(1, "Weekly"),
-                //         _buildToggle(3, "Monthly"),
-                //       ],
-                //     ),
-                //   );
-                // }),
-                // 20.verticalSpace,
+                // goal type
+                Text(
+                  'Goal Type *',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.grey900,
+                  ),
+
+                  //troggle button
+                ),
+                10.verticalSpace,
+                Obx(() {
+                  return Container(
+                    height: 50.h,
+
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.grey200,
+                      borderRadius: BorderRadius.circular(30.0.r),
+                      border: Border.all(
+                        color: AppColors.grey200,
+                        width: 1.0.w,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildToggle(0, "Daily"),
+                        _buildToggle(1, "Weekly"),
+                        _buildToggle(2, "Monthly"),
+                      ],
+                    ),
+                  );
+                }),
+                20.verticalSpace,
 
                 //goal creating section
                 Obx(() {
@@ -154,16 +159,9 @@ class _ParentUpdateGoalState extends State<ParentUpdateGoal> {
 
                   // Weekly goal section
                     case 1:
-                      return Text('Assign to Child *', style: getTextStyle());
+                      return DailyGoalSection(isFromUpdateSection: true,);
                     case 2:
-                      return Text(
-                        'Assign to Child *',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.grey900,
-                        ),
-                      );
+                      return DailyGoalSection(isFromUpdateSection: true,);
 
                   // Monthly goal section
                     default:

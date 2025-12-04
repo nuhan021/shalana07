@@ -26,11 +26,15 @@ class ChildHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-            () {
-              if (childProfileController.isChildProfileLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: () async {
+        await childProfileController.getUserData();
+      },
+      child: Obx(() {
+        if (childProfileController.isChildProfileLoading.value) {
+          return Center(child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 25.h));
+        }
         return Scaffold(
           backgroundColor: AppColors.appBackground,
           extendBodyBehindAppBar: true,
@@ -52,10 +56,16 @@ class ChildHomeScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: CachedNetworkImage(
-                    imageUrl: childProfileController.childModel.value?.data.childProfile.image ??
+                    imageUrl:
+                        childProfileController
+                            .childModel
+                            .value
+                            ?.data
+                            .childProfile
+                            .image ??
                         "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
-                    width: 34.r,   // ✅ .r
-                    height: 34.r,  // ✅ .r
+                    width: 34.r, // ✅ .r
+                    height: 34.r, // ✅ .r
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Center(
                       child: LoadingAnimationWidget.staggeredDotsWave(
@@ -66,7 +76,7 @@ class ChildHomeScreen extends StatelessWidget {
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
-              )
+              ),
             ),
 
             actions: [
@@ -111,7 +121,7 @@ class ChildHomeScreen extends StatelessWidget {
             ],
           ),
         );
-      }
+      }),
     );
   }
 }
