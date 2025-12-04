@@ -7,6 +7,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
+import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_tasks.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/home_child_avatar.dart';
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
@@ -23,6 +24,8 @@ class ChildHomeScreen extends StatelessWidget {
     ChildProfileController(),
   );
 
+  final ChildHomeScreenController controller = Get.put(ChildHomeScreenController());
+
   final Logincontroller loginController = Get.put(Logincontroller());
 
   @override
@@ -35,6 +38,26 @@ class ChildHomeScreen extends StatelessWidget {
       child: Obx(() {
         if (childProfileController.isChildProfileLoading.value) {
           return Center(child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 25.h));
+        }
+
+        if (childProfileController.isChildProfileError.value) {
+          return Center(
+            child: TextButton(
+              onPressed: () {
+                childProfileController.getUserData();
+                controller.getChildGoals();
+              },
+              child: Text(
+                'Error!\nTry again',
+                textAlign: TextAlign.center,
+                style: getTextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.error,
+                ),
+              ),
+            ),
+          );
         }
         return Scaffold(
           backgroundColor: AppColors.appBackground,
@@ -118,7 +141,7 @@ class ChildHomeScreen extends StatelessWidget {
               ),
 
               // child task
-              ChildTasks(),
+              ChildTasks(controller: controller,),
             ],
           ),
         );
