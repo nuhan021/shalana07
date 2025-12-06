@@ -42,7 +42,7 @@ class ChildProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await 500.milliseconds.delay();
+      await controller.getUserData();
       },
       child: Scaffold(
         backgroundColor: AppColors.appBackground,
