@@ -47,7 +47,7 @@ class ChildProfile extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.appBackground,
         key: _scaffoldKey,
-        endDrawer: Drawer(),
+        // endDrawer: Drawer(),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.h),
           child: CustomChildAppBar(title: 'Profile', isAvatarVisible: false),
