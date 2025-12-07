@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/daily_goal/child/model/child_goal_model.dart';
 import 'package:shalana07/features/home/child/model/child_goal_model.dart';
 
@@ -34,7 +35,7 @@ class ChildHomeScreenController extends GetxController {
       final tokenService = Get.find<TokenService>();
       if(await tokenService.refreshToken()) {
         response = await _networkCaller.getRequest(
-          "${Api.baseUrl}/auth/get-profile",
+          "${Api.baseUrl}/goals/child-goals",
           token: token,
         );
       }
@@ -57,4 +58,5 @@ class ChildHomeScreenController extends GetxController {
   RxBool isChildLoading = false.obs;
   RxBool isChildError = false.obs;
   Rx<ChildGoalsModel?> childGoalModel = Rx<ChildGoalsModel?>(null);
+
 }

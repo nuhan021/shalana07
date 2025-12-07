@@ -7,6 +7,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
+import 'package:shalana07/features/home/child/model/child_goal_model.dart';
 
 class ChildHomeDailyTask extends StatelessWidget {
   const ChildHomeDailyTask({super.key, required this.controller});
@@ -18,23 +19,53 @@ class ChildHomeDailyTask extends StatelessWidget {
     return Obx(() {
       final goals = controller.childGoalModel.value?.data;
 
-      AppLoggerHelper.debug(controller.childGoalModel.toString());
+      late List<Datum>? dailyTask = goals?.where(
+            (e) => e.goal.type == 'DAILY',
+      ).toList();
+
+      late List<Datum>? weeklyTask = goals?.where(
+            (e) => e.goal.type == 'WEEKLY',
+      ).toList();
 
       // 2. Add a check for null or empty data within the Obx
-      if (goals == null || goals.isEmpty) {
-        // This handles the case where loading is false, but data is empty
-        return const Center(
-          child: Padding(
-            padding: EdgeInsets.all(32.0),
-            child: Text("No daily tasks found yet!"),
-          ),
-        );
+      if(controller.selectedTab.value == 0) {
+        if (dailyTask == null || dailyTask.isEmpty) {
+          // This handles the case where loading is false, but data is empty
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: Text("No daily tasks found yet!"),
+            ),
+          );
+        }
+      } else {
+        if (weeklyTask == null || weeklyTask.isEmpty) {
+          // This handles the case where loading is false, but data is empty
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: Text("No weekly tasks found yet!"),
+            ),
+          );
+        }
       }
 
       // 3. Render the list using the safely extracted 'goals' list
       return Column(
         children: [
-          ...goals.map(
+
+          if(controller.selectedTab.value == 0)
+          ...?dailyTask?.map(
+                (goal) => ChildTaskCard(
+              taskName: goal.goal.title,
+              coin: goal.goal.rewardCoins.toString(),
+              // Ensure the progress is correctly treated as a double
+              percentage: (goal.goal.progress is double)
+                  ? goal.goal.progress as double
+                  : double.parse(goal.goal.progress.toString()),
+            ),
+          )
+          else ...?weeklyTask?.map(
                 (goal) => ChildTaskCard(
               taskName: goal.goal.title,
               coin: goal.goal.rewardCoins.toString(),

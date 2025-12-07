@@ -6,6 +6,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
@@ -198,6 +199,8 @@ class ChildTasks extends StatelessWidget {
                               ),
                             );
                           }
+
+                          AppLoggerHelper.debug(controller.selectedTab.toString());
                           return ChildHomeDailyTask(controller: controller);
                         }),
 
