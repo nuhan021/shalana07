@@ -6,11 +6,15 @@ import 'package:shalana07/features/daily_goal/parent/model/parent_goal_model.dar
 class ChildDailyGoalController extends GetxController {
   var tabIndex = 1.obs;
 
+  RxString goalFilter = 'Daily'.obs;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   void changeTabIndex(int index) {
     tabIndex.value = index;
   }
+
+
 
 
   //hard coded model when api come just replease it

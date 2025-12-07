@@ -78,7 +78,7 @@ class ChildGoalCard extends StatelessWidget {
                     ),
                     10.horizontalSpace,
                     Text(
-                      "${goal.coinsPerDay} coins per day",
+                      "${goal.coinsPerDay} coins",
                       style: getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,

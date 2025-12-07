@@ -15,6 +15,7 @@ import 'package:shalana07/features/create_goal/parent/presentation/view/parent_u
 import 'package:shalana07/features/daily_goal/parent/controller/parent_daily_goal_controller.dart';
 import 'package:shalana07/features/daily_goal/parent/model/ParentGoalModel.dart';
 import 'package:shalana07/features/daily_goal/parent/presentation/widgets/parent_goal_card.dart';
+import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 import 'package:shalana07/features/home/parent/presentatrion/widgets/account_card.dart';
 
 import '../../../../../profile/parent/controller/parent_profile_controller.dart';
@@ -37,12 +38,11 @@ class _TastDetailsState extends State<TastDetails> {
   void initState() {
     super.initState();
     actualGoal = _controller.parentGoals.value!.data.firstWhere(
-      (element) => element.id == widget.goal.id,
+          (element) => element.id == widget.goal.id,
     );
   }
 
   final _controller = Get.put(ParentDailyGoalController());
-
   final ParentProfileController parentProfileController = Get.put(
     ParentProfileController(),
   );
