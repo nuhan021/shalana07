@@ -1,18 +1,17 @@
-// child_profile.dart
+// child_profile.dart (updated)
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; // ✅ For date formatting
+import 'package:intl/intl.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
-import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
-import 'package:shalana07/features/profile/child/presentation/view/child_edit_profile.dart';
+import 'package:shalana07/features/profile/child/presentation/view/child_edit_profile.dart'; // Make sure this is imported
 import 'package:shalana07/features/profile/child/presentation/widget/profilepicture.dart';
 import 'package:shalana07/features/profile/child/presentation/widget/weekily_overview.dart';
 import 'package:shalana07/features/profile/parent/presentation/widgets/custom_switch.dart';
@@ -22,7 +21,6 @@ class ChildProfile extends StatelessWidget {
   final ChildProfileController controller = Get.put(ChildProfileController());
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // ✅ Helper: Calculate age from birth date
   int _calculateAge(DateTime birthDate) {
     final today = DateTime.now();
     int age = today.year - birthDate.year;
@@ -33,7 +31,6 @@ class ChildProfile extends StatelessWidget {
     return age;
   }
 
-  // ✅ Helper: Format date like "23 January, 2012"
   String _formatDate(DateTime date) {
     return DateFormat('dd MMMM, yyyy').format(date);
   }
@@ -42,12 +39,11 @@ class ChildProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-      await controller.getUserData();
+        await controller.getUserData();
       },
       child: Scaffold(
         backgroundColor: AppColors.appBackground,
         key: _scaffoldKey,
-        // endDrawer: Drawer(),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.h),
           child: CustomChildAppBar(title: 'Profile', isAvatarVisible: false),
@@ -55,37 +51,29 @@ class ChildProfile extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Obx(() {
-            // ✅ Show loading or error if needed
             if (controller.isChildProfileLoading.value) {
               return const Center(child: CircularProgressIndicator());
             }
-      
+
             final model = controller.childModel.value;
             if (model == null) {
               return const Center(child: Text('Failed to load profile.'));
             }
-      
+
             final childProfile = model.data.childProfile;
-            final parent = childProfile.parent;
-      
-            // ✅ Dynamic data from API
             final String formattedDob = _formatDate(childProfile.dateOfBirth);
             final String age = '${_calculateAge(childProfile.dateOfBirth)} years';
             final String email = childProfile.email;
-            final String completedTasks = '15'; // ← Replace with real data if API provides
-            final String activeTasks = '12';   // ← Replace later
             final String earnedCoins = childProfile.coins.toString();
-      
+            final String completedTasks = '15';
+            final String activeTasks = '12';
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //////=======profile section =========////////////
                   Profilepicture(controller: controller),
-      
                   10.verticalSpace,
-      
-                  ///////name
                   Center(
                     child: Text(
                       childProfile.name,
@@ -96,7 +84,6 @@ class ChildProfile extends StatelessWidget {
                       ),
                     ),
                   ),
-      
                   20.verticalSpace,
                   CommonButton(
                     textColor: AppColors.grey900,
@@ -104,15 +91,10 @@ class ChildProfile extends StatelessWidget {
                     title: "Edit Profile",
                     fontSize: 14,
                     onPressed: () {
-                      AppHelperFunctions.navigateToScreen(
-                        context,
-                        ChildEditProfile(),
-                      );
+                      Get.to(() => ChildEditProfile(model: model));
                     },
                   ),
-      
                   20.verticalSpace,
-                  //////////body details
                   Row(
                     children: [
                       Text(
@@ -137,9 +119,7 @@ class ChildProfile extends StatelessWidget {
                       ),
                     ],
                   ),
-      
                   20.verticalSpace,
-                  //////////======weekly Overview section =========////////////
                   Row(
                     children: [
                       Expanded(
@@ -155,8 +135,6 @@ class ChildProfile extends StatelessWidget {
                       ),
                     ],
                   ),
-      
-                  //////////BAsic Information
                   30.verticalSpace,
                   Text(
                     'Basic Information',
@@ -166,8 +144,6 @@ class ChildProfile extends StatelessWidget {
                       color: AppColors.primary,
                     ),
                   ),
-      
-                  //////////////==profdile details=========/////////////
                   20.verticalSpace,
                   _buildInfromation('Date of Birth', formattedDob),
                   20.verticalSpace,
@@ -175,8 +151,6 @@ class ChildProfile extends StatelessWidget {
                   20.verticalSpace,
                   _buildInfromation('Email', email),
                   20.verticalSpace,
-      
-                  //notificvation
                   Row(
                     children: [
                       Text(
@@ -193,7 +167,6 @@ class ChildProfile extends StatelessWidget {
                           value: controller.toggle.value,
                           onChanged: (value) {
                             controller.toggle.value = value;
-                            // TODO: Sync toggle with API if needed
                           },
                         );
                       }),
@@ -228,9 +201,7 @@ class ChildProfile extends StatelessWidget {
                             backgroundColor: AppColors.primary,
                             title: "Cancel",
                             fontSize: 14,
-                            onPressed: () {
-                              Get.back();
-                            },
+                            onPressed: () => Get.back(),
                           ),
                         ],
                       );
