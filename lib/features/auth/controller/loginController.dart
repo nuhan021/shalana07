@@ -57,8 +57,13 @@ class Logincontroller extends GetxController {
         "password": pass,
       }
     );
+    if(response.isSuccess){
+       Get.snackbar("Login Success", response.errorMessage, colorText: AppColors.green100
+       );
+        isLoginLoading.value = false;
+    }
 
-    isLoginLoading.value = false;
+   
 
 
     if (!response.isSuccess) {

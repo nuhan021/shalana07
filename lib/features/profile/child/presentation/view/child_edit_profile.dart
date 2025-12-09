@@ -7,17 +7,18 @@ import 'package:shalana07/core/common/widgets/common_text_feild.dart';
 import 'package:shalana07/core/common/widgets/custom_appbar.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/features/profile/child/controller/child_edit_profile_controller.dart';
-import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
-import 'package:shalana07/features/profile/child/presentation/widget/profilepicture.dart';
+import 'package:shalana07/features/profile/model/child_model.dart';
 
 class ChildEditProfile extends StatelessWidget {
-  ChildEditProfile({super.key});
+  final ChildModel model;
 
-  final ChildProfileController controller = Get.put(ChildProfileController());
-  final ChildEditProfileController editController = Get.put(ChildEditProfileController());
+  const ChildEditProfile({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ChildEditProfileController());
+    controller.loadChildData(model);
+
     return Scaffold(
       backgroundColor: AppColors.appBackground,
       appBar: PreferredSize(
@@ -28,7 +29,6 @@ class ChildEditProfile extends StatelessWidget {
           profileIcon: false,
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.only(
           left: 15.0,
@@ -41,137 +41,95 @@ class ChildEditProfile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ///////////////profile section
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFE0E0E0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    children: [
-                    Profilepicture(controller: controller),
-                      10.verticalSpace,
-                      Center(
-                        child: Text(
-                          "Change Profile",
-                          style: getTextStyle(
-                            color: AppColors.grey400,
-                            fontSize: 16,
-          
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          
-              /////////////==============All text section===============//////////////
-              20.verticalSpace,
               _title("Name"),
               10.verticalSpace,
               CustomTextField(
-                hintText: "Shalana",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.nameController,
               ),
-          
               20.verticalSpace,
+
               _title("Phone Number"),
               10.verticalSpace,
               CustomTextField(
-                hintText: "(262) 724-3679",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.phoneController,
               ),
-          
               20.verticalSpace,
+
               _title("Email"),
               10.verticalSpace,
               CustomTextField(
-                hintText: "laurel@gmail.com",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.emailController,
               ),
-          
               20.verticalSpace,
-              _title("Password"),
+
+              _title("Relation"),
               10.verticalSpace,
               CustomTextField(
-                hintText: "**************",
                 isfilled: true,
-                controller: TextEditingController(),
+                controller: controller.relationController,
               ),
-          
               20.verticalSpace,
-              _title("Parent "),
+
+              _title("City"),
               10.verticalSpace,
-              CustomTextField(
-                hintText: "Shalana",
-                isfilled: true,
-                controller: TextEditingController(),
-              ),
+              Obx(() {
+                return DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                  ),
+                  hint: const Text('Select a city'),
+                  value: controller.cities.contains(controller.selectedCity.value)
+                      ? controller.selectedCity.value
+                      : null,
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  items: controller.cities.map((city) {
+                    return DropdownMenuItem<String>(
+                      value: city,
+                      child: Text(city),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    controller.selectedCity.value = value ?? '';
+                    controller.locationController.text = value ?? '';
+                  },
+                );
+              }),
+              50.verticalSpace,
 
- 
-  20.verticalSpace,
-  _title("City"),
-  10.verticalSpace,
-   
-   Center(
-        child: Obx(() {
-          return DropdownButtonFormField<String>(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white
-            ),
-            hint: Text('Select a city',
-                style: getTextStyle(
-                  color: AppColors.grey400,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                )),
-            value: editController.selectedCity.value.isEmpty
-                ? null
-                : editController.selectedCity.value,
-            icon: Icon(Icons.keyboard_arrow_down_rounded),
-            items: editController.cities.map((city) {
-              return DropdownMenuItem<String>(
-                value: city,
-                child: Text(city),
-              );
-            }).toList(),
-            onChanged: (value) {
-              editController.selectedCity.value = value ?? '';
-            },
-          );
-        }),
-      ),
-     
-
-          
-          50.verticalSpace,
               Row(
                 children: [
-                  Expanded(child: CommonButton(
-                    
-                    backgroundColor: Colors.transparent,
-                    textColor: AppColors.primary,
-                    isbporderColor: true,
-                    title: "Cancel", onPressed: (){
-                    Get.back();
-                  })),
+                  Expanded(
+                    child: CommonButton(
+                      backgroundColor: Colors.transparent,
+                      textColor: AppColors.primary,
+                      isbporderColor: true,
+                      title: "Cancel",
+                      onPressed: () => Get.back(),
+                    ),
+                  ),
                   20.horizontalSpace,
-                  Expanded(child: CommonButton(title: "Save", onPressed: (){})),
+                  Obx(
+                    () => Expanded(
+                      child: CommonButton(
+                        title: controller.isLoading.value
+                            ? "Saving..."
+                            : "Save",
+                        onPressed: () {
+                          if (!controller.isLoading.value) {
+                            controller.saveProfile();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
-          
-              50.verticalSpace
+              50.verticalSpace,
             ],
           ),
         ),
@@ -179,7 +137,7 @@ class ChildEditProfile extends StatelessWidget {
     );
   }
 
-  Text _title(title) {
+  Text _title(String title) {
     return Text(
       "$title*",
       style: getTextStyle(
