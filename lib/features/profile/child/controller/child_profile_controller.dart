@@ -2,7 +2,7 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
-import 'package:shalana07/features/daily_goal/child/model/child_goal_model.dart';
+import 'package:shalana07/features/home/child/model/child_goal_model.dart';
 import 'package:shalana07/features/profile/model/child_model.dart';
 import '../../../../core/common/service/token_service.dart';
 import '../../../../core/services/network_caller.dart';
@@ -13,16 +13,21 @@ class ChildProfileController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();
 
   final Rx<ChildModel?> childModel = Rx<ChildModel?>(null);
-  final Rx<ChildGoalModel?> childGoalModel = Rx<ChildGoalModel?>(null);
+  final Rx<ChildGoalsModel?> childGoalModel = Rx<ChildGoalsModel?>(null);
   final RxBool isChildProfileLoading = false.obs;
   final RxBool isChildProfileError = false.obs;
   final RxBool toggle = false.obs;
   final RxString selectedImagePath = ''.obs;
+  
+  // Goal statistics
+  final RxInt completedTasks = 0.obs;
+  final RxInt activeTasks = 0.obs;
 
   @override
   void onInit() async {
     super.onInit();
     await getUserData();
+    await loadChildGoals();
     AppLoggerHelper.debug(childModel.toString());
   }
 
@@ -69,17 +74,41 @@ class ChildProfileController extends GetxController {
     }
   }
 
-  // Optional: Add goal loading if needed later
-  Future<void> loadChildGoals(String token) async {
+  // Load child goals and calculate statistics
+  Future<void> loadChildGoals() async {
+    final token = StorageService.token;
+    
     final response = await _networkCaller.getRequest(
       "${Api.baseUrl}/goals/child-goals",
       token: token,
     );
+    
     if (response.isSuccess) {
-      // Parse and assign to childGoalModel.value
+      try {
+        final model = ChildGoalsModel.fromJson(response.responseData);
+        childGoalModel.value = model;
+        
+        // Calculate completed and active tasks
+        if (model.data != null && model.data.isNotEmpty) {
+          int completed = 0;
+          int active = 0;
+          
+          for (var goal in model.data) {
+            if (goal.goal.status == 'COMPLETED') {
+              completed++;
+            } else if (goal.goal.status == 'ACTIVE') {
+              active++;
+            }
+          }
+          
+          completedTasks.value = completed;
+          activeTasks.value = active;
+        }
+      } catch (e) {
+        AppLoggerHelper.debug('Error parsing goals: $e');
+      }
     }
   }
-
 
   Future<void> pickImageFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(

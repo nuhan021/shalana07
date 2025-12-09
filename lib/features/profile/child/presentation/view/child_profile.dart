@@ -64,8 +64,6 @@ class ChildProfile extends StatelessWidget {
             final String age = '${_calculateAge(childProfile.dateOfBirth)} years';
             final String email = childProfile.email;
             final String earnedCoins = childProfile.coins.toString();
-            final String completedTasks = '15';
-            final String activeTasks = '12';
 
             return SingleChildScrollView(
               child: Column(
@@ -119,21 +117,29 @@ class ChildProfile extends StatelessWidget {
                     ],
                   ),
                   20.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: WeeeklyOVerview(title: 'Completed Task', sub: completedTasks),
-                      ),
-                      10.horizontalSpace,
-                      Expanded(
-                        child: WeeeklyOVerview(title: 'Active Task', sub: activeTasks),
-                      ),
-                      10.horizontalSpace,
-                      Expanded(
-                        child: WeeeklyOVerview(title: 'Earn Coin', sub: earnedCoins),
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: WeeeklyOVerview(
+                            title: 'Completed Task',
+                            sub: controller.completedTasks.value.toString(),
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        Expanded(
+                          child: WeeeklyOVerview(
+                            title: 'Active Task',
+                            sub: controller.activeTasks.value.toString(),
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        Expanded(
+                          child: WeeeklyOVerview(title: 'Earn Coin', sub: earnedCoins),
+                        ),
+                      ],
+                    );
+                  }),
                   30.verticalSpace,
                   Text(
                     'Basic Information',
