@@ -7,12 +7,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
-import 'package:shalana07/core/utils/constants/image_path.dart';
-import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
 import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
 import 'package:shalana07/features/profile/common_profile.dart';
-import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 
 //note: This is a custom appbar widget
 // if you add to custom appbar you need to wrap it with prefferd sized widgets

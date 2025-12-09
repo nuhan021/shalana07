@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalana07/core/services/network_caller.dart';
 import 'package:shalana07/core/utils/constants/api_constants.dart';
-import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/profile/parent/controller/parent_profile_controller.dart';
 
 import '../../../../core/common/service/token_service.dart';
@@ -16,7 +15,7 @@ class CreateNewgoalController extends GetxController {
   void onInit() {
     super.onInit();
 
-    final ParentProfileController parentProfileController = Get.find<ParentProfileController>();
+    final ParentProfileController parentProfileController = Get.put(ParentProfileController());
     final parent = parentProfileController.parentModel.value?.data.parentProfile;
 
     parent?.children.map((child) {
