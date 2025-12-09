@@ -9,6 +9,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
 import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
+import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 import 'package:shalana07/features/profile/common_profile.dart';
 
 //note: This is a custom appbar widget
@@ -19,7 +20,8 @@ class CustomAppBar extends StatelessWidget {
     required this.title,
     this.notificationIcon,
     this.profileIcon,
-    this.backArrowIcon, this.image,
+    this.backArrowIcon,
+    this.image,
   });
   final String title;
   final bool? notificationIcon;
@@ -27,6 +29,9 @@ class CustomAppBar extends StatelessWidget {
   final bool? backArrowIcon;
   final String? image;
   final Logincontroller loginController = Get.put(Logincontroller());
+  final ChildProfileController childProfileController = Get.put(
+    ChildProfileController(),
+  );
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -90,9 +95,16 @@ class CustomAppBar extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: CachedNetworkImage(
-                          imageUrl:  image ?? "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
-                          width: 34.w,
-                          height: 34.w,
+                          imageUrl:
+                              childProfileController
+                                  .childModel
+                                  .value
+                                  ?.data
+                                  .childProfile
+                                  .image ??
+                              "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                          width: 34.r, // ✅ .r
+                          height: 34.r, // ✅ .r
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
                             child: LoadingAnimationWidget.staggeredDotsWave(
@@ -100,7 +112,8 @@ class CustomAppBar extends StatelessWidget {
                               size: 25.h,
                             ),
                           ),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
                       ),
                     ),
