@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
+import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
 import '../../utils/constants/colors.dart';
@@ -13,7 +14,7 @@ import '../../utils/constants/image_path.dart';
 import '../styles/global_text_style.dart';
 
 class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomChildAppBar({
+   CustomChildAppBar({
     super.key,
     required this.title,
     this.isBackButtonVisible = true,
@@ -29,7 +30,7 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isAppBarTransparent;
   final bool isCenterTitle;
   final String? image;
-
+  final ChildProfileController childProfileController = Get.put(ChildProfileController());
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -66,34 +67,39 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: CachedNetworkImage(
-              imageUrl:
-                  image ??
-                  "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
-              width: 34.w,
-              height: 34.w,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: AppColors.primary,
-                  size: 25.h,
-                ),
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
+                    imageUrl:
+                        childProfileController
+                            .childModel
+                            .value
+                            ?.data
+                            .childProfile
+                            .image ??
+                        "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                    width: 34.r, // ✅ .r
+                    height: 34.r, // ✅ .r
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: AppColors.primary,
+                        size: 25.h,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
           ),
         ),
         SizedBox(width: 10.w),
-        isAvatarVisible
-            ? GestureDetector(
-                onTap: () {
-                  AppHelperFunctions.navigateToScreen(context, ChildProfile());
-                },
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(ImagePath.childAvatar),
-                  backgroundColor: Colors.white,
-                ).paddingOnly(right: 10.r),
-              )
-            : SizedBox(),
+        // isAvatarVisible
+        //     ? GestureDetector(
+        //         onTap: () {
+        //           AppHelperFunctions.navigateToScreen(context, ChildProfile());
+        //         },
+        //         child: CircleAvatar(
+        //           backgroundImage: AssetImage(ImagePath.childAvatar),
+        //           backgroundColor: Colors.white,
+        //         ).paddingOnly(right: 10.r),
+        //       )
+        //     : SizedBox(),
       ],
     );
   }
