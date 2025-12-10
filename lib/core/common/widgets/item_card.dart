@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
-import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/reward_details/presentation/screens/reward_details_screen.dart';
 

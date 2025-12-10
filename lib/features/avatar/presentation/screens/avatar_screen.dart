@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/item_card.dart';
@@ -12,6 +14,7 @@ import 'package:shalana07/features/avatar/controllers/controller.dart';
 import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
+import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
 import '../../../bottom_nav_bar/controller/navaber_controller.dart';
@@ -25,6 +28,7 @@ class AvatarScreen extends StatelessWidget {
   );
 
   final controller = Get.put(CustomizeAvatarController());
+  final ChildProfileController childProfileController = Get.put(ChildProfileController());
   NavaberController navaberController = Get.find<NavaberController>();
 
   @override
@@ -70,10 +74,29 @@ class AvatarScreen extends StatelessWidget {
             onTap: () {
               AppHelperFunctions.navigateToScreen(context, ChildProfile());
             },
-            child: CircleAvatar(
-              backgroundImage: AssetImage(ImagePath.childAvatar),
-              backgroundColor: Colors.white,
-            ).paddingOnly(right: 10.r),
+            child: ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: CachedNetworkImage(
+                    imageUrl:
+                        childProfileController
+                            .childModel
+                            .value
+                            ?.data
+                            .childProfile
+                            .image ??
+                        "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                    width: 34.r, // ✅ .r
+                    height: 34.r, // ✅ .r
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: AppColors.primary,
+                        size: 25.h,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
+          ),
           ),
         ],
       ),

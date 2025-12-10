@@ -89,17 +89,17 @@ class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         SizedBox(width: 10.w),
-        isAvatarVisible
-            ? GestureDetector(
-                onTap: () {
-                  AppHelperFunctions.navigateToScreen(context, ChildProfile());
-                },
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(ImagePath.childAvatar),
-                  backgroundColor: Colors.white,
-                ).paddingOnly(right: 10.r),
-              )
-            : SizedBox(),
+        // isAvatarVisible
+        //     ? GestureDetector(
+        //         onTap: () {
+        //           AppHelperFunctions.navigateToScreen(context, ChildProfile());
+        //         },
+        //         child: CircleAvatar(
+        //           backgroundImage: AssetImage(ImagePath.childAvatar),
+        //           backgroundColor: Colors.white,
+        //         ).paddingOnly(right: 10.r),
+        //       )
+        //     : SizedBox(),
       ],
     );
   }
