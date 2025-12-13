@@ -10,6 +10,8 @@ import 'package:shalana07/features/change_avatar/controller/change_avatar_contro
 import 'package:shalana07/features/change_avatar/presentation/widgets/avatar_card.dart';
 import 'package:shalana07/features/customize_avatar/controllers/customize_avatar_controller.dart';
 
+import '../../../avatar/controllers/controller.dart';
+
 class ChangeAvatarScreen extends StatelessWidget {
   ChangeAvatarScreen({super.key});
 
@@ -19,6 +21,10 @@ class ChangeAvatarScreen extends StatelessWidget {
 
   final CustomizeAvatarController controller = Get.put(
     CustomizeAvatarController(),
+  );
+
+  AvatarScreenController avatarScreenController = Get.put(
+    AvatarScreenController(),
   );
 
   @override
@@ -201,7 +207,7 @@ class ChangeAvatarScreen extends StatelessWidget {
           30.verticalSpace,
 
           Text(
-            'Best Match',
+            'Owned Avatars',
             style: getTextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
 
@@ -216,26 +222,37 @@ class ChangeAvatarScreen extends StatelessWidget {
           // ),
           Expanded(
             child: GridView.builder(
-
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Ensures a single row
                 mainAxisSpacing: 24.r,
                 crossAxisSpacing: 13.r,
               ),
 
-              itemCount: controller.avatars.length,
+              itemCount: avatarScreenController.currentAvatar.value!.data.unequipped.length,
 
               itemBuilder: (context, index) {
-                final item = controller.avatars[index];
-                DressStyle currentDressStyle = item.dress.elements.first;
-                JewelryStyle currentJewelryStyle =
-                    item.jewelry.elements.first;
-                HairStyle currentHairStyle = item.hair.elements.first;
+                final item = avatarScreenController.currentAvatar.value!.data.unequipped[index];
+
+                // null check করে নিন
+                String dressUrl = '';
+                if (item.dress.elements != null && item.dress.elements!.isNotEmpty) {
+                  dressUrl = item.dress.elements!.first.colors.first.url;
+                }
+
+                String jewelryUrl = '';
+                if (item.jewelry.elements != null && item.jewelry.elements!.isNotEmpty) {
+                  jewelryUrl = item.jewelry.elements!.first.colors.first.url;
+                }
+
+                String hairUrl = '';
+                if (item.hair.elements != null && item.hair.elements!.isNotEmpty) {
+                  hairUrl = item.hair.elements!.first.colors.first.url;
+                }
                 return AvatarCard(
                   avatarImgUrl: item.avatarImgUrl,
-                  currentDressStyle: currentDressStyle.colors.first,
-                  currentJewelryStyle: currentJewelryStyle.colors.first,
-                  currentHairStyle: currentHairStyle.colors.first,
+                  currentDressStyle: dressUrl,
+                  currentJewelryStyle: jewelryUrl,
+                  currentHairStyle: hairUrl,
                   index: index,
                 );
               },

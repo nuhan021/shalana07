@@ -1,8 +1,61 @@
 import 'package:get/get.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
+import 'package:shalana07/features/avatar/model/current_avatar.dart';
 
+import '../../../core/common/service/token_service.dart';
+import '../../../core/services/network_caller.dart';
+import '../../../core/services/storage_service.dart';
+import '../../../core/utils/constants/api_constants.dart';
 import '../../../core/utils/constants/image_path.dart';
 
 class AvatarScreenController extends GetxController {
+  final NetworkCaller _networkCaller = NetworkCaller();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getCurrentAvatar();
+  }
+
+  Future<void> getCurrentAvatar() async {
+    isCurrentAvatarIsLoading.value = true;
+    final token = StorageService.token;
+
+    var response = await _networkCaller.getRequest(
+      "${Api.baseUrl}/avatar/owned",
+      token: token,
+    );
+
+    if (response.statusCode == 401) {
+      final tokenService = Get.find<TokenService>();
+      if (await tokenService.refreshToken()) {
+        final newToken = StorageService.token;
+        response = await _networkCaller.getRequest(
+          "${Api.baseUrl}/avatar/owned",
+          token: newToken,
+        );
+      }
+    }
+
+    if (!response.isSuccess) {
+      Get.snackbar("Error", response.errorMessage);
+      isCurrentAvatarIsError.value = true;
+      return;
+    }
+
+    final responseData = response.responseData;
+    currentAvatar.value = CurrentAvatar.fromJson(responseData);
+
+    isCurrentAvatarIsLoading.value = false;
+    isCurrentAvatarIsError.value = false;
+  }
+
+
+  RxBool isCurrentAvatarIsLoading = false.obs;
+  RxBool isCurrentAvatarIsError = false.obs;
+
+  final Rx<CurrentAvatar?> currentAvatar = Rx<CurrentAvatar?>(null);
+
   final List<TrendingItem> trendingItems = [
     TrendingItem(
       imgUrl: ImagePath.cat,

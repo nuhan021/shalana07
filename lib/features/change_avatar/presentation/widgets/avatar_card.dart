@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:shalana07/core/services/storage_service.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/customize_avatar/controllers/customize_avatar_controller.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
 
@@ -17,7 +20,8 @@ class AvatarCard extends StatelessWidget {
     required this.avatarImgUrl,
     required this.currentDressStyle,
     required this.currentJewelryStyle,
-    required this.currentHairStyle, required this.index,
+    required this.currentHairStyle,
+    required this.index,
   });
 
   final int index;
@@ -47,7 +51,10 @@ class AvatarCard extends StatelessWidget {
               StorageService.saveCurrentAvatar(index.toString());
               controller.totalElements.value = controller.avatars[index];
               controller.resetAll();
-              AppHelperFunctions.navigateToScreen(context, AvatarCustomizeScreen());
+              AppHelperFunctions.navigateToScreen(
+                context,
+                AvatarCustomizeScreen(),
+              );
             },
             child: Container(
               height: 123.h,
@@ -58,18 +65,73 @@ class AvatarCard extends StatelessWidget {
               ),
 
               child: SizedBox(
-                  height: 270.h,
-                  width: double.maxFinite,
+                height: 270.h,
+                width: double.maxFinite,
 
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(avatarImgUrl),
-                      Image.asset(currentDressStyle),
-                      Image.asset(currentJewelryStyle),
-                      Image.asset(currentHairStyle),
-                    ],
-                  )
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (avatarImgUrl.isNotEmpty)
+                      ShowImage(image: avatarImgUrl),
+
+                    if (currentDressStyle.isNotEmpty)
+                      ShowImage(image: currentDressStyle),
+                    
+                    if(currentJewelryStyle.isNotEmpty)
+                      ShowImage(image: currentJewelryStyle),
+
+                    if (currentHairStyle.isNotEmpty)
+                      ShowImage(image: currentHairStyle),
+
+                    // Glassmorphism overlay - যদি কোনো data missing থাকে
+                    if (avatarImgUrl.isEmpty ||
+                        currentDressStyle.isEmpty ||
+                        currentHairStyle.isEmpty)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(6.r),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            height: double.maxFinite,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.white.withOpacity(0.2),
+                                  Colors.white.withOpacity(0.1),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(6.r),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.all(12.r),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.4),
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 32,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),

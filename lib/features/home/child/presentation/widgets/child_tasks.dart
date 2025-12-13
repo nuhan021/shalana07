@@ -92,7 +92,7 @@ class ChildTasks extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12.r),
                         height: 30.h,
-                        width: 72.w,
+                        // width: 72.w,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           color: Colors.white,

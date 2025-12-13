@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +13,7 @@ import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
@@ -116,13 +119,91 @@ class AvatarScreen extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               child: Obx(() {
+                // return Stack(
+                //   alignment: Alignment.center,
+                //   children: [
+                //     Image.asset(controller.totalElements.value.avatarImgUrl),
+                //     Image.asset(controller.currentDressStyle),
+                //     Image.asset(controller.currentJewelryStyle),
+                //     Image.asset(controller.currentHairStyle),
+                //   ],
+                // );
+                if(avatarScreenController.isCurrentAvatarIsLoading.value) return LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h);
+                if(avatarScreenController.isCurrentAvatarIsError.value) return Center(child: IconButton(onPressed: () => avatarScreenController.getCurrentAvatar(), icon: Icon(Icons.refresh)),);
+                final item = avatarScreenController.currentAvatar.value!.data.equipped;
+
+                String getElementUrl(dynamic elementData) {
+                  if (elementData?.elements != null &&
+                      elementData!.elements!.isNotEmpty &&
+                      elementData.elements!.first.colors != null &&
+                      elementData.elements!.first.colors.isNotEmpty) {
+                    return elementData.elements!.first.colors.first.url ?? '';
+                  }
+                  return '';
+                }
+
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(controller.totalElements.value.avatarImgUrl),
-                    Image.asset(controller.currentDressStyle),
-                    Image.asset(controller.currentJewelryStyle),
-                    Image.asset(controller.currentHairStyle),
+                    // Avatar base image
+                    if (item.avatarImgUrl?.isNotEmpty ?? false)
+                      ShowImage(image: item.avatarImgUrl!),
+
+                    // Dress
+                    if (getElementUrl(item.dress).isNotEmpty)
+                      ShowImage(image: getElementUrl(item.dress)),
+
+                    if (getElementUrl(item.jewelry).isNotEmpty)
+                      ShowImage(image: getElementUrl(item.jewelry)),
+
+                    // Hair
+                    if (getElementUrl(item.hair).isNotEmpty)
+                      ShowImage(image: getElementUrl(item.hair)),
+
+                    if(item.avatarImgUrl.isEmpty || getElementUrl(item.dress).isEmpty || getElementUrl(item.jewelry).isEmpty || getElementUrl(item.hair).isEmpty)
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.r),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.2),
+                                    Colors.white.withOpacity(0.1),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(6.r),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(12.r),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.4),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    size: 32,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 );
               }),
