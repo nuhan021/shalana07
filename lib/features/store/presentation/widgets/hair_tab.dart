@@ -3,18 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shalana07/core/common/widgets/item_card.dart';
 
+import '../../../../core/common/widgets/item_card.dart';
 import '../../../../core/utils/constants/colors.dart';
 import '../../../../core/utils/constants/enums.dart';
 import '../../../avatar/controllers/controller.dart';
 import '../../controller/store_controller.dart';
 
-class AvatarTab extends StatelessWidget {
-  AvatarTab({super.key});
+class HairTab extends StatelessWidget {
+  HairTab({super.key});
 
   final AvatarScreenController avatarScreenController =
-      Get.find<AvatarScreenController>();
+  Get.find<AvatarScreenController>();
 
   final StoreController storeController = Get.find<StoreController>();
 
@@ -22,7 +22,7 @@ class AvatarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       // Loading state
-      if (storeController.avatarItemsLoading.value) {
+      if (storeController.hairItemsLoading.value) {
         return Center(
           child: LoadingAnimationWidget.dotsTriangle(
             color: AppColors.primary,
@@ -32,11 +32,11 @@ class AvatarTab extends StatelessWidget {
       }
 
       // Error state
-      if (storeController.avatarItemsError.value) {
+      if (storeController.hairItemsError.value) {
         return Center(
           child: IconButton(
             onPressed: () {
-              storeController.getStoreItems(itemName: StoreItems.avatar);
+              storeController.getStoreItems(itemName: StoreItems.hair);
             },
             icon: const Icon(Icons.refresh),
           ),
@@ -44,11 +44,11 @@ class AvatarTab extends StatelessWidget {
       }
 
       // Empty state check (optional but recommended)
-      if (storeController.avatarItems.value == null ||
-          storeController.avatarItems.value!.data.isEmpty) {
+      if (storeController.hairItems.value == null ||
+          storeController.hairItems.value!.data.isEmpty) {
         return Center(
           child: Text(
-            'No avatar items available',
+            'No hair items available',
             style: TextStyle(fontSize: 16.sp, color: AppColors.grey700),
           ),
         );
@@ -63,7 +63,7 @@ class AvatarTab extends StatelessWidget {
           mainAxisSpacing: 10.h,
           crossAxisSpacing: 10.w,
         ),
-        itemCount: storeController.avatarItems.value!.data.length,
+        itemCount: storeController.hairItems.value!.data.length,
         itemBuilder: (context, index) {
           final item = storeController.trendingItems.value!.data[index];
           return ItemCard(

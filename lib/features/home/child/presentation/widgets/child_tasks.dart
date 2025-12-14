@@ -13,9 +13,11 @@ import 'package:shalana07/features/home/child/presentation/widgets/child_home_ta
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 
 import '../../../../../core/common/widgets/item_card.dart';
+import '../../../../../core/utils/constants/enums.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../../avatar/controllers/controller.dart';
 import '../../../../bottom_nav_bar/controller/navaber_controller.dart';
+import '../../../../store/controller/store_controller.dart';
 
 class ChildTasks extends StatelessWidget {
   ChildTasks({super.key, required this.controller});
@@ -25,6 +27,8 @@ class ChildTasks extends StatelessWidget {
   AvatarScreenController avatarScreenController = Get.put(
     AvatarScreenController(),
   );
+
+  final StoreController storeController = Get.find<StoreController>();
 
   NavaberController navaberController = Get.find<NavaberController>();
   ChildProfileController childProfileController =
@@ -177,8 +181,13 @@ class ChildTasks extends StatelessWidget {
 
                         // all the task will be here
                         Obx(() {
-                          if(controller.isChildLoading.value) {
-                            return Center(child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 25.h),);
+                          if (controller.isChildLoading.value) {
+                            return Center(
+                              child: LoadingAnimationWidget.dotsTriangle(
+                                color: AppColors.primary,
+                                size: 25.h,
+                              ),
+                            );
                           }
 
                           if (controller.isChildError.value) {
@@ -200,7 +209,9 @@ class ChildTasks extends StatelessWidget {
                             );
                           }
 
-                          AppLoggerHelper.debug(controller.selectedTab.toString());
+                          AppLoggerHelper.debug(
+                            controller.selectedTab.toString(),
+                          );
                           return ChildHomeDailyTask(controller: controller);
                         }),
 
@@ -255,20 +266,45 @@ class ChildTasks extends StatelessWidget {
                         ),
 
                         // trending items
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: avatarScreenController.trendingItems.map((
-                              element,
-                            ) {
-                              return ItemCard(
-                                imgUrl: element.imgUrl,
-                                title: element.title,
-                                coin: element.coin,
-                              ).marginOnly(right: 10.r);
-                            }).toList(),
-                          ),
-                        ),
+                        Obx(() {
+                          if (storeController.trendingItemsLoading.value) {
+                            return Center(
+                              child: LoadingAnimationWidget.dotsTriangle(
+                                color: AppColors.primary,
+                                size: 25.h,
+                              ),
+                            );
+                          }
+                          if (storeController.trendingItemsError.value) {
+                            return Center(
+                              child: IconButton(
+                                onPressed: () {
+                                  storeController.getStoreItems(
+                                    itemName: StoreItems.trending,
+                                  );
+                                },
+                                icon: Icon(Icons.refresh),
+                              ),
+                            );
+                          }
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: storeController
+                                  .trendingItems
+                                  .value!
+                                  .data
+                                  .map((element) {
+                                    return ItemCard(
+                                      imgUrl: element.assetImage,
+                                      title: element.gender,
+                                      coin: element.price.toString(),
+                                    ).marginOnly(right: 10.r);
+                                  })
+                                  .toList(),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),

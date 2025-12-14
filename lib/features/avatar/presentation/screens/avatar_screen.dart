@@ -13,6 +13,7 @@ import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/avatar_item_card.dart';
 import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/change_avatar/presentation/screens/change_avatar_screen.dart';
 import 'package:shalana07/features/customize_avatar/presentation/screens/avatar_customize_screen.dart';
@@ -20,8 +21,10 @@ import 'package:shalana07/features/notification/child/presentation/view/child_no
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
+import '../../../../core/utils/constants/enums.dart';
 import '../../../bottom_nav_bar/controller/navaber_controller.dart';
 import '../../../customize_avatar/controllers/customize_avatar_controller.dart';
+import '../../../store/controller/store_controller.dart';
 
 class AvatarScreen extends StatelessWidget {
   AvatarScreen({super.key});
@@ -31,8 +34,11 @@ class AvatarScreen extends StatelessWidget {
   );
 
   final controller = Get.put(CustomizeAvatarController());
-  final ChildProfileController childProfileController = Get.put(ChildProfileController());
+  final ChildProfileController childProfileController = Get.put(
+    ChildProfileController(),
+  );
   NavaberController navaberController = Get.find<NavaberController>();
+  final StoreController storeController = Get.find<StoreController>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,28 +84,28 @@ class AvatarScreen extends StatelessWidget {
               AppHelperFunctions.navigateToScreen(context, ChildProfile());
             },
             child: ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: CachedNetworkImage(
-                    imageUrl:
-                        childProfileController
-                            .childModel
-                            .value
-                            ?.data
-                            .childProfile
-                            .image ??
-                        "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
-                    width: 34.r, // ✅ .r
-                    height: 34.r, // ✅ .r
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: AppColors.primary,
-                        size: 25.h,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+              borderRadius: BorderRadius.circular(50),
+              child: CachedNetworkImage(
+                imageUrl:
+                    childProfileController
+                        .childModel
+                        .value
+                        ?.data
+                        .childProfile
+                        .image ??
+                    "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                width: 34.r, // ✅ .r
+                height: 34.r, // ✅ .r
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.primary,
+                    size: 25.h,
                   ),
-          ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
           ),
         ],
       ),
@@ -119,9 +125,21 @@ class AvatarScreen extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               child: Obx(() {
-                if(avatarScreenController.isCurrentAvatarIsLoading.value) return LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h);
-                if(avatarScreenController.isCurrentAvatarIsError.value) return Center(child: IconButton(onPressed: () => avatarScreenController.getCurrentAvatar(), icon: Icon(Icons.refresh)),);
-                final item = avatarScreenController.currentAvatar.value!.data.equipped;
+                if (avatarScreenController.isCurrentAvatarIsLoading.value)
+                  return LoadingAnimationWidget.dotsTriangle(
+                    color: AppColors.primary,
+                    size: 24.h,
+                  );
+                if (avatarScreenController.isCurrentAvatarIsError.value)
+                  return Center(
+                    child: IconButton(
+                      onPressed: () =>
+                          avatarScreenController.getCurrentAvatar(),
+                      icon: Icon(Icons.refresh),
+                    ),
+                  );
+                final item =
+                    avatarScreenController.currentAvatar.value!.data.equipped;
 
                 String getElementUrl(dynamic elementData) {
                   if (elementData?.elements != null &&
@@ -151,7 +169,10 @@ class AvatarScreen extends StatelessWidget {
                     if (getElementUrl(item.hair).isNotEmpty)
                       ShowImage(image: getElementUrl(item.hair)),
 
-                    if(item.avatarImgUrl.isEmpty || getElementUrl(item.dress).isEmpty || getElementUrl(item.jewelry).isEmpty || getElementUrl(item.hair).isEmpty)
+                    if (item.avatarImgUrl.isEmpty ||
+                        getElementUrl(item.dress).isEmpty ||
+                        getElementUrl(item.jewelry).isEmpty ||
+                        getElementUrl(item.hair).isEmpty)
                       Positioned.fill(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12.r),
@@ -209,7 +230,14 @@ class AvatarScreen extends StatelessWidget {
                   if (i == 1) {
                     AppHelperFunctions.navigateToScreen(
                       context,
-                      AvatarCustomizeScreen(avatarId: avatarScreenController.currentAvatar.value!.data.equipped.avatarId,),
+                      AvatarCustomizeScreen(
+                        avatarId: avatarScreenController
+                            .currentAvatar
+                            .value!
+                            .data
+                            .equipped
+                            .avatarId,
+                      ),
                     );
                   } else {
                     AppHelperFunctions.navigateToScreen(
@@ -242,7 +270,7 @@ class AvatarScreen extends StatelessWidget {
                     children: [
                       // Screen name
                       Text(
-                        i == 0 ? 'Change Avatar' : 'Customize Avatar',
+                        i == 0 ? 'Find Avatar' : 'Customize Avatar',
                         style: getTextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -257,7 +285,82 @@ class AvatarScreen extends StatelessWidget {
                 ).paddingOnly(bottom: 20),
               ),
 
+
             // Trending items section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // title
+                Text(
+                  'Trending Items',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                // see all button
+                TextButton(
+                  onPressed: () {
+                    navaberController.jumpToScreen(3);
+                  },
+                  child: Text(
+                    'See All',
+                    style: getTextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: double.maxFinite,
+              child: Obx(() {
+                if (storeController.trendingItemsLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primary,
+                      size: 25.h,
+                    ),
+                  );
+                }
+                if (storeController.trendingItemsError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () {
+                        storeController.getStoreItems(
+                          itemName: StoreItems.trending,
+                        );
+                      },
+                      icon: Icon(Icons.refresh),
+                    ),
+                  );
+                }
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: storeController
+                        .trendingItems
+                        .value!
+                        .data
+                        .map((element) {
+                      return ItemCard(
+                        imgUrl: element.assetImage,
+                        title: element.gender,
+                        coin: element.price.toString(),
+                      ).marginOnly(right: 10.r);
+                    })
+                        .toList(),
+                  ),
+                );
+              }),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Owned avatar
             SizedBox(
               width: double.maxFinite,
               child: Column(
@@ -269,43 +372,54 @@ class AvatarScreen extends StatelessWidget {
                     children: [
                       // title
                       Text(
-                        'Trending Items',
+                        'Owned Avatar',
                         style: getTextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-
-                      // see all button
-                      TextButton(
-                        onPressed: () {navaberController.jumpToScreen(3);},
-                        child: Text(
-                          'See All',
-                          style: getTextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.grey700,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
 
+                  15.verticalSpace,
+
                   // item section
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: avatarScreenController.trendingItems.map((
-                        element,
-                      ) {
-                        return ItemCard(
-                          imgUrl: element.imgUrl,
-                          title: element.title,
-                          coin: element.coin,
-                        ).marginOnly(right: 10.r);
-                      }).toList(),
-                    ),
-                  ),
+                 SizedBox(
+                   height: 170.h,
+                   child: ListView.separated(
+                     scrollDirection: Axis.horizontal,
+                     itemCount: avatarScreenController.currentAvatar.value!.data.unequipped.length,
+                     separatorBuilder: (context, index) => SizedBox(width: 15.w,),
+                     itemBuilder: (context, index) {
+                       final item = avatarScreenController.currentAvatar.value!.data.unequipped[index];
+
+                       // null check করে নিন
+                       String dressUrl = '';
+                       if (item.dress.elements != null && item.dress.elements!.isNotEmpty) {
+                         dressUrl = item.dress.elements!.first.colors.first.url;
+                       }
+
+                       String jewelryUrl = '';
+                       if (item.jewelry.elements != null && item.jewelry.elements!.isNotEmpty) {
+                         jewelryUrl = item.jewelry.elements!.first.colors.first.url;
+                       }
+
+                       String hairUrl = '';
+                       if (item.hair.elements != null && item.hair.elements!.isNotEmpty) {
+                         hairUrl = item.hair.elements!.first.colors.first.url;
+                       }
+
+                       return AvatarItemCard(
+                         id: item.avatarId,
+                         avatarImgUrl: item.avatarImgUrl,
+                         currentDressStyle: dressUrl,
+                         currentJewelryStyle: jewelryUrl,
+                         currentHairStyle: hairUrl,
+                         index: index,
+                       );
+                     },
+                   ),
+                 )
                 ],
               ),
             ),

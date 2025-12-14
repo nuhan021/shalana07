@@ -5,6 +5,7 @@ import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/reward_details/presentation/screens/reward_details_screen.dart';
 
 class ItemCard extends StatelessWidget {
@@ -44,7 +45,7 @@ class ItemCard extends StatelessWidget {
           // image
           GestureDetector(
               onTap: () => AppHelperFunctions.navigateToScreen(context, RewardDetailsScreen(imgUrl: imgUrl, title: title, coin: coin,)),
-              child: ClipRRect(borderRadius: BorderRadius.circular(8.r),child: Image.asset(imgUrl))),
+              child: ClipRRect(borderRadius: BorderRadius.circular(8.r),child: ShowImage(image: imgUrl))),
 
           // title
           Align(

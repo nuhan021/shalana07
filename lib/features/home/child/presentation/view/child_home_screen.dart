@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/core/utils/constants/enums.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/features/auth/controller/loginController.dart';
 import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
@@ -13,13 +14,19 @@ import 'package:shalana07/features/home/child/presentation/widgets/home_child_av
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
 import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
+import 'package:shalana07/features/store/controller/store_controller.dart';
 
 import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 
-class ChildHomeScreen extends StatelessWidget {
+class ChildHomeScreen extends StatefulWidget {
   ChildHomeScreen({super.key});
 
+  @override
+  State<ChildHomeScreen> createState() => _ChildHomeScreenState();
+}
+
+class _ChildHomeScreenState extends State<ChildHomeScreen> {
   final ChildProfileController childProfileController = Get.put(
     ChildProfileController(),
   );
@@ -27,6 +34,14 @@ class ChildHomeScreen extends StatelessWidget {
   final ChildHomeScreenController controller = Get.put(ChildHomeScreenController());
 
   final Logincontroller loginController = Get.put(Logincontroller());
+
+  final StoreController storeController = Get.put(StoreController());
+
+  @override
+  void initState() {
+    super.initState();
+    storeController.getStoreItems(itemName: StoreItems.trending);
+  }
 
   @override
   Widget build(BuildContext context) {

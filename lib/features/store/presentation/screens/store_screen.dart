@@ -10,10 +10,13 @@ import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/store/presentation/widgets/all_items_tab.dart';
 import 'package:shalana07/features/store/presentation/widgets/avatar_tab.dart';
 import 'package:shalana07/features/store/presentation/widgets/dress_tab.dart';
-import 'package:shalana07/features/store/presentation/widgets/pets_tab.dart';
+import 'package:shalana07/features/store/presentation/widgets/hair_tab.dart';
+import 'package:shalana07/features/store/presentation/widgets/trending_tab.dart';
 
 import '../../../../core/common/widgets/custom_appbar.dart';
+import '../../../../core/utils/constants/enums.dart';
 import '../../../profile/parent/controller/parent_profile_controller.dart';
+import '../../controller/store_controller.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
@@ -30,6 +33,8 @@ class _StoreScreenState extends State<StoreScreen>
     ParentProfileController(),
   );
 
+  final StoreController storeController = Get.find<StoreController>();
+
   String role = "";
 
   void getRole() async {
@@ -40,8 +45,14 @@ class _StoreScreenState extends State<StoreScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: 4);
+    _tabController = new TabController(vsync: this, length: 5);
     getRole();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeController.getStoreItems(itemName: StoreItems.trending);
+      storeController.getStoreItems(itemName: StoreItems.dress);
+      storeController.getStoreItems(itemName: StoreItems.avatar);
+      storeController.getStoreItems(itemName: StoreItems.hair);
+    });
   }
 
   @override
@@ -56,19 +67,26 @@ class _StoreScreenState extends State<StoreScreen>
       backgroundColor: AppColors.appBackground,
 
       // app bar
-      appBar: role == "parent" ?  PreferredSize(
-        preferredSize: Size.fromHeight(50.0.h),
-        child: CustomAppBar(
-          title: 'Avatar Store',
-          notificationIcon: true,
-          backArrowIcon: false,
-          image: parentProfileController.parentModel.value?.data.parentProfile.image,
-        ),
-      ) : CustomChildAppBar(
-        title: 'Avatar Store',
-        isBackButtonVisible: false,
-        isCenterTitle: false,
-      ),
+      appBar: role == "parent"
+          ? PreferredSize(
+              preferredSize: Size.fromHeight(50.0.h),
+              child: CustomAppBar(
+                title: 'Avatar Store',
+                notificationIcon: true,
+                backArrowIcon: false,
+                image: parentProfileController
+                    .parentModel
+                    .value
+                    ?.data
+                    .parentProfile
+                    .image,
+              ),
+            )
+          : CustomChildAppBar(
+              title: 'Avatar Store',
+              isBackButtonVisible: false,
+              isCenterTitle: false,
+            ),
 
       body: Column(
         children: [
@@ -87,7 +105,7 @@ class _StoreScreenState extends State<StoreScreen>
                   fontSize: 16,
                 ),
 
-                suffixIcon: Image.asset(IconPath.search, scale: 3,),
+                suffixIcon: Image.asset(IconPath.search, scale: 3),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: AppColors.grey400),
                   borderRadius: BorderRadius.circular(10.r),
@@ -142,16 +160,23 @@ class _StoreScreenState extends State<StoreScreen>
             tabs: [
               // Each tab is a Tab widget.
               Tab(text: 'All'),
+              Tab(text: 'Trending'),
               Tab(text: 'Avatar'),
               Tab(text: 'Dress'),
-              Tab(text: 'Pets'),
+              Tab(text: 'Hair'),
             ],
           ),
 
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [AllItemsTab(), AvatarTab(), DressTab(), PetsTab(),],
+              children: [
+                AllItemsTab(tabController: _tabController,),
+                TrendingTab(),
+                AvatarTab(),
+                DressTab(),
+                HairTab()
+              ],
             ).paddingSymmetric(horizontal: 16.r),
           ),
         ],

@@ -5,6 +5,8 @@ enum TextSizes { small, medium, large }
 
 enum OrderStatus { processing, shipped, delivered }
 
+enum StoreItems {trending, dress, hair, avatar}
+
 enum PaymentMethods {
   paypal,
   googlePay,

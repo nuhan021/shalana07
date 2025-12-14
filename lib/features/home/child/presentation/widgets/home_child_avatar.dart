@@ -4,15 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shalana07/core/utils/constants/colors.dart';
+import 'package:shalana07/features/avatar/controllers/controller.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 
 import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../../customize_avatar/controllers/customize_avatar_controller.dart';
 
-class HomeChildAvatar extends StatelessWidget {
+class HomeChildAvatar extends StatefulWidget {
   HomeChildAvatar({super.key});
 
+  @override
+  State<HomeChildAvatar> createState() => _HomeChildAvatarState();
+}
+
+class _HomeChildAvatarState extends State<HomeChildAvatar> {
   final controller = Get.put(CustomizeAvatarController());
+  final AvatarScreenController avatarScreenController = Get.put(AvatarScreenController());
+
+  @override
+  void initState() {
+    super.initState();
+    avatarScreenController.getCurrentAvatar();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +47,25 @@ class HomeChildAvatar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
           child: Stack(
             children: [
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //     child: Obx(() {
-              //       return Stack(
-              //         alignment: Alignment.center,
-              //         children: [
-              //           Image.asset(controller.totalElements.value.avatarImgUrl),
-              //           Image.asset(controller.currentDressStyle),
-              //           Image.asset(controller.currentJewelryStyle),
-              //           Image.asset(controller.currentHairStyle),
-              //         ],
-              //       );
-              //     }),
-              // ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                  child: Obx(() {
+                    if(avatarScreenController.isCurrentAvatarIsLoading.value) {
+                      return Center(
+                        child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h),
+                      );
+                    }
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.avatarImgUrl),
+                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.dress.elements!.first.colors.first.url),
+                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.jewelry.elements!.first.colors.first.url),
+                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.hair.elements!.first.colors.first.url),
+                      ],
+                    );
+                  }),
+              ),
 
               Container(
                 decoration: BoxDecoration(

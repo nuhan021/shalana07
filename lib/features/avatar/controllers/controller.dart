@@ -40,6 +40,7 @@ class AvatarScreenController extends GetxController {
     if (!response.isSuccess) {
       Get.snackbar("Error", response.errorMessage);
       isCurrentAvatarIsError.value = true;
+      isCurrentAvatarIsLoading.value = false;
       return;
     }
 
