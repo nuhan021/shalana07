@@ -30,14 +30,14 @@ class ChangeAllAssets extends StatelessWidget {
                     // Hair
                     GestureDetector(
                       onTap: () {
-                        controller.selectedAvatarObject.value = object.value.hair.name;
+                        controller.selectedAvatarObject.value = object.value!.hair.name;
                       },
                       child: Text(
-                        object.value.hair.name,
+                        object.value!.hair.name,
                         style: getTextStyle(
                           fontSize: 16,
                           color:
-                              object.value.hair.name ==
+                              object.value!.hair.name ==
                                   controller.selectedAvatarObject.value
                               ? AppColors.primary
                               : AppColors.grey900,
@@ -50,14 +50,14 @@ class ChangeAllAssets extends StatelessWidget {
                     // dress
                     GestureDetector(
                       onTap: () {
-                        controller.selectedAvatarObject.value = object.value.dress.name;
+                        controller.selectedAvatarObject.value = object.value!.dress.name;
                       },
                       child: Text(
-                        object.value.dress.name,
+                        object.value!.dress.name,
                         style: getTextStyle(
                           fontSize: 16,
                           color:
-                          object.value.dress.name ==
+                          object.value!.dress.name ==
                               controller.selectedAvatarObject.value
                               ? AppColors.primary
                               : AppColors.grey900,

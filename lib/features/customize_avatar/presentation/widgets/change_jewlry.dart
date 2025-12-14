@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
@@ -13,6 +14,9 @@ class ChangeJewelry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(controller.totalElements.value!.jewelry.elements.isEmpty) {
+      return Text('No jewelry found!', style: getTextStyle(fontSize: 14, fontWeight: FontWeight.w500),);
+    }
     return Column(
       children: [
         // hair style
@@ -38,7 +42,7 @@ class ChangeJewelry extends StatelessWidget {
                 child: Obx(() {
                   return Row(
                     children: List.generate(
-                      controller.totalElements.value.jewelry.elements.length,
+                      controller.totalElements.value!.jewelry.elements.length,
                       (index) {
                         return GestureDetector(
                           onTap: () {
@@ -60,15 +64,15 @@ class ChangeJewelry extends StatelessWidget {
                                 width: 2,
                               ),
                             ),
-                            child: Image.asset(
-                              controller
+                            child: ShowImage(
+                             image: controller
                                   .totalElements
-                                  .value
+                                  .value!
                                   .jewelry
                                   .elements[index]
                                   .colors
                                   .first,
-                              width: 100,
+                              // width: 100,
                             ),
                           ),
                         );
@@ -103,7 +107,7 @@ class ChangeJewelry extends StatelessWidget {
                     children: List.generate(
                       controller
                           .totalElements
-                          .value
+                          .value!
                           .jewelry
                           .elements[controller.selectedJewelryStyleIndex.value]
                           .colors
@@ -129,10 +133,10 @@ class ChangeJewelry extends StatelessWidget {
                                 width: 2,
                               ),
                             ),
-                            child: Image.asset(
-                              controller
+                            child: ShowImage(
+                              image: controller
                                   .totalElements
-                                  .value
+                                  .value!
                                   .jewelry
                                   .elements[controller
                                       .selectedJewelryStyleIndex

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 
 import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/utils/constants/colors.dart';
@@ -39,7 +40,7 @@ class ChangeDressStyle extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 return Row(
-                  children: List.generate(controller.totalElements.value.dress.elements.length, (
+                  children: List.generate(controller.totalElements.value!.dress.elements.length, (
                       index,
                       ) {
                     return GestureDetector(
@@ -60,8 +61,8 @@ class ChangeDressStyle extends StatelessWidget {
                               width: 2
                           ),
                         ),
-                        child: Image.asset(
-                          controller.totalElements.value.dress.elements[index].colors.first,
+                        child: ShowImage(
+                          image: controller.totalElements.value!.dress.elements[index].colors.first,
                         ),
                       ),
                     );
@@ -97,7 +98,7 @@ class ChangeDressStyle extends StatelessWidget {
                 child: Row(
                   children: List.generate(
                     controller
-                        .totalElements.value.dress.elements[controller.selectedDressStyleIndex.value]
+                        .totalElements.value!.dress.elements[controller.selectedDressStyleIndex.value]
                         .colors
                         .length,
                         (index) {
@@ -120,9 +121,9 @@ class ChangeDressStyle extends StatelessWidget {
                             ),
                           ),
                           alignment: Alignment.center,
-                          child: Image.asset(
-                            controller
-                                .totalElements.value.dress.elements[controller
+                          child: ShowImage(
+                            image: controller
+                                .totalElements.value!.dress.elements[controller
                                 .selectedDressStyleIndex
                                 .value]
                                 .colors[index],

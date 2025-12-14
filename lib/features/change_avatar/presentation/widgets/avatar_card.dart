@@ -50,8 +50,8 @@ class AvatarCard extends StatelessWidget {
           // avatar image
           GestureDetector(
             onTap: () {
-              StorageService.saveCurrentAvatar(index.toString());
-              controller.totalElements.value = controller.avatars[index];
+              // StorageService.saveCurrentAvatar(index.toString());
+              // controller.totalElements.value = controller.avatars[index];
               controller.resetAll();
               AppHelperFunctions.navigateToScreen(
                 context,
