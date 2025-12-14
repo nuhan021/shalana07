@@ -1,20 +1,59 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import 'package:shalana07/core/services/storage_service.dart';
+import 'package:shalana07/features/customize_avatar/model/customize_avatar_model.dart';
+
+import '../../../core/common/service/token_service.dart';
+import '../../../core/services/network_caller.dart';
+import '../../../core/utils/constants/api_constants.dart';
 
 class CustomizeAvatarController extends GetxController {
+  final NetworkCaller _networkCaller = NetworkCaller();
   RxString selectedAvatarObject = 'Hair'.obs;
   RxString selectedAccessories = 'Jewelry'.obs;
   RxInt selectedTab = 0.obs;
+  RxBool isChangeAvatarLoading = false.obs;
+  RxBool isChangeAvatarError = false.obs;
 
   final currentAvatarIndex = int.parse(
     StorageService.getCurrentAvatar.toString(),
   );
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
+  Future<void> getAvatarCredential({required String id}) async {
+
+    isChangeAvatarLoading.value = true;
+
+    final token = StorageService.token;
+
+    var response = await _networkCaller.getRequest(
+      "${Api.baseUrl}/avatar/customization/$id",
+      token: token,
+    );
+
+    if (response.statusCode == 401) {
+      final tokenService = Get.find<TokenService>();
+      if (await tokenService.refreshToken()) {
+        final newToken = StorageService.token;
+        response = await _networkCaller.getRequest(
+          "${Api.baseUrl}/avatar/customization/$id",
+          token: newToken,
+        );
+      }
+    }
+
+    if (!response.isSuccess) {
+      Get.snackbar("Error", response.errorMessage);
+      isChangeAvatarError.value = true;
+      return;
+    }
+
+    customizeAvatarModel.value = CustomizeAvatarModel.fromJson(response.responseData);
+    isChangeAvatarLoading.value = false;
+    isChangeAvatarError.value = false;
   }
+
+  Rx<CustomizeAvatarModel?> customizeAvatarModel = Rx<CustomizeAvatarModel?>(null);
 
   void toggleIsAvatarTab(int index) {
     selectedTab.value = index;

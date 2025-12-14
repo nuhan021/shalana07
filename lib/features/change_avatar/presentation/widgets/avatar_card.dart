@@ -22,6 +22,7 @@ class AvatarCard extends StatelessWidget {
     required this.currentJewelryStyle,
     required this.currentHairStyle,
     required this.index,
+    required this.id,
   });
 
   final int index;
@@ -29,6 +30,7 @@ class AvatarCard extends StatelessWidget {
   final String currentDressStyle;
   final String currentJewelryStyle;
   final String currentHairStyle;
+  final String id;
 
   CustomizeAvatarController controller = Get.put(CustomizeAvatarController());
 
@@ -53,7 +55,7 @@ class AvatarCard extends StatelessWidget {
               controller.resetAll();
               AppHelperFunctions.navigateToScreen(
                 context,
-                AvatarCustomizeScreen(),
+                AvatarCustomizeScreen(avatarId: id,),
               );
             },
             child: Container(

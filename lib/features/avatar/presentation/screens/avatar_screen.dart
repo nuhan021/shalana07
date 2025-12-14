@@ -119,15 +119,6 @@ class AvatarScreen extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               child: Obx(() {
-                // return Stack(
-                //   alignment: Alignment.center,
-                //   children: [
-                //     Image.asset(controller.totalElements.value.avatarImgUrl),
-                //     Image.asset(controller.currentDressStyle),
-                //     Image.asset(controller.currentJewelryStyle),
-                //     Image.asset(controller.currentHairStyle),
-                //   ],
-                // );
                 if(avatarScreenController.isCurrentAvatarIsLoading.value) return LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h);
                 if(avatarScreenController.isCurrentAvatarIsError.value) return Center(child: IconButton(onPressed: () => avatarScreenController.getCurrentAvatar(), icon: Icon(Icons.refresh)),);
                 final item = avatarScreenController.currentAvatar.value!.data.equipped;
@@ -163,7 +154,7 @@ class AvatarScreen extends StatelessWidget {
                     if(item.avatarImgUrl.isEmpty || getElementUrl(item.dress).isEmpty || getElementUrl(item.jewelry).isEmpty || getElementUrl(item.hair).isEmpty)
                       Positioned.fill(
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6.r),
+                          borderRadius: BorderRadius.circular(12.r),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
@@ -218,7 +209,7 @@ class AvatarScreen extends StatelessWidget {
                   if (i == 1) {
                     AppHelperFunctions.navigateToScreen(
                       context,
-                      AvatarCustomizeScreen(),
+                      AvatarCustomizeScreen(avatarId: avatarScreenController.currentAvatar.value!.data.equipped.avatarId,),
                     );
                   } else {
                     AppHelperFunctions.navigateToScreen(

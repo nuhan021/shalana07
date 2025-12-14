@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final currentAvatar = currentAvatarFromJson(jsonString);
+//     final customizeAvatarModel = customizeAvatarModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CurrentAvatar currentAvatarFromJson(String str) => CurrentAvatar.fromJson(json.decode(str));
+CustomizeAvatarModel customizeAvatarModelFromJson(String str) => CustomizeAvatarModel.fromJson(json.decode(str));
 
-String currentAvatarToJson(CurrentAvatar data) => json.encode(data.toJson());
+String customizeAvatarModelToJson(CustomizeAvatarModel data) => json.encode(data.toJson());
 
-class CurrentAvatar {
+class CustomizeAvatarModel {
   bool success;
   String message;
   Data data;
 
-  CurrentAvatar({
+  CustomizeAvatarModel({
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory CurrentAvatar.fromJson(Map<String, dynamic> json) => CurrentAvatar(
+  factory CustomizeAvatarModel.fromJson(Map<String, dynamic> json) => CustomizeAvatarModel(
     success: json["success"],
     message: json["message"],
     data: Data.fromJson(json["data"]),
@@ -33,49 +33,29 @@ class CurrentAvatar {
 }
 
 class Data {
-  Equipped equipped;
-  List<Equipped> unequipped;
-
-  Data({
-    required this.equipped,
-    required this.unequipped,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    equipped: Equipped.fromJson(json["equipped"]),
-    unequipped: List<Equipped>.from(json["unequipped"].map((x) => Equipped.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "equipped": equipped.toJson(),
-    "unequipped": List<dynamic>.from(unequipped.map((x) => x.toJson())),
-  };
-}
-
-class Equipped {
   String avatarId;
   String avatarImgUrl;
   String gender;
   String region;
   Accessory hair;
   Accessory dress;
-  Accessory eyes;
   Accessory jewelry;
+  Accessory eyes;
   Accessory skin;
   Accessory nose;
   Accessory shoes;
   Accessory accessory;
   Accessory pet;
 
-  Equipped({
+  Data({
     required this.avatarId,
     required this.avatarImgUrl,
     required this.gender,
     required this.region,
     required this.hair,
     required this.dress,
-    required this.eyes,
     required this.jewelry,
+    required this.eyes,
     required this.skin,
     required this.nose,
     required this.shoes,
@@ -83,15 +63,15 @@ class Equipped {
     required this.pet,
   });
 
-  factory Equipped.fromJson(Map<String, dynamic> json) => Equipped(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     avatarId: json["avatarId"],
     avatarImgUrl: json["avatarImgUrl"],
     gender: json["gender"],
     region: json["region"],
     hair: Accessory.fromJson(json["hair"]),
     dress: Accessory.fromJson(json["dress"]),
-    eyes: Accessory.fromJson(json["eyes"]),
     jewelry: Accessory.fromJson(json["jewelry"]),
+    eyes: Accessory.fromJson(json["eyes"]),
     skin: Accessory.fromJson(json["skin"]),
     nose: Accessory.fromJson(json["nose"]),
     shoes: Accessory.fromJson(json["shoes"]),
@@ -106,8 +86,8 @@ class Equipped {
     "region": region,
     "hair": hair.toJson(),
     "dress": dress.toJson(),
-    "eyes": eyes.toJson(),
     "jewelry": jewelry.toJson(),
+    "eyes": eyes.toJson(),
     "skin": skin.toJson(),
     "nose": nose.toJson(),
     "shoes": shoes.toJson(),
@@ -117,7 +97,7 @@ class Equipped {
 }
 
 class Accessory {
-  Name name;
+  String name;
   List<Element>? elements;
 
   Accessory({
@@ -126,12 +106,12 @@ class Accessory {
   });
 
   factory Accessory.fromJson(Map<String, dynamic> json) => Accessory(
-    name: nameValues.map[json["name"]]!,
+    name: json["name"],
     elements: json["elements"] == null ? [] : List<Element>.from(json["elements"]!.map((x) => Element.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "name": nameValues.reverse[name],
+    "name": name,
     "elements": elements == null ? [] : List<dynamic>.from(elements!.map((x) => x.toJson())),
   };
 }
@@ -190,32 +170,4 @@ class Color {
     "isSelected": isSelected,
     "price": price,
   };
-}
-
-enum Name {
-  DRESS,
-  EYES,
-  HAIR,
-  JEWELRY,
-  NULL
-}
-
-final nameValues = EnumValues({
-  "Dress": Name.DRESS,
-  "Eyes": Name.EYES,
-  "Hair": Name.HAIR,
-  "Jewelry": Name.JEWELRY,
-  "null": Name.NULL
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

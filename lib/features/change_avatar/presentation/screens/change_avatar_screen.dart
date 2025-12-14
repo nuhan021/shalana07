@@ -29,22 +29,7 @@ class ChangeAvatarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> avatarCards = List.generate(controller.avatars.length, (
-      index,
-    ) {
-      final item = controller.avatars[index];
-      DressStyle currentDressStyle = item.dress.elements.first;
-      JewelryStyle currentJewelryStyle = item.jewelry.elements.first;
-      HairStyle currentHairStyle = item.hair.elements.first;
 
-      return AvatarCard(
-        index: index,
-        avatarImgUrl: item.avatarImgUrl,
-        currentDressStyle: currentDressStyle.colors.first,
-        currentJewelryStyle: currentJewelryStyle.colors.first,
-        currentHairStyle: currentHairStyle.colors.first,
-      );
-    });
 
     return Scaffold(
       backgroundColor: AppColors.appBackground,
@@ -213,13 +198,6 @@ class ChangeAvatarScreen extends StatelessWidget {
 
           25.verticalSpace,
 
-          // Column(
-          //   children: AppHelperFunctions.wrapWidgets(
-          //     avatarCards,
-          //     2,
-          //     verticalSpacing: 24.h,
-          //   ),
-          // ),
           Expanded(
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -249,6 +227,7 @@ class ChangeAvatarScreen extends StatelessWidget {
                   hairUrl = item.hair.elements!.first.colors.first.url;
                 }
                 return AvatarCard(
+                  id: item.avatarId,
                   avatarImgUrl: item.avatarImgUrl,
                   currentDressStyle: dressUrl,
                   currentJewelryStyle: jewelryUrl,
