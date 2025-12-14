@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
+import 'package:shalana07/core/common/widgets/item_card.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/change_avatar/controller/change_avatar_controller.dart';
@@ -29,12 +31,10 @@ class ChangeAvatarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: AppColors.appBackground,
       // app bar
-      appBar: CustomChildAppBar(title: 'Change Avatar'),
+      appBar: CustomChildAppBar(title: 'Find Avatar'),
 
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,6 +64,7 @@ class ChangeAvatarScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ).paddingOnly(bottom: 8.r),
+
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 10.r),
                       decoration: BoxDecoration(
@@ -77,7 +78,8 @@ class ChangeAvatarScreen extends StatelessWidget {
                           Obx(() {
                             return Text(
                               changeAvatarController.selectedGender.value
-                                  .toString(),
+                                  .toString()
+                                  .toLowerCase(),
                               style: getTextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
@@ -99,11 +101,11 @@ class ChangeAvatarScreen extends StatelessWidget {
                             itemBuilder: (BuildContext context) {
                               return [
                                 const PopupMenuItem<String>(
-                                  value: 'male',
+                                  value: 'MALE',
                                   child: Text('Male'),
                                 ),
                                 const PopupMenuItem<String>(
-                                  value: 'female',
+                                  value: 'FEMALE',
                                   child: Text('Female'),
                                 ),
                               ];
@@ -170,6 +172,10 @@ class ChangeAvatarScreen extends StatelessWidget {
                                   value: 'UK',
                                   child: Text('UK'),
                                 ),
+                                const PopupMenuItem<String>(
+                                  value: 'Europe',
+                                  child: Text('Europe'),
+                                ),
                               ];
                             },
                           ),
@@ -187,56 +193,63 @@ class ChangeAvatarScreen extends StatelessWidget {
           // find button
           30.verticalSpace,
 
-          CommonButton(title: 'Find', onPressed: () {}),
+          Obx(() {
+            if (changeAvatarController.selectedGender.value.isNotEmpty && changeAvatarController.selectedRegion.value.isNotEmpty) {
+              if(changeAvatarController.isFindAvatarLoading.value) {
+                return Center(child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h),);
+              }
+              return CommonButton(title: 'Find', onPressed: () {
+                changeAvatarController.findAvatars();
+              });
+            }
+            return SizedBox();
+          }),
 
           30.verticalSpace,
 
-          Text(
-            'Owned Avatars',
-            style: getTextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-          ),
+          Obx(() {
+            if(changeAvatarController.findedAvatars.value != null) {
+              return Text(
+                'Avatars',
+                style: getTextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              );
+            }
 
-          25.verticalSpace,
+            return SizedBox();
+          }),
 
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Ensures a single row
-                mainAxisSpacing: 24.r,
-                crossAxisSpacing: 13.r,
-              ),
 
-              itemCount: avatarScreenController.currentAvatar.value!.data.unequipped.length,
+          Obx(() {
+            if(changeAvatarController.findedAvatars.value != null) {
+              if(changeAvatarController.findedAvatars.value!.data.isEmpty){
+                return Center(child: Text('No data found'),);
+              }
+              return Expanded(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 12.h,
+                    childAspectRatio: 160.w / 230.h, // Width to Height ratio from ItemCard
+                  ),
+                  itemCount: changeAvatarController.findedAvatars.value!.data.length,
+                  itemBuilder: (context, index) {
+                    final item = changeAvatarController.findedAvatars.value!.data[index];
+                    return ItemCard(imgUrl: item.avatarImgUrl, title: item.gender, coin: '100');
+                  },
+                ),
+              );
+            }
 
-              itemBuilder: (context, index) {
-                final item = avatarScreenController.currentAvatar.value!.data.unequipped[index];
+            return SizedBox();
 
-                // null check করে নিন
-                String dressUrl = '';
-                if (item.dress.elements != null && item.dress.elements!.isNotEmpty) {
-                  dressUrl = item.dress.elements!.first.colors.first.url;
-                }
-
-                String jewelryUrl = '';
-                if (item.jewelry.elements != null && item.jewelry.elements!.isNotEmpty) {
-                  jewelryUrl = item.jewelry.elements!.first.colors.first.url;
-                }
-
-                String hairUrl = '';
-                if (item.hair.elements != null && item.hair.elements!.isNotEmpty) {
-                  hairUrl = item.hair.elements!.first.colors.first.url;
-                }
-                return AvatarCard(
-                  id: item.avatarId,
-                  avatarImgUrl: item.avatarImgUrl,
-                  currentDressStyle: dressUrl,
-                  currentJewelryStyle: jewelryUrl,
-                  currentHairStyle: hairUrl,
-                  index: index,
-                );
-              },
-            ),
-          ),
+          })
         ],
       ).paddingSymmetric(horizontal: 16),
     );

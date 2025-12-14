@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
@@ -30,7 +31,7 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
   @override
   void initState() {
     super.initState();
-    AppLoggerHelper.debug('My id is: ${widget.avatarId}');
+    controller.resetAll();
     controller.getAvatarCredential(id: widget.avatarId);
   }
 
@@ -38,11 +39,7 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isChangeAvatarLoading.value) {
-        return Container(
-          height: double.maxFinite,
-          width: double.maxFinite,
-          color: Colors.red,
-        );
+        return LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h);
       }
       return Scaffold(
         backgroundColor: AppColors.appBackground,
