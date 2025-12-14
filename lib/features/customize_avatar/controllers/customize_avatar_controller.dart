@@ -15,13 +15,20 @@ class CustomizeAvatarController extends GetxController {
   RxInt selectedTab = 0.obs;
   RxBool isChangeAvatarLoading = false.obs;
   RxBool isChangeAvatarError = false.obs;
+  // Dynamic avatars list
+  RxList<TotalElements> avatars = <TotalElements>[].obs;
+
+  // Current avatar observable
+  late Rx<TotalElements?> totalElements = Rx<TotalElements?>(null);
+  Rx<CustomizeAvatarModel?> customizeAvatarModel = Rx<CustomizeAvatarModel?>(
+    null,
+  );
 
   final currentAvatarIndex = int.parse(
     StorageService.getCurrentAvatar.toString(),
   );
 
   Future<void> getAvatarCredential({required String id}) async {
-
     isChangeAvatarLoading.value = true;
 
     final token = StorageService.token;
@@ -48,279 +55,81 @@ class CustomizeAvatarController extends GetxController {
       return;
     }
 
-    customizeAvatarModel.value = CustomizeAvatarModel.fromJson(response.responseData);
+    customizeAvatarModel.value = CustomizeAvatarModel.fromJson(
+      response.responseData,
+    );
+    // Convert API response to TotalElements and add to avatars list
+    _convertAndStoreAvatar();
     isChangeAvatarLoading.value = false;
     isChangeAvatarError.value = false;
   }
 
-  Rx<CustomizeAvatarModel?> customizeAvatarModel = Rx<CustomizeAvatarModel?>(null);
+  void _convertAndStoreAvatar() {
+    final data = customizeAvatarModel.value?.data;
+    if (data == null) return;
+
+    final convertedAvatar = TotalElements(
+      avatarImgUrl: data.avatarImgUrl,
+      hair: _convertToStyleElement(data.hair),
+      dress: _convertToStyleElement(data.dress),
+      jewelry: _convertToStyleElement(data.jewelry),
+      eyes: _convertToStyleElement(data.eyes),
+      skin: _convertToStyleElement(data.skin),
+      nose: _convertToStyleElement(data.nose),
+      shoes: _convertToStyleElement(data.shoes),
+      accessory: _convertToStyleElement(data.accessory),
+      pet: _convertToStyleElement(data.pet),
+    );
+
+    // Add to avatars list (or update if exists)
+    final existingIndex = avatars.indexWhere(
+      (avatar) => avatar.avatarImgUrl == data.avatarImgUrl,
+    );
+
+    if (existingIndex != -1) {
+      avatars[existingIndex] = convertedAvatar;
+    } else {
+      avatars.add(convertedAvatar);
+    }
+
+    // Set as current avatar
+    totalElements.value = convertedAvatar;
+  }
+
+  StyleElement _convertToStyleElement(dynamic apiElement) {
+    if (apiElement == null || apiElement.elements == null) {
+      return StyleElement(name: '', elements: []);
+    }
+
+    final elements = (apiElement.elements as List).map((element) {
+      final colors = (element.colors as List)
+          .map((color) => color.url as String)
+          .toList();
+
+      return StyleItem(
+        id: element.id,
+        styleName: element.styleName,
+        colors: colors,
+        colorDetails: (element.colors as List)
+            .map(
+              (color) => ColorDetail(
+                id: color.id,
+                url: color.url,
+                isUnlocked: color.isUnlocked,
+                isSelected: color.isSelected,
+                price: color.price,
+              ),
+            )
+            .toList(),
+      );
+    }).toList();
+
+    return StyleElement(name: apiElement.name ?? '', elements: elements);
+  }
 
   void toggleIsAvatarTab(int index) {
     selectedTab.value = index;
   }
-
-  TotalElements avatar1 = TotalElements(
-    avatarImgUrl: "assets/avatar/avatar1/skeleton/2.png",
-    hair: StyleElement(
-      name: 'Hair',
-      elements: [
-        HairStyle(
-          styleName: 'Long',
-          colors: [
-            "assets/avatar/avatar1/hair/style_3/6.png",
-            "assets/avatar/avatar1/hair/style_3/7.png",
-            "assets/avatar/avatar1/hair/style_3/8.png",
-          ],
-        ),
-        HairStyle(
-          styleName: "curly",
-          colors: [
-            "assets/avatar/avatar1/hair/style_1/9.png",
-            "assets/avatar/avatar1/hair/style_1/10.png",
-          ],
-        ),
-
-        HairStyle(
-          styleName: 'Normal',
-          colors: [
-            "assets/avatar/avatar1/hair/style_2/4.png",
-            "assets/avatar/avatar1/hair/style_2/5.png",
-          ],
-        ),
-      ],
-    ),
-
-    dress: StyleElement(
-      name: 'Dress',
-      elements: [
-        DressStyle(
-          styleName: 'Neckless',
-          colors: [
-            "assets/avatar/avatar1/dress/dress_2/16.png",
-            "assets/avatar/avatar1/dress/dress_2/17.png",
-          ],
-        ),
-
-
-        DressStyle(
-          styleName: 'Basic',
-          colors: ["assets/avatar/avatar1/dress/dress_1/15.png"],
-        ),
-
-
-
-        DressStyle(
-          styleName: 'Tops',
-          colors: [
-            "assets/avatar/avatar1/dress/dress_3/12.png",
-            "assets/avatar/avatar1/dress/dress_3/13.png",
-            "assets/avatar/avatar1/dress/dress_3/14.png",
-          ],
-        ),
-      ],
-    ),
-
-    jewelry: StyleElement(
-      name: 'Jewelry',
-      elements: [
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar1/jewelry/3.png"],
-        ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar1/jewelry/1.png"],
-        ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar1/jewelry/2.png"],
-        ),
-
-      ],
-    ),
-  );
-
-  TotalElements avatar2 = TotalElements(
-    avatarImgUrl: "assets/avatar/avatar2/skeleton/avatar.png",
-    hair: StyleElement(
-      name: 'Hair',
-      elements: [
-        HairStyle(
-          styleName: "curly",
-          colors: [
-            "assets/avatar/avatar2/hair/style_1/30.png",
-            "assets/avatar/avatar2/hair/style_1/31.png",
-            "assets/avatar/avatar2/hair/style_1/32.png",
-          ],
-        ),
-
-        HairStyle(
-          styleName: 'Normal',
-          colors: [
-            "assets/avatar/avatar2/hair/style_2/33.png",
-            "assets/avatar/avatar2/hair/style_2/34.png",
-          ],
-        ),
-      ],
-    ),
-
-    dress: StyleElement(
-      name: 'Dress',
-      elements: [
-        DressStyle(
-          styleName: 'Basic',
-          colors: [
-            "assets/avatar/avatar2/dress/dress_1/35.png",
-            "assets/avatar/avatar2/dress/dress_1/48.png",
-          ],
-        ),
-
-        DressStyle(
-          styleName: 'Neckless',
-          colors: [
-            "assets/avatar/avatar2/dress/dress_2/36.png",
-            "assets/avatar/avatar2/dress/dress_2/49.png",
-          ],
-        ),
-      ],
-    ),
-
-    jewelry: StyleElement(
-      name: 'Jewelry',
-      elements: [
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar2/jewelry/50.png"],
-        ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar2/jewelry/51.png"],
-        ),
-      ],
-    ),
-  );
-
-  TotalElements avatar3 = TotalElements(
-    avatarImgUrl: "assets/avatar/avatar3/skeleton/avatar.png",
-    hair: StyleElement(
-      name: 'Hair',
-      elements: [
-        HairStyle(
-          styleName: "curly",
-          colors: [
-            "assets/avatar/avatar3/hair/style_1/37.png",
-            "assets/avatar/avatar3/hair/style_1/38.png",
-          ],
-        ),
-
-        HairStyle(
-          styleName: 'Normal',
-          colors: [
-            "assets/avatar/avatar3/hair/style_2/43.png",
-            "assets/avatar/avatar3/hair/style_2/44.png",
-          ],
-        ),
-      ],
-    ),
-
-    dress: StyleElement(
-      name: 'Dress',
-      elements: [
-        DressStyle(
-          styleName: 'Basic',
-          colors: [
-            "assets/avatar/avatar3/dress/dress_1/39.png",
-            "assets/avatar/avatar3/dress/dress_1/40.png",
-          ],
-        ),
-
-        DressStyle(
-          styleName: 'Neckless',
-          colors: [
-            "assets/avatar/avatar3/dress/dress_2/41.png",
-            "assets/avatar/avatar3/dress/dress_2/42.png",
-          ],
-        ),
-      ],
-    ),
-
-    jewelry: StyleElement(
-      name: 'Jewelry',
-      elements: [
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar3/jewelry/46.png"],
-        ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar3/jewelry/47.png"],
-        ),
-      ],
-    ),
-  );
-
-  TotalElements avatar4 = TotalElements(
-    avatarImgUrl: "assets/avatar/avatar4/skeleton/3.png",
-    hair: StyleElement(
-      name: 'Hair',
-      elements: [
-        HairStyle(
-          styleName: "curly",
-          colors: [
-            "assets/avatar/avatar4/hair/style_1/4.png",
-            "assets/avatar/avatar4/hair/style_1/5.png",
-          ],
-        ),
-
-        HairStyle(
-          styleName: 'Normal',
-          colors: [
-            "assets/avatar/avatar4/hair/style_2/12.png",
-            "assets/avatar/avatar4/hair/style_2/13.png",
-          ],
-        ),
-      ],
-    ),
-
-    dress: StyleElement(
-      name: 'Dress',
-      elements: [
-        DressStyle(
-          styleName: 'Basic',
-          colors: [
-            "assets/avatar/avatar4/dress/dress_1/14.png",
-            "assets/avatar/avatar4/dress/dress_1/15.png",
-          ],
-        ),
-
-        DressStyle(
-          styleName: 'Neckless',
-          colors: [
-            "assets/avatar/avatar4/dress/dress_2/6.png",
-            "assets/avatar/avatar4/dress/dress_2/7.png",
-          ],
-        ),
-      ],
-    ),
-
-    jewelry: StyleElement(
-      name: 'Jewelry',
-      elements: [
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar4/jewelry/8.png"],
-        ),
-        JewelryStyle(
-          styleName: 'Style 1',
-          colors: ["assets/avatar/avatar4/jewelry/11.png"],
-        ),
-      ],
-    ),
-  );
-
-  late List<TotalElements> avatars = [avatar1, avatar2, avatar3, avatar4];
-
-  late var totalElements = avatars[currentAvatarIndex].obs;
 
   // ----------------------------- Change hair style and color ---------------------------
 
@@ -342,8 +151,12 @@ class CustomizeAvatarController extends GetxController {
 
   // get current hair style
   String get currentHairStyle {
+    if (totalElements.value == null ||
+        totalElements.value!.hair.elements.isEmpty) {
+      return '';
+    }
     return totalElements
-        .value
+        .value!
         .hair
         .elements[selectedHairStyleIndex.value]
         .colors[selectedHairColorIndex.value];
@@ -371,8 +184,12 @@ class CustomizeAvatarController extends GetxController {
 
   // get current hair style
   String get currentDressStyle {
+    if (totalElements.value == null ||
+        totalElements.value!.dress.elements.isEmpty) {
+      return '';
+    }
     return totalElements
-        .value
+        .value!
         .dress
         .elements[selectedDressStyleIndex.value]
         .colors[selectedDressColorIndex.value];
@@ -400,8 +217,12 @@ class CustomizeAvatarController extends GetxController {
 
   // get current hair style
   String get currentJewelryStyle {
+    if (totalElements.value == null ||
+        totalElements.value!.jewelry.elements.isEmpty) {
+      return '';
+    }
     return totalElements
-        .value
+        .value!
         .jewelry
         .elements[selectedJewelryStyleIndex.value]
         .colors[selectedJewelryColorIndex.value];
@@ -422,24 +243,68 @@ class CustomizeAvatarController extends GetxController {
 }
 
 // this class is for total element of the avatar
+// Updated model classes
 class TotalElements {
   TotalElements({
     required this.avatarImgUrl,
     required this.hair,
     required this.dress,
     required this.jewelry,
+    this.eyes,
+    this.skin,
+    this.nose,
+    this.shoes,
+    this.accessory,
+    this.pet,
   });
+
   final String avatarImgUrl;
   final StyleElement hair;
   final StyleElement dress;
   final StyleElement jewelry;
+  final StyleElement? eyes;
+  final StyleElement? skin;
+  final StyleElement? nose;
+  final StyleElement? shoes;
+  final StyleElement? accessory;
+  final StyleElement? pet;
 }
 
-//
 class StyleElement {
   StyleElement({required this.name, required this.elements});
   final String name;
-  final List<dynamic> elements;
+  final List<StyleItem> elements;
+}
+
+class StyleItem {
+  StyleItem({
+    this.id,
+    required this.styleName,
+    required this.colors,
+    this.colorDetails,
+  });
+
+  final String? id;
+  final String styleName;
+  final List<String> colors; // URLs for quick access
+  final List<ColorDetail>?
+  colorDetails; // Full details including price, unlock status
+}
+
+class ColorDetail {
+  ColorDetail({
+    required this.id,
+    required this.url,
+    required this.isUnlocked,
+    required this.isSelected,
+    required this.price,
+  });
+
+  final String id;
+  final String url;
+  final bool isUnlocked;
+  final bool isSelected;
+  final int price;
 }
 
 // this class is for hair style

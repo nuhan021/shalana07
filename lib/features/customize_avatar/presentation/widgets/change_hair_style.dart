@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/customize_avatar/controllers/customize_avatar_controller.dart';
 
 import '../../../../core/common/styles/global_text_style.dart';
@@ -39,7 +40,7 @@ class ChangeHairStyle extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 return Row(
-                  children: List.generate(controller.totalElements.value.hair.elements.length, (
+                  children: List.generate(controller.totalElements.value!.hair.elements.length, (
                       index,
                       ) {
                     return GestureDetector(
@@ -60,8 +61,8 @@ class ChangeHairStyle extends StatelessWidget {
                               width: 2
                           ),
                         ),
-                        child: Image.asset(
-                          controller.totalElements.value.hair.elements[index].colors.first,
+                        child: ShowImage(
+                          image: controller.totalElements.value!.hair.elements[index].colors.first,
                         ),
                       ),
                     );
@@ -97,7 +98,7 @@ class ChangeHairStyle extends StatelessWidget {
                 child: Row(
                   children: List.generate(
                     controller
-                        .totalElements.value.hair.elements[controller.selectedHairStyleIndex.value]
+                        .totalElements.value!.hair.elements[controller.selectedHairStyleIndex.value]
                         .colors
                         .length,
                         (index) {
@@ -119,9 +120,9 @@ class ChangeHairStyle extends StatelessWidget {
                                 width: 2
                             ),
                           ),
-                          child: Image.asset(
-                            controller
-                                .totalElements.value.hair.elements[controller
+                          child: ShowImage(
+                            image: controller
+                                .totalElements.value!.hair.elements[controller
                                 .selectedHairStyleIndex
                                 .value]
                                 .colors[index],

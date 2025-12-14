@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
+import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 import 'package:shalana07/features/customize_avatar/controllers/customize_avatar_controller.dart';
 import 'package:shalana07/features/customize_avatar/presentation/widgets/avatar_customization_tab_bar.dart';
 import 'package:shalana07/features/customize_avatar/presentation/widgets/change_all_accessories.dart';
@@ -29,6 +30,7 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
   @override
   void initState() {
     super.initState();
+    AppLoggerHelper.debug('My id is: ${widget.avatarId}');
     controller.getAvatarCredential(id: widget.avatarId);
   }
 
@@ -58,10 +60,17 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
                   return Stack(
                     alignment: Alignment.center,
                     children: [
-                      Image.asset(controller.totalElements.value.avatarImgUrl),
-                      Image.asset(controller.currentDressStyle),
-                      Image.asset(controller.currentJewelryStyle),
-                      Image.asset(controller.currentHairStyle),
+                      if(controller.totalElements.value!.avatarImgUrl.isNotEmpty)
+                        ShowImage(image: controller.totalElements.value!.avatarImgUrl),
+
+                      if(controller.currentDressStyle.isNotEmpty)
+                        ShowImage(image: controller.currentDressStyle),
+
+                      if(controller.currentJewelryStyle.isNotEmpty)
+                        ShowImage(image: controller.currentJewelryStyle),
+
+                      if(controller.currentHairStyle.isNotEmpty)
+                        ShowImage(image: controller.currentHairStyle),
                     ],
                   );
                 }),

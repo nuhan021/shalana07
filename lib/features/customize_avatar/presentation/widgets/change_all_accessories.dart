@@ -31,14 +31,14 @@ class ChangeAllAccessories extends StatelessWidget {
                     // Hair
                     GestureDetector(
                       onTap: () {
-                        controller.selectedAccessories.value = object.value.hair.name;
+                        controller.selectedAccessories.value = object.value!.hair.name;
                       },
                       child: Text(
-                        object.value.jewelry.name,
+                        object.value!.jewelry.name,
                         style: getTextStyle(
                           fontSize: 16,
                           color:
-                          object.value.jewelry.name ==
+                          object.value!.jewelry.name ==
                               controller.selectedAccessories.value
                               ? AppColors.primary
                               : AppColors.grey900,
