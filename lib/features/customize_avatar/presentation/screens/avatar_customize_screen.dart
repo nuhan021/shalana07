@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/common/widgets/custom_child_app_bar.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
@@ -113,6 +114,28 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
 
                 return ChangeJewelry(controller: controller);
               }),
+
+              50.verticalSpace,
+              Obx(
+                      () {
+                        if(controller.isSaveAvatarLoading.value) {
+                          return Container(
+                            height: 50.h,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(24.r),
+                            ),
+                            child: Center(
+                              child: CircularProgressIndicator(color: Colors.white),
+                            ),
+                          );
+                        }
+                  return CommonButton(title: 'Save', onPressed: (){
+                    controller.saveAvatarCredential();
+                  });
+                }
+              )
             ],
           ).paddingSymmetric(horizontal: 16.r),
         ),

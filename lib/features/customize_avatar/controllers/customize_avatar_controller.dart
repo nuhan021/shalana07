@@ -15,6 +15,8 @@ class CustomizeAvatarController extends GetxController {
   RxInt selectedTab = 0.obs;
   RxBool isChangeAvatarLoading = false.obs;
   RxBool isChangeAvatarError = false.obs;
+  RxBool isSaveAvatarLoading = false.obs;
+  RxBool isSaveAvatarError = false.obs;
   // Dynamic avatars list
   RxList<TotalElements> avatars = <TotalElements>[].obs;
 
@@ -52,6 +54,7 @@ class CustomizeAvatarController extends GetxController {
     if (!response.isSuccess) {
       Get.snackbar("Error", response.errorMessage);
       isChangeAvatarError.value = true;
+      isChangeAvatarLoading.value = false;
       return;
     }
 
@@ -63,6 +66,176 @@ class CustomizeAvatarController extends GetxController {
     isChangeAvatarLoading.value = false;
     isChangeAvatarError.value = false;
   }
+
+
+  Future<void> saveAvatarCredential() async {
+    isSaveAvatarLoading.value = true;
+
+    final token = StorageService.token;
+
+    var response = await _networkCaller.postRequest(
+      "${Api.baseUrl}/avatar/customization",
+      body: {
+        "avatarId": customizeAvatarModel.value!.data.avatarId,
+        "assetIds": [
+          selectedHairColorId,
+          selectedDressColorId,
+          selectedJewelryColorId
+        ]
+      },
+      token: token,
+    );
+
+    if (response.statusCode == 401) {
+      final tokenService = Get.find<TokenService>();
+      if (await tokenService.refreshToken()) {
+        final newToken = StorageService.token;
+        response = await _networkCaller.postRequest(
+          "${Api.baseUrl}/avatar/customization",
+          body: {
+            "avatarId": customizeAvatarModel.value!.data.avatarId,
+            "assetIds": [
+              selectedHairColorId,
+              selectedDressColorId,
+              selectedJewelryColorId
+            ]
+          },
+          token: newToken,
+        );
+      }
+    }
+
+    if (!response.isSuccess) {
+      Get.snackbar("Error", response.errorMessage);
+      isSaveAvatarError.value = true;
+      isSaveAvatarLoading.value = false;
+      return;
+    }
+
+    isSaveAvatarLoading.value = false;
+    isSaveAvatarError.value = false;
+  }
+
+  // ========== Hair selected color ID ==========
+  String? get selectedHairColorId {
+    if (totalElements.value == null ||
+        totalElements.value!.hair.elements.isEmpty) {
+      return null;
+    }
+
+    final hairElement = totalElements.value!.hair.elements[selectedHairStyleIndex.value];
+
+    if (hairElement.colorDetails == null ||
+        hairElement.colorDetails!.isEmpty ||
+        selectedHairColorIndex.value >= hairElement.colorDetails!.length) {
+      return null;
+    }
+
+    return hairElement.colorDetails![selectedHairColorIndex.value].id;
+  }
+
+  // ========== Dress selected color ID ==========
+  String? get selectedDressColorId {
+    if (totalElements.value == null ||
+        totalElements.value!.dress.elements.isEmpty) {
+      return null;
+    }
+
+    final dressElement = totalElements.value!.dress.elements[selectedDressStyleIndex.value];
+
+    if (dressElement.colorDetails == null ||
+        dressElement.colorDetails!.isEmpty ||
+        selectedDressColorIndex.value >= dressElement.colorDetails!.length) {
+      return null;
+    }
+
+    return dressElement.colorDetails![selectedDressColorIndex.value].id;
+  }
+
+  String? get selectedJewelryColorId {
+    if (totalElements.value == null ||
+        totalElements.value!.jewelry.elements.isEmpty) {
+      return null;
+    }
+
+    final jewelryElement = totalElements.value!.jewelry.elements[selectedJewelryStyleIndex.value];
+
+    if (jewelryElement.colorDetails == null ||
+        jewelryElement.colorDetails!.isEmpty ||
+        selectedJewelryColorIndex.value >= jewelryElement.colorDetails!.length) {
+      return null;
+    }
+
+    return jewelryElement.colorDetails![selectedJewelryColorIndex.value].id;
+  }
+
+  void _setInitialSelectedIndices() {
+    final data = totalElements.value;
+    if (data == null) return;
+
+    _findAndSetHairSelectedIndex(data.hair);
+
+    _findAndSetDressSelectedIndex(data.dress);
+
+    _findAndSetJewelrySelectedIndex(data.jewelry);
+
+  }
+
+
+  void _findAndSetHairSelectedIndex(StyleElement hair) {
+    // প্রথমে style index খুঁজুন
+    for (int styleIndex = 0; styleIndex < hair.elements.length; styleIndex++) {
+      final element = hair.elements[styleIndex];
+
+      if (element.colorDetails == null) continue;
+
+      // এই style এর মধ্যে selected color আছে কিনা দেখুন
+      for (int colorIndex = 0; colorIndex < element.colorDetails!.length; colorIndex++) {
+        if (element.colorDetails![colorIndex].isSelected) {
+          // পাওয়া গেছে! Index set করুন
+          selectedHairStyleIndex.value = styleIndex;
+          selectedHairColorIndex.value = colorIndex;
+          return; // বের হয়ে যান
+        }
+      }
+    }
+
+    // কিছু না পেলে default 0 থাকবে (already set আছে)
+  }
+
+  void _findAndSetDressSelectedIndex(StyleElement dress) {
+    for (int styleIndex = 0; styleIndex < dress.elements.length; styleIndex++) {
+      final element = dress.elements[styleIndex];
+
+      if (element.colorDetails == null) continue;
+
+      for (int colorIndex = 0; colorIndex < element.colorDetails!.length; colorIndex++) {
+        if (element.colorDetails![colorIndex].isSelected) {
+          selectedDressStyleIndex.value = styleIndex;
+          selectedDressColorIndex.value = colorIndex;
+          return;
+        }
+      }
+    }
+  }
+
+  void _findAndSetJewelrySelectedIndex(StyleElement jewelry) {
+    for (int styleIndex = 0; styleIndex < jewelry.elements.length; styleIndex++) {
+      final element = jewelry.elements[styleIndex];
+
+      if (element.colorDetails == null) continue;
+
+      for (int colorIndex = 0; colorIndex < element.colorDetails!.length; colorIndex++) {
+        if (element.colorDetails![colorIndex].isSelected) {
+          selectedJewelryStyleIndex.value = styleIndex;
+          selectedJewelryColorIndex.value = colorIndex;
+          return;
+        }
+      }
+    }
+  }
+
+
 
   void _convertAndStoreAvatar() {
     final data = customizeAvatarModel.value?.data;
@@ -94,6 +267,8 @@ class CustomizeAvatarController extends GetxController {
 
     // Set as current avatar
     totalElements.value = convertedAvatar;
+
+    _setInitialSelectedIndices();
   }
 
   StyleElement _convertToStyleElement(dynamic apiElement) {

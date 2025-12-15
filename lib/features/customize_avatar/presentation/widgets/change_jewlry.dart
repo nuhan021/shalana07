@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
 
@@ -14,8 +16,11 @@ class ChangeJewelry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(controller.totalElements.value!.jewelry.elements.isEmpty) {
-      return Text('No jewelry found!', style: getTextStyle(fontSize: 14, fontWeight: FontWeight.w500),);
+    if (controller.totalElements.value!.jewelry.elements.isEmpty) {
+      return Text(
+        'No jewelry found!',
+        style: getTextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      );
     }
     return Column(
       children: [
@@ -65,7 +70,7 @@ class ChangeJewelry extends StatelessWidget {
                               ),
                             ),
                             child: ShowImage(
-                             image: controller
+                              image: controller
                                   .totalElements
                                   .value!
                                   .jewelry
@@ -102,6 +107,12 @@ class ChangeJewelry extends StatelessWidget {
               ),
               SizedBox(width: 10.w),
               Obx(() {
+                final jewlryElement = controller
+                    .totalElements
+                    .value!
+                    .jewelry
+                    .elements[controller.selectedJewelryStyleIndex.value];
+                final colorDetails = jewlryElement.colorDetails ?? [];
                 return Expanded(
                   child: Row(
                     children: List.generate(
@@ -113,8 +124,17 @@ class ChangeJewelry extends StatelessWidget {
                           .colors
                           .length,
                       (index) {
+                        final colorDetail = colorDetails[index];
+                        final isUnlocked = colorDetail.isUnlocked;
                         return GestureDetector(
                           onTap: () {
+                            if (!isUnlocked) {
+                              Get.snackbar(
+                                'Locked',
+                                'Unlock this color for ${colorDetail.price} coins',
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                            }
                             controller.changeSelectedJewelryColor(index);
                           },
                           child: Container(
@@ -133,15 +153,35 @@ class ChangeJewelry extends StatelessWidget {
                                 width: 2,
                               ),
                             ),
-                            child: ShowImage(
-                              image: controller
-                                  .totalElements
-                                  .value!
-                                  .jewelry
-                                  .elements[controller
-                                      .selectedJewelryStyleIndex
-                                      .value]
-                                  .colors[index],
+                            child: Stack(
+                              children: [
+                                ShowImage(
+                                  image: controller
+                                      .totalElements
+                                      .value!
+                                      .jewelry
+                                      .elements[controller
+                                          .selectedJewelryStyleIndex
+                                          .value]
+                                      .colors[index],
+                                ),
+                                if (!isUnlocked)
+                                  Container(
+                                    height: 30.h,
+                                    width: 30.h,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey400.withOpacity(0.3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.lock,
+                                        color: AppColors.grey400,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         );

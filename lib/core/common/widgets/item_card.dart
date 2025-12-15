@@ -11,14 +11,18 @@ import 'package:shalana07/features/reward_details/presentation/screens/reward_de
 class ItemCard extends StatelessWidget {
   const ItemCard({
     super.key,
+    required this.id,
     required this.imgUrl,
     required this.title,
     required this.coin,
+    required this.type,
   });
 
+  final String id;
   final String imgUrl;
   final String title;
   final String coin;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +42,42 @@ class ItemCard extends StatelessWidget {
         ],
         borderRadius: BorderRadius.circular(16.r),
       ),
-      
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // image
           GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(context, RewardDetailsScreen(imgUrl: imgUrl, title: title, coin: coin,)),
-              child: ClipRRect(borderRadius: BorderRadius.circular(8.r),child: ShowImage(image: imgUrl))),
+            onTap: () => AppHelperFunctions.navigateToScreen(
+              context,
+              RewardDetailsScreen(
+                imgUrl: imgUrl,
+                title: title,
+                coin: coin,
+                type: type, id: id,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: ShowImage(image: imgUrl),
+            ),
+          ),
 
           // title
           Align(
             alignment: AlignmentGeometry.centerLeft,
-            child: Text(title, style: getTextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppColors.grey900
-            ), overflow: TextOverflow.ellipsis,),
+            child: Text(
+              title,
+              style: getTextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.grey900,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
 
-          const SizedBox(height: 5,),
+          const SizedBox(height: 5),
 
           // coin and unlock buttons
           Row(
@@ -70,21 +90,24 @@ class ItemCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 3.r),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(
-                    color: AppColors.primary,
-                    width: 0.5
-                  )
+                  border: Border.all(color: AppColors.primary, width: 0.5),
                 ),
-                
+
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // coin
-                    Text(coin, style: getTextStyle(fontSize: 12, fontWeight: FontWeight.w600),),
-                    
+                    Text(
+                      coin,
+                      style: getTextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
                     // coin icon
-                    Image.asset(IconPath.earnCoinIcon)
+                    Image.asset(IconPath.earnCoinIcon),
                   ],
                 ),
               ),
@@ -95,18 +118,21 @@ class ItemCard extends StatelessWidget {
                 width: 60.w,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(16.r),
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
 
                 alignment: Alignment.center,
-                child: Text('Unlock', style: getTextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
-                ),),
-              )
+                child: Text(
+                  'Unlock',
+                  style: getTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     ).paddingAll(5.r);

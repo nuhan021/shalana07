@@ -347,6 +347,8 @@ class AvatarScreen extends StatelessWidget {
                         .data
                         .map((element) {
                       return ItemCard(
+                        id: element.id,
+                        type: element.style.styleName,
                         imgUrl: element.assetImage,
                         title: element.gender,
                         coin: element.price.toString(),
