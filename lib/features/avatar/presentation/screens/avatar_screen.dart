@@ -12,6 +12,7 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/constants/image_path.dart';
 import 'package:shalana07/core/utils/helpers/app_helper.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/avatar/controllers/controller.dart';
 import 'package:shalana07/features/avatar/presentation/widgets/avatar_item_card.dart';
 import 'package:shalana07/features/avatar/presentation/widgets/show_image.dart';
@@ -42,393 +43,399 @@ class AvatarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackground, // default color
-      // App Bar of this screen
-      appBar: AppBar(
-        centerTitle: false,
+    return RefreshIndicator(
+      onRefresh: () async {
+        avatarScreenController.getCurrentAvatar();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.appBackground, // default color
+        // App Bar of this screen
+        appBar: AppBar(
+          centerTitle: false,
 
-        title: Text(
-          // title of the screen
-          'Avatar',
-          style: getTextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: AppColors.grey900,
-          ),
-        ),
-
-        actions: [
-          // notification icon button
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChildNotificationPage(),
-                ),
-              );
-            },
-            child: Image.asset(
-              IconPath.notificationIcon,
-              height: 32.h,
+          title: Text(
+            // title of the screen
+            'Avatar',
+            style: getTextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
               color: AppColors.grey900,
             ),
           ),
 
-          SizedBox(width: 10.w),
-
-          // profile picture
-          GestureDetector(
-            onTap: () {
-              AppHelperFunctions.navigateToScreen(context, ChildProfile());
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: CachedNetworkImage(
-                imageUrl:
-                    childProfileController
-                        .childModel
-                        .value
-                        ?.data
-                        .childProfile
-                        .image ??
-                    "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
-                width: 34.r, // ✅ .r
-                height: 34.r, // ✅ .r
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: AppColors.primary,
-                    size: 25.h,
+          actions: [
+            // notification icon button
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChildNotificationPage(),
                   ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                );
+              },
+              child: Image.asset(
+                IconPath.notificationIcon,
+                height: 32.h,
+                color: AppColors.grey900,
               ),
             ),
-          ),
-        ],
-      ),
 
-      // body of the screen
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // child avatar picture container
-            Container(
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(color: AppColors.primary, width: 10),
-              ),
-              alignment: Alignment.bottomCenter,
-              child: Obx(() {
-                if (avatarScreenController.isCurrentAvatarIsLoading.value)
-                  return LoadingAnimationWidget.dotsTriangle(
-                    color: AppColors.primary,
-                    size: 24.h,
-                  );
-                if (avatarScreenController.isCurrentAvatarIsError.value)
-                  return Center(
-                    child: IconButton(
-                      onPressed: () =>
-                          avatarScreenController.getCurrentAvatar(),
-                      icon: Icon(Icons.refresh),
+            SizedBox(width: 10.w),
+
+            // profile picture
+            GestureDetector(
+              onTap: () {
+                AppHelperFunctions.navigateToScreen(context, ChildProfile());
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      childProfileController
+                          .childModel
+                          .value
+                          ?.data
+                          .childProfile
+                          .image ??
+                      "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
+                  width: 34.r, // ✅ .r
+                  height: 34.r, // ✅ .r
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: AppColors.primary,
+                      size: 25.h,
                     ),
-                  );
-                final item =
-                    avatarScreenController.currentAvatar.value!.data.equipped;
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+            ),
+          ],
+        ),
 
-                String getElementUrl(dynamic elementData) {
-                  if (elementData?.elements != null &&
-                      elementData!.elements!.isNotEmpty &&
-                      elementData.elements!.first.colors != null &&
-                      elementData.elements!.first.colors.isNotEmpty) {
-                    return elementData.elements!.first.colors.first.url ?? '';
+        // body of the screen
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // child avatar picture container
+              Container(
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: AppColors.primary, width: 10),
+                ),
+                alignment: Alignment.bottomCenter,
+                child: Obx(() {
+                  if (avatarScreenController.isCurrentAvatarIsLoading.value) {
+                    return LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primary,
+                      size: 24.h,
+                    );
                   }
-                  return '';
-                }
+                  if (avatarScreenController.isCurrentAvatarIsError.value) {
+                    return Center(
+                      child: IconButton(
+                        onPressed: () =>
+                            avatarScreenController.getCurrentAvatar(),
+                        icon: Icon(Icons.refresh),
+                      ),
+                    );
+                  }
+                  final item =
+                      avatarScreenController.currentAvatar.value!.data.equipped;
 
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Avatar base image
-                    if (item.avatarImgUrl?.isNotEmpty ?? false)
-                      ShowImage(image: item.avatarImgUrl!),
+                  String getElementUrl(dynamic elementData) {
+                    if (elementData?.elements != null &&
+                        elementData!.elements!.isNotEmpty &&
+                        elementData.elements!.first.colors != null &&
+                        elementData.elements!.first.colors.isNotEmpty) {
+                      return elementData.elements!.first.colors.first.url ?? '';
+                    }
+                    return '';
+                  }
 
-                    // Dress
-                    if (getElementUrl(item.dress).isNotEmpty)
-                      ShowImage(image: getElementUrl(item.dress)),
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Avatar base image
+                      if (item.avatarImgUrl?.isNotEmpty ?? false)
+                        ShowImage(image: item.avatarImgUrl!),
 
-                    if (getElementUrl(item.jewelry).isNotEmpty)
-                      ShowImage(image: getElementUrl(item.jewelry)),
+                      // Dress
+                      if (getElementUrl(item.dress).isNotEmpty)
+                        ShowImage(image: getElementUrl(item.dress)),
 
-                    // Hair
-                    if (getElementUrl(item.hair).isNotEmpty)
-                      ShowImage(image: getElementUrl(item.hair)),
+                      if (getElementUrl(item.jewelry).isNotEmpty)
+                        ShowImage(image: getElementUrl(item.jewelry)),
 
-                    if (item.avatarImgUrl.isEmpty ||
-                        getElementUrl(item.dress).isEmpty ||
-                        getElementUrl(item.jewelry).isEmpty ||
-                        getElementUrl(item.hair).isEmpty)
-                      Positioned.fill(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.white.withOpacity(0.2),
-                                    Colors.white.withOpacity(0.1),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(6.r),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: Center(
-                                child: Container(
-                                  padding: EdgeInsets.all(12.r),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white.withOpacity(0.4),
-                                      width: 2,
-                                    ),
+                      // Hair
+                      if (getElementUrl(item.hair).isNotEmpty)
+                        ShowImage(image: getElementUrl(item.hair)),
+
+                      if (item.avatarImgUrl.isEmpty ||
+                          getElementUrl(item.dress).isEmpty ||
+                          getElementUrl(item.hair).isEmpty)
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.white.withOpacity(0.2),
+                                      Colors.white.withOpacity(0.1),
+                                    ],
                                   ),
-                                  child: Icon(
-                                    Icons.image_not_supported_outlined,
-                                    size: 32,
-                                    color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12.r),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white.withOpacity(0.4),
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.image_not_supported_outlined,
+                                      size: 32,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                  ],
-                );
-              }),
-            ),
-
-            SizedBox(height: 30),
-
-            // navigator buttons
-            for (int i = 0; i < 2; i++)
-              GestureDetector(
-                onTap: () {
-                  if (i == 1) {
-                    AppHelperFunctions.navigateToScreen(
-                      context,
-                      AvatarCustomizeScreen(
-                        avatarId: avatarScreenController
-                            .currentAvatar
-                            .value!
-                            .data
-                            .equipped
-                            .avatarId,
-                      ),
-                    );
-                  } else {
-                    AppHelperFunctions.navigateToScreen(
-                      context,
-                      ChangeAvatarScreen(),
-                    );
-                  }
-                },
-                child: Container(
-                  height: 52.h,
-                  width: double.maxFinite,
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.06),
-                        offset: const Offset(0, 2),
-                        blurRadius: 6,
-                        spreadRadius: 0,
-                      ),
                     ],
-                    border: Border.all(color: AppColors.grey200),
-                  ),
-
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Screen name
-                      Text(
-                        i == 0 ? 'Find Avatar' : 'Customize Avatar',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.grey900,
-                        ),
-                      ),
-
-                      // arrow icon
-                      Image.asset(IconPath.arrowForwardIcon, height: 20.h),
-                    ],
-                  ),
-                ).paddingOnly(bottom: 20),
+                  );
+                }),
               ),
 
+              SizedBox(height: 30),
 
-            // Trending items section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // title
-                Text(
-                  'Trending Items',
-                  style: getTextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-                // see all button
-                TextButton(
-                  onPressed: () {
-                    navaberController.jumpToScreen(3);
-                  },
-                  child: Text(
-                    'See All',
-                    style: getTextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.grey700,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: double.maxFinite,
-              child: Obx(() {
-                if (storeController.trendingItemsLoading.value) {
-                  return Center(
-                    child: LoadingAnimationWidget.dotsTriangle(
-                      color: AppColors.primary,
-                      size: 25.h,
-                    ),
-                  );
-                }
-                if (storeController.trendingItemsError.value) {
-                  return Center(
-                    child: IconButton(
-                      onPressed: () {
-                        storeController.getStoreItems(
-                          itemName: StoreItems.trending,
-                        );
-                      },
-                      icon: Icon(Icons.refresh),
-                    ),
-                  );
-                }
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: storeController
-                        .trendingItems
-                        .value!
-                        .data
-                        .map((element) {
-                      return ItemCard(
-                        id: element.id,
-                        type: element.style.styleName,
-                        imgUrl: element.assetImage,
-                        title: element.gender,
-                        coin: element.price.toString(),
-                      ).marginOnly(right: 10.r);
-                    })
-                        .toList(),
-                  ),
-                );
-              }),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Owned avatar
-            SizedBox(
-              width: double.maxFinite,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // top section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // title
-                      Text(
-                        'Owned Avatar',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+              // navigator buttons
+              for (int i = 0; i < 2; i++)
+                GestureDetector(
+                  onTap: () {
+                    if (i == 1) {
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        AvatarCustomizeScreen(
+                          avatarId: avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .avatarId,
                         ),
-                      ),
-                    ],
+                      );
+                    } else {
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        ChangeAvatarScreen(),
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 52.h,
+                    width: double.maxFinite,
+                    padding: EdgeInsets.all(10.r),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          offset: const Offset(0, 2),
+                          blurRadius: 6,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                      border: Border.all(color: AppColors.grey200),
+                    ),
+
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Screen name
+                        Text(
+                          i == 0 ? 'Find Avatar' : 'Customize Avatar',
+                          style: getTextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.grey900,
+                          ),
+                        ),
+
+                        // arrow icon
+                        Image.asset(IconPath.arrowForwardIcon, height: 20.h),
+                      ],
+                    ),
+                  ).paddingOnly(bottom: 20),
+                ),
+
+
+              // Trending items section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // title
+                  Text(
+                    'Trending Items',
+                    style: getTextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
 
-                  15.verticalSpace,
-
-                  // item section
-                 SizedBox(
-                   height: 170.h,
-                   child: ListView.separated(
-                     scrollDirection: Axis.horizontal,
-                     itemCount: avatarScreenController.currentAvatar.value!.data.unequipped.length,
-                     separatorBuilder: (context, index) => SizedBox(width: 15.w,),
-                     itemBuilder: (context, index) {
-                       final item = avatarScreenController.currentAvatar.value!.data.unequipped[index];
-
-                       // null check করে নিন
-                       String dressUrl = '';
-                       if (item.dress.elements != null && item.dress.elements!.isNotEmpty) {
-                         dressUrl = item.dress.elements!.first.colors.first.url;
-                       }
-
-                       String jewelryUrl = '';
-                       if (item.jewelry.elements != null && item.jewelry.elements!.isNotEmpty) {
-                         jewelryUrl = item.jewelry.elements!.first.colors.first.url;
-                       }
-
-                       String hairUrl = '';
-                       if (item.hair.elements != null && item.hair.elements!.isNotEmpty) {
-                         hairUrl = item.hair.elements!.first.colors.first.url;
-                       }
-
-                       return AvatarItemCard(
-                         id: item.avatarId,
-                         avatarImgUrl: item.avatarImgUrl,
-                         currentDressStyle: dressUrl,
-                         currentJewelryStyle: jewelryUrl,
-                         currentHairStyle: hairUrl,
-                         index: index,
-                       );
-                     },
-                   ),
-                 )
+                  // see all button
+                  TextButton(
+                    onPressed: () {
+                      navaberController.jumpToScreen(3);
+                    },
+                    child: Text(
+                      'See All',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey700,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
+              SizedBox(
+                width: double.maxFinite,
+                child: Obx(() {
+                  if (storeController.trendingItemsLoading.value) {
+                    return Center(
+                      child: LoadingAnimationWidget.dotsTriangle(
+                        color: AppColors.primary,
+                        size: 25.h,
+                      ),
+                    );
+                  }
+                  if (storeController.trendingItemsError.value) {
+                    return Center(
+                      child: IconButton(
+                        onPressed: () {
+                          storeController.getStoreItems(
+                            itemName: StoreItems.trending,
+                          );
+                        },
+                        icon: Icon(Icons.refresh),
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: storeController
+                          .trendingItems
+                          .value!
+                          .data
+                          .map((element) {
+                        return ItemCard(
+                          id: element.id,
+                          type: element.style.styleName,
+                          imgUrl: element.assetImage,
+                          title: element.gender,
+                          coin: element.price.toString(),
+                        ).marginOnly(right: 10.r);
+                      })
+                          .toList(),
+                    ),
+                  );
+                }),
+              ),
 
-            const SizedBox(height: 10),
-          ],
-        ).paddingSymmetric(horizontal: 15.r),
+              const SizedBox(height: 20),
+
+              // Owned avatar
+              SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // top section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // title
+                        Text(
+                          'Owned Avatar',
+                          style: getTextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    15.verticalSpace,
+
+                    // item section
+                   SizedBox(
+                     height: 170.h,
+                     child: ListView.separated(
+                       scrollDirection: Axis.horizontal,
+                       itemCount: avatarScreenController.currentAvatar.value!.data.unequipped.length,
+                       separatorBuilder: (context, index) => SizedBox(width: 15.w,),
+                       itemBuilder: (context, index) {
+                         final item = avatarScreenController.currentAvatar.value!.data.unequipped[index];
+
+                         // null check করে নিন
+                         String dressUrl = '';
+                         if (item.dress.elements != null && item.dress.elements!.isNotEmpty) {
+                           dressUrl = item.dress.elements!.first.colors.first.url;
+                         }
+
+                         String jewelryUrl = '';
+                         if (item.jewelry.elements != null && item.jewelry.elements!.isNotEmpty) {
+                           jewelryUrl = item.jewelry.elements!.first.colors.first.url;
+                         }
+
+                         String hairUrl = '';
+                         if (item.hair.elements != null && item.hair.elements!.isNotEmpty) {
+                           hairUrl = item.hair.elements!.first.colors.first.url;
+                         }
+
+                         return AvatarItemCard(
+                           id: item.avatarId,
+                           avatarImgUrl: item.avatarImgUrl,
+                           currentDressStyle: dressUrl,
+                           currentJewelryStyle: jewelryUrl,
+                           currentHairStyle: hairUrl,
+                           index: index,
+                         );
+                       },
+                     ),
+                   )
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+            ],
+          ).paddingSymmetric(horizontal: 15.r),
+        ),
       ),
     );
   }
