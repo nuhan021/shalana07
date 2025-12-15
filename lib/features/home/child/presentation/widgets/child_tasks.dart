@@ -8,6 +8,8 @@ import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
 import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
+import 'package:shalana07/features/home/child/model/message_user_model.dart';
+import 'package:shalana07/features/home/child/presentation/view/child_chat_screen.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
@@ -19,6 +21,7 @@ import '../../../../avatar/controllers/controller.dart';
 import '../../../../bottom_nav_bar/controller/navaber_controller.dart';
 import '../../../../store/controller/store_controller.dart';
 
+// ignore: must_be_immutable
 class ChildTasks extends StatelessWidget {
   ChildTasks({super.key, required this.controller});
 
@@ -220,7 +223,36 @@ class ChildTasks extends StatelessWidget {
                         // ask parent for help-----> message section
                         CommonButton(
                           title: 'Ask Parent for Help',
-                          onPressed: () {},
+                          onPressed: () {
+                            // Get parent data from child profile
+                            final parentData = childProfileController.childModel.value?.data.childProfile.parent;
+                            
+                            if (parentData == null) {
+                              Get.snackbar(
+                                'Error',
+                                'Parent information not available',
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                              return;
+                            }
+                            
+                            // Create MessageUserModel from parent data
+                            final parentMessage = MessageUserModel(
+                              name: parentData.name,
+                              role: 'PARENT',
+                              message: 'Help me with this task',
+                              time: DateTime.now().toString(),
+                              unread: 0,
+                              initials: parentData.name.substring(0, 1).toUpperCase(),
+                              active: true,
+                            );
+                            
+                            Get.to(
+                              () => ChildChatScreen(),
+                              arguments: parentMessage,
+                            );
+                          },
                         ),
 
                         12.verticalSpace,
