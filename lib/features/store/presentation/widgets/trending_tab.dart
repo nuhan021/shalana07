@@ -65,6 +65,8 @@ class TrendingTab extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = storeController.trendingItems.value!.data[index];
           return ItemCard(
+            id: item.id,
+            type: item.style.styleName,
             imgUrl: item.assetImage,
             title: item.gender,
             coin: item.price.toString(),

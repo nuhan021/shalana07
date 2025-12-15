@@ -100,7 +100,6 @@ class StoreController extends GetxController {
       }
     }
 
-    AppLoggerHelper.debug('The actual Data is: ${response.responseData}');
 
     if (!response.isSuccess) {
       Get.snackbar("Error", response.errorMessage);

@@ -241,7 +241,7 @@ class ChangeAvatarScreen extends StatelessWidget {
                   itemCount: changeAvatarController.findedAvatars.value!.data.length,
                   itemBuilder: (context, index) {
                     final item = changeAvatarController.findedAvatars.value!.data[index];
-                    return ItemCard(imgUrl: item.avatarImgUrl, title: item.gender, coin: '100');
+                    return ItemCard(id: item.id ,imgUrl: item.avatarImgUrl, title: item.gender, coin: item.price.toString(), type: item.region,);
                   },
                 ),
               );

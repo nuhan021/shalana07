@@ -84,6 +84,8 @@ class AllItemsTab extends StatelessWidget {
                   element,
                 ) {
                   return ItemCard(
+                    id: element.id,
+                    type: element.style.styleName,
                     imgUrl: element.assetImage,
                     title: element.gender,
                     coin: element.price.toString(),
@@ -146,6 +148,8 @@ class AllItemsTab extends StatelessWidget {
               child: Row(
                 children: storeController.dressItems.value!.data.map((element) {
                   return ItemCard(
+                    id: element.id,
+                    type: element.style.styleName,
                     imgUrl: element.assetImage,
                     title: element.gender,
                     coin: element.price.toString(),
@@ -207,6 +211,8 @@ class AllItemsTab extends StatelessWidget {
               child: Row(
                 children: storeController.hairItems.value!.data.map((element) {
                   return ItemCard(
+                    id: element.id,
+                    type: element.style.styleName,
                     imgUrl: element.assetImage,
                     title: element.gender,
                     coin: element.price.toString(),
@@ -270,6 +276,8 @@ class AllItemsTab extends StatelessWidget {
                   element,
                 ) {
                   return ItemCard(
+                    id: element.id,
+                    type: element.style.styleName,
                     imgUrl: element.assetImage,
                     title: element.gender,
                     coin: element.price.toString(),
