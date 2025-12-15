@@ -36,6 +36,5 @@ class AppRoute {
     GetPage(name: forgotPasswordScreen, page: () => const ForgetPassword()),
     GetPage(name: forgetOTPScreen, page: () =>  OtpPage()),
     GetPage(name: setNewPasswordScreen, page: () => const SetNewPassword()),
-
   ];
 }
