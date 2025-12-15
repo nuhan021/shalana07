@@ -18,6 +18,7 @@ import 'package:shalana07/features/store/controller/store_controller.dart';
 
 import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../../avatar/controllers/controller.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   ChildHomeScreen({super.key});
@@ -37,10 +38,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   final StoreController storeController = Get.put(StoreController());
 
+  final AvatarScreenController avatarScreenController = Get.put(AvatarScreenController());
+
   @override
   void initState() {
     super.initState();
-    storeController.getStoreItems(itemName: StoreItems.trending);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeController.getStoreItems(itemName: StoreItems.trending);
+    });
   }
 
   @override
@@ -49,6 +54,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       color: AppColors.primary,
       onRefresh: () async {
         await childProfileController.getUserData();
+        avatarScreenController.getCurrentAvatar();
       },
       child: Obx(() {
         if (childProfileController.isChildProfileLoading.value) {

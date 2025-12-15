@@ -22,12 +22,15 @@ class HomeChildAvatar extends StatefulWidget {
 
 class _HomeChildAvatarState extends State<HomeChildAvatar> {
   final controller = Get.put(CustomizeAvatarController());
-  final AvatarScreenController avatarScreenController = Get.put(AvatarScreenController());
+  final AvatarScreenController avatarScreenController =
+      Get.find<AvatarScreenController>();
 
   @override
   void initState() {
     super.initState();
-    avatarScreenController.getCurrentAvatar();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      avatarScreenController.getCurrentAvatar();
+    });
   }
 
   @override
@@ -49,22 +52,128 @@ class _HomeChildAvatarState extends State<HomeChildAvatar> {
             children: [
               Align(
                 alignment: Alignment.bottomCenter,
-                  child: Obx(() {
-                    if(avatarScreenController.isCurrentAvatarIsLoading.value) {
-                      return Center(
-                        child: LoadingAnimationWidget.dotsTriangle(color: AppColors.primary, size: 24.h),
-                      );
-                    }
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.avatarImgUrl),
-                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.dress.elements!.first.colors.first.url),
-                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.jewelry.elements!.first.colors.first.url),
-                        ShowImage(image: avatarScreenController.currentAvatar.value!.data.equipped.hair.elements!.first.colors.first.url),
-                      ],
+                child: Obx(() {
+                  if (avatarScreenController.isCurrentAvatarIsLoading.value) {
+                    return Center(
+                      child: LoadingAnimationWidget.dotsTriangle(
+                        color: AppColors.primary,
+                        size: 24.h,
+                      ),
                     );
-                  }),
+                  }
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      if (avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .hair
+                              .elements !=
+                          null && avatarScreenController
+                          .currentAvatar
+                          .value!
+                          .data
+                          .equipped
+                          .hair
+                          .elements!.isNotEmpty)
+                        ShowImage(
+                          image: avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .avatarImgUrl,
+                        ),
+
+                      if (avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .dress
+                              .elements !=
+                          null && avatarScreenController
+                          .currentAvatar
+                          .value!
+                          .data
+                          .equipped
+                          .dress
+                          .elements!.isNotEmpty)
+                        ShowImage(
+                          image: avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .dress
+                              .elements!
+                              .first
+                              .colors
+                              .first
+                              .url,
+                        ),
+
+                      if (avatarScreenController
+                                  .currentAvatar
+                                  .value!
+                                  .data
+                                  .equipped
+                                  .jewelry
+                                  .elements !=
+                              null &&
+                          avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .jewelry
+                              .elements!
+                              .isNotEmpty)
+                        ShowImage(
+                          image: avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .jewelry
+                              .elements!
+                              .first
+                              .colors
+                              .first
+                              .url,
+                        ),
+
+                      if (avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .hair
+                              .elements !=
+                          null && avatarScreenController.currentAvatar
+                          .value!
+                          .data
+                          .equipped
+                          .hair
+                          .elements!.isNotEmpty)
+                        ShowImage(
+                          image: avatarScreenController
+                              .currentAvatar
+                              .value!
+                              .data
+                              .equipped
+                              .hair
+                              .elements!
+                              .first
+                              .colors
+                              .first
+                              .url,
+                        ),
+                    ],
+                  );
+                }),
               ),
 
               Container(

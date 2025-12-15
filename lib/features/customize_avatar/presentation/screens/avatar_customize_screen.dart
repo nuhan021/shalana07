@@ -32,8 +32,11 @@ class _AvatarCustomizeScreenState extends State<AvatarCustomizeScreen> {
   @override
   void initState() {
     super.initState();
-    controller.resetAll();
-    controller.getAvatarCredential(id: widget.avatarId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // These calls will now execute safely after the initial build is complete.
+      controller.resetAll();
+      controller.getAvatarCredential(id: widget.avatarId);
+    });
   }
 
   @override

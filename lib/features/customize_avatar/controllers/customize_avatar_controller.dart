@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:shalana07/core/services/storage_service.dart';
+import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/customize_avatar/model/customize_avatar_model.dart';
 
 import '../../../core/common/service/token_service.dart';
@@ -69,6 +70,8 @@ class CustomizeAvatarController extends GetxController {
 
 
   Future<void> saveAvatarCredential() async {
+
+    AppLoggerHelper.debug('The id is: $selectedJewelryColorId');
     isSaveAvatarLoading.value = true;
 
     final token = StorageService.token;
@@ -80,7 +83,7 @@ class CustomizeAvatarController extends GetxController {
         "assetIds": [
           selectedHairColorId,
           selectedDressColorId,
-          selectedJewelryColorId
+          // selectedJewelryColorId
         ]
       },
       token: token,
@@ -97,7 +100,7 @@ class CustomizeAvatarController extends GetxController {
             "assetIds": [
               selectedHairColorId,
               selectedDressColorId,
-              selectedJewelryColorId
+              // selectedJewelryColorId
             ]
           },
           token: newToken,
