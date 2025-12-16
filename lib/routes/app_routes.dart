@@ -4,6 +4,7 @@ import 'package:shalana07/features/auth/presentation/views/login_screen.dart';
 import 'package:shalana07/features/auth/presentation/views/otp_page.dart';
 import 'package:shalana07/features/auth/presentation/views/set_new_password.dart';
 import 'package:shalana07/features/auth/presentation/views/signup_screen.dart';
+import 'package:shalana07/features/home/child/presentation/view/post_feed_screen.dart';
 import '../features/bottom_nav_bar/presentation/screens/app_bottom_nav_bar.dart';
 import 'package:shalana07/features/onboard_screen/presentation/view/obboarding.dart';
 
@@ -18,6 +19,7 @@ class AppRoute {
   static String  forgotPasswordScreen = "/forgotPasswordScreen";
   static String forgetOTPScreen = "/otpScreen";
   static String setNewPasswordScreen = "/setNewPasswordScreen";
+  static String postFeedScreen = "/postFeedScreen";
 
   static String getLoginScreen() => loginScreen;
   static String getSplashScreen() => onboardScreen;
@@ -26,6 +28,7 @@ class AppRoute {
   static String getForgotPasswordScreen() => forgotPasswordScreen;
   static String getForgetOTPScreen() => forgetOTPScreen;
   static String getSetNewPasswordScreen() => setNewPasswordScreen;
+  
 
   static List<GetPage> routes = [
     GetPage(name: splashScreen, page: () => SplashScreen()),
@@ -36,5 +39,6 @@ class AppRoute {
     GetPage(name: forgotPasswordScreen, page: () => const ForgetPassword()),
     GetPage(name: forgetOTPScreen, page: () =>  OtpPage()),
     GetPage(name: setNewPasswordScreen, page: () => const SetNewPassword()),
+    GetPage(name: postFeedScreen, page: () =>  PostFeedScreen()),
   ];
 }
