@@ -1,23 +1,20 @@
-// services/post_service.dart
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:shalana07/core/services/network_caller.dart';
+import 'package:shalana07/core/services/storage_service.dart';
+import 'package:shalana07/core/utils/constants/api_constants.dart';
 import 'package:shalana07/features/home/child/model/post_model.dart';
 
-
 class PostService {
-  final String baseUrl;
-
-  PostService({required this.baseUrl});
+  final NetworkCaller _networkCaller = NetworkCaller();
 
   Future<PostFeedResponse> fetchPosts({int page = 1, int limit = 10}) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/posts?page=$page&limit=$limit'),
-      headers: {'Content-Type': 'application/json'},
+    final response = await _networkCaller.getRequest(
+      '${Api.baseUrl}/posts?page=$page&limit=$limit',
+      token: StorageService.token,
     );
 
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final apiResponse = ApiResponse.fromJson(json, (data) => PostFeedResponse.fromJson(data));
+    if (response.isSuccess) {
+      final apiResponse = ApiResponse.fromJson(response.responseData, (data) => PostFeedResponse.fromJson(data));
       return apiResponse.data!;
     } else {
       throw Exception('Failed to load posts');
@@ -25,15 +22,14 @@ class PostService {
   }
 
   Future<Post> createPost(PostRequest request) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/posts'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(request.toJson()),
+    final response = await _networkCaller.postRequest(
+      '${Api.baseUrl}/posts',
+      body: request.toJson(),
+      token: StorageService.token,
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final apiResponse = ApiResponse.fromJson(json, (data) => Post.fromJson(data));
+    if (response.isSuccess) {
+      final apiResponse = ApiResponse.fromJson(response.responseData, (data) => Post.fromJson(data));
       return apiResponse.data!;
     } else {
       throw Exception('Failed to create post');
@@ -41,15 +37,14 @@ class PostService {
   }
 
   Future<Post> updatePost(String postId, PostRequest request) async {
-    final response = await http.patch(
-      Uri.parse('$baseUrl/posts/$postId'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(request.toJson()),
+    final response = await _networkCaller.patchRequest(
+      '${Api.baseUrl}/posts/$postId',
+      body: request.toJson(),
+      token: StorageService.token,
     );
 
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final apiResponse = ApiResponse.fromJson(json, (data) => Post.fromJson(data));
+    if (response.isSuccess) {
+      final apiResponse = ApiResponse.fromJson(response.responseData, (data) => Post.fromJson(data));
       return apiResponse.data!;
     } else {
       throw Exception('Failed to update post');
@@ -57,26 +52,25 @@ class PostService {
   }
 
   Future<void> deletePost(String postId) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/posts/$postId'),
-      headers: {'Content-Type': 'application/json'},
+    final response = await _networkCaller.deleteRequest(
+      '${Api.baseUrl}/posts/$postId',
+      token: StorageService.token,
     );
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccess) {
       throw Exception('Failed to delete post');
     }
   }
 
   Future<Comment> addCommentToPost(String postId, String content) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/posts/$postId/comments'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'content': content}),
+    final response = await _networkCaller.postRequest(
+      '${Api.baseUrl}/posts/$postId/comments',
+      body: {'content': content},
+      token: StorageService.token,
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final apiResponse = ApiResponse.fromJson(json, (data) => Comment.fromJson(data));
+    if (response.isSuccess) {
+      final apiResponse = ApiResponse.fromJson(response.responseData, (data) => Comment.fromJson(data));
       return apiResponse.data!;
     } else {
       throw Exception('Failed to add comment');
@@ -84,12 +78,12 @@ class PostService {
   }
 
   Future<void> deleteComment(String commentId) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/posts/comments/$commentId'),
-      headers: {'Content-Type': 'application/json'},
+    final response = await _networkCaller.deleteRequest(
+      '${Api.baseUrl}/posts/comments/$commentId',
+      token: StorageService.token,
     );
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccess) {
       throw Exception('Failed to delete comment');
     }
   }
@@ -118,13 +112,13 @@ class Comment {
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-        id: json['id'],
-        postId: json['postId'],
-        authorId: json['authorId'],
-        authorRole: json['authorRole'],
-        content: json['content'],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
-        author: Author.fromJson(json['author']),
-      );
+    id: json['id'],
+    postId: json['postId'],
+    authorId: json['authorId'],
+    authorRole: json['authorRole'],
+    content: json['content'],
+    createdAt: DateTime.parse(json['createdAt']),
+    updatedAt: DateTime.parse(json['updatedAt']),
+    author: Author.fromJson(json['author']),
+  );
 }

@@ -16,7 +16,7 @@ class NetworkCaller {
       final Response response = await get(
         Uri.parse(url),
         headers: {
-          'Authorization': token.toString(),
+          'Authorization': 'Bearer $token',
           'Content-type': 'application/json',
         },
       ).timeout(Duration(seconds: timeoutDuration));
@@ -44,7 +44,7 @@ class NetworkCaller {
           if (token != null && isCookie)
             'Cookie': 'refreshToken=$token',  // Send as cookie
           if (token != null && !isCookie)
-            'Authorization': token,  // Send as Authorization for other requests
+            'Authorization': 'Bearer $token',  // Send as Authorization for other requests
         },
         body: jsonEncode(body),
       ).timeout(Duration(seconds: timeoutDuration));
@@ -71,10 +71,28 @@ class NetworkCaller {
           if (token != null && isCookie)
             'Cookie': 'refreshToken=$token',  // Send as cookie
           if (token != null && !isCookie)
-            'Authorization': token,  // Send as Authorization for other requests
+            'Authorization': 'Bearer $token',  // Send as Authorization for other requests
         },
         body: jsonEncode(body),
       ).timeout(Duration(seconds: timeoutDuration));
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  Future<ResponseData> deleteRequest(String url, {String? token}) async {
+    log('DELETE Request: $url');
+    log('DELETE Token: $token');
+    try {
+      final Response response = await delete(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-type': 'application/json',
+        },
+      ).timeout(Duration(seconds: timeoutDuration));
+
       return _handleResponse(response);
     } catch (e) {
       return _handleError(e);
