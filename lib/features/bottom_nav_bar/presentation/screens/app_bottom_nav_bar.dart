@@ -11,6 +11,7 @@ import 'package:shalana07/features/bottom_nav_bar/controller/navaber_controller.
 import 'package:shalana07/features/create_goal/common_create_goal.dart';
 import 'package:shalana07/features/daily_goal/common_daily_goal.dart';
 import 'package:shalana07/features/home/common_homescren.dart';
+import 'package:shalana07/features/notification/parent/presentation/view/notification_page.dart';
 import 'package:shalana07/features/profile/parent/presentation/view/parent_profile_screen.dart';
 import 'package:shalana07/features/store/presentation/screens/store_screen.dart';
 import '../../../../core/common/styles/global_text_style.dart';
@@ -31,6 +32,8 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
 
   int _currentIndex = 0;
 
+  late final role = logincontroller.userRole.value;
+
   @override
   // void initState() {
   //   super.initState();
@@ -42,7 +45,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       CommonHomeScreen(),
       CommonDailyGoal(),
       CommonCreateGoal(),
-      StoreScreen(),
+      role == "parent" ? NotificationPage() :StoreScreen(),
       // AvatarScreen(),
       
      CommonAvatarScreen(),
@@ -98,11 +101,11 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
       screen: _buildScreens()[3],
       item: ItemConfig(
         icon: Image.asset(
-          width: 25.w,
-          IconPath.navbarStoreICon,
+          width: role == "parent" ? 30.w : 25.w,
+          role == "parent" ? IconPath.notificationIcon :IconPath.navbarStoreICon,
           color: _currentIndex == 3 ? AppColors.primary : AppColors.grey900,
         ),
-        title: "Store",
+        title: role == "parent" ? "Notification" : "Store",
         textStyle: getTextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primary,
         inactiveForegroundColor: Colors.black,

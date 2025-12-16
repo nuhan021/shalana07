@@ -172,6 +172,7 @@ class ChildDailyGoal extends StatelessWidget {
                         ),
                         coinsPerDay: filteredGoals[index].goal.rewardCoins,
                         status: filteredGoals[index].goal.status,
+                        goalId: filteredGoals[index].goalId,
                       ),
                     ),
                   ),
