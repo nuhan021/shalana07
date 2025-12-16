@@ -34,9 +34,10 @@ class ChildHomeScreenController extends GetxController {
     if(response.statusCode == 401) {
       final tokenService = Get.find<TokenService>();
       if(await tokenService.refreshToken()) {
+        final newToken = StorageService.token;
         response = await _networkCaller.getRequest(
           "${Api.baseUrl}/goals/child-goals",
-          token: token,
+          token: newToken,
         );
       }
     }

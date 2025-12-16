@@ -95,13 +95,7 @@ class CustomAppBar extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: CachedNetworkImage(
-                          imageUrl:
-                              childProfileController
-                                  .childModel
-                                  .value
-                                  ?.data
-                                  .childProfile
-                                  .image ??
+                          imageUrl: image??
                               "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png",
                           width: 34.r, // ✅ .r
                           height: 34.r, // ✅ .r

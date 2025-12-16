@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shalana07/core/common/styles/global_text_style.dart';
+import 'package:shalana07/core/common/widgets/common_button.dart';
 import 'package:shalana07/core/utils/constants/colors.dart';
 import 'package:shalana07/core/utils/constants/icon_path.dart';
+import 'package:shalana07/features/daily_goal/child/controller/Child_daily_goal_controller.dart';
 import 'package:shalana07/features/daily_goal/child/model/child_goal_model.dart';
-
+import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 
 class ChildGoalCard extends StatelessWidget {
-  const ChildGoalCard({super.key, required this.goal, });
-    //////////////////no tention just pass goal model when you call the api
+  ChildGoalCard({super.key, required this.goal});
   final ChildGoalModel goal;
-
-
+  
+  final ChildDailyGoalController controller = Get.find<ChildDailyGoalController>();
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 15.0.h, bottom: 15.0.h,left: 8.w,right: 8.w),
+      padding: EdgeInsets.only(
+        top: 15.0.h,
+        bottom: 15.0.h,
+        left: 8.w,
+        right: 8.w,
+      ),
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border(
@@ -92,6 +100,7 @@ class ChildGoalCard extends StatelessWidget {
           ),
 
           Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ////////Goal status
               Text(
@@ -104,8 +113,22 @@ class ChildGoalCard extends StatelessWidget {
                       : AppColors.secondary,
                 ),
               ),
-              5.verticalSpace,
-             
+              20.verticalSpace,
+
+              if(goal.status == 'ACTIVE')
+                GestureDetector(
+                  onTap: () {
+                    controller.startTask(goal.goalId);
+                  },
+                  child: Text(
+                    'Active Now',
+                    style: getTextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                )
             ],
           ),
         ],

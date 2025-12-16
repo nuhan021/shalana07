@@ -19,16 +19,16 @@ class ChildHomeDailyTask extends StatelessWidget {
     return Obx(() {
       final goals = controller.childGoalModel.value?.data;
 
-      late List<Datum>? dailyTask = goals?.where(
-            (e) => e.goal.type == 'DAILY',
-      ).toList();
+      late List<Datum>? dailyTask = goals
+          ?.where((e) => e.goal.type == 'DAILY')
+          .toList();
 
-      late List<Datum>? weeklyTask = goals?.where(
-            (e) => e.goal.type == 'WEEKLY',
-      ).toList();
+      late List<Datum>? weeklyTask = goals
+          ?.where((e) => e.goal.type == 'WEEKLY')
+          .toList();
 
       // 2. Add a check for null or empty data within the Obx
-      if(controller.selectedTab.value == 0) {
+      if (controller.selectedTab.value == 0) {
         if (dailyTask == null || dailyTask.isEmpty) {
           // This handles the case where loading is false, but data is empty
           return const Center(
@@ -53,28 +53,30 @@ class ChildHomeDailyTask extends StatelessWidget {
       // 3. Render the list using the safely extracted 'goals' list
       return Column(
         children: [
-
-          if(controller.selectedTab.value == 0)
-          ...?dailyTask?.map(
-                (goal) => ChildTaskCard(
-              taskName: goal.goal.title,
-              coin: goal.goal.rewardCoins.toString(),
-              // Ensure the progress is correctly treated as a double
-              percentage: (goal.goal.progress is double)
-                  ? goal.goal.progress as double
-                  : double.parse(goal.goal.progress.toString()),
+          if (controller.selectedTab.value == 0)
+            ...?dailyTask?.map(
+              (goal) => ChildTaskCard(
+                status: goal.goal.status,
+                taskName: goal.goal.title,
+                coin: goal.goal.rewardCoins.toString(),
+                // Ensure the progress is correctly treated as a double
+                percentage: (goal.goal.progress is double)
+                    ? goal.goal.progress as double
+                    : double.parse(goal.goal.progress.toString()),
+              ),
+            )
+          else
+            ...?weeklyTask?.map(
+              (goal) => ChildTaskCard(
+                status: goal.goal.status,
+                taskName: goal.goal.title,
+                coin: goal.goal.rewardCoins.toString(),
+                // Ensure the progress is correctly treated as a double
+                percentage: (goal.goal.progress is double)
+                    ? goal.goal.progress as double
+                    : double.parse(goal.goal.progress.toString()),
+              ),
             ),
-          )
-          else ...?weeklyTask?.map(
-                (goal) => ChildTaskCard(
-              taskName: goal.goal.title,
-              coin: goal.goal.rewardCoins.toString(),
-              // Ensure the progress is correctly treated as a double
-              percentage: (goal.goal.progress is double)
-                  ? goal.goal.progress as double
-                  : double.parse(goal.goal.progress.toString()),
-            ),
-          )
         ],
       );
     });
@@ -87,11 +89,13 @@ class ChildTaskCard extends StatelessWidget {
     required this.taskName,
     required this.coin,
     required this.percentage,
+    required this.status,
   });
 
   final String taskName;
   final String coin;
   final double percentage;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -127,19 +131,16 @@ class ChildTaskCard extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: percentage / 100,
                   strokeWidth: 4.0.w,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.green
-                  ),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                   backgroundColor: AppColors.grey200,
                 ),
               ),
               Text(
                 "${percentage.toInt().toString()}%",
-                  style: getTextStyle(fontSize: 13, fontWeight: FontWeight.w500)
+                style: getTextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               ),
             ],
           ),
-
 
           SizedBox(width: 10.w),
 
@@ -173,11 +174,13 @@ class ChildTaskCard extends StatelessWidget {
             child: Align(
               alignment: Alignment.topRight,
               child: Text(
-                percentage.toInt() == 100 ? 'Complete' : percentage.toInt() == 0 ? 'Pending' : 'In Progress',
+                status,
                 style: getTextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color:percentage.toInt() == 0 ? AppColors.secondary : AppColors.primary,
+                  color: percentage.toInt() == 0
+                      ? AppColors.secondary
+                      : AppColors.primary,
                 ),
               ),
             ),
