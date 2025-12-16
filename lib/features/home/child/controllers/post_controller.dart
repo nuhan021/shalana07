@@ -58,7 +58,7 @@ class PostController extends GetxController {
 
   Future<void> addComment(String postId, String content) async {
     try {
-      final comment = await _postService.addCommentToPost(postId, content);
+      await _postService.addCommentToPost(postId, content);
       // Optionally update post comment count or refetch
       // For simplicity: just reload
       loadPosts();

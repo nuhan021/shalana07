@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shalana07/core/utils/helpers/app_helper.dart';
 import 'package:shalana07/features/notification/child/presentation/view/child_notification_page.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
-import 'package:shalana07/features/profile/child/presentation/view/child_profile.dart';
 
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/icon_path.dart';
-import '../../utils/constants/image_path.dart';
 import '../styles/global_text_style.dart';
 
 class CustomChildAppBar extends StatelessWidget implements PreferredSizeWidget {

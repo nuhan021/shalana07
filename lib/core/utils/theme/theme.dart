@@ -17,7 +17,7 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       textTheme: AppTextTheme.lightTextTheme,
       elevatedButtonTheme: AppElevatedButtonTheme.lightElevatedButtonTheme,
-      appBarTheme: App_BarTheme.lightAppBarTheme,
+      appBarTheme: AppBarThemeCustom.lightAppBarTheme,
       inputDecorationTheme: AppTextFormFieldTheme.lightInputDecorationTheme);
 
   static ThemeData darkTheme = ThemeData(
@@ -28,6 +28,6 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.black,
       textTheme: AppTextTheme.darkTextTheme,
       elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme,
-      appBarTheme: App_BarTheme.darkAppBarTheme,
+      appBarTheme: AppBarThemeCustom.darkAppBarTheme,
       inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme);
 }

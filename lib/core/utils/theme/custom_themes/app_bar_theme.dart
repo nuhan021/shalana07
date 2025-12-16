@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class App_BarTheme {
-  App_BarTheme._();
+class AppBarThemeCustom {
+  AppBarThemeCustom._();
 
   static const AppBarTheme lightAppBarTheme = AppBarTheme(
     foregroundColor: Colors.transparent,

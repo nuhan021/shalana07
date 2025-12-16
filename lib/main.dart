@@ -1,6 +1,5 @@
 import 'package:shalana07/app.dart';
 import 'package:flutter/material.dart';
-import 'package:shalana07/core/bindings/controller_binder.dart';
 import 'package:shalana07/core/services/storage_service.dart';
 
 

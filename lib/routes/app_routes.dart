@@ -5,6 +5,7 @@ import 'package:shalana07/features/auth/presentation/views/otp_page.dart';
 import 'package:shalana07/features/auth/presentation/views/set_new_password.dart';
 import 'package:shalana07/features/auth/presentation/views/signup_screen.dart';
 import 'package:shalana07/features/home/child/presentation/view/post_feed_screen.dart';
+import 'package:shalana07/features/home/child/binding/post_binding.dart';
 import '../features/bottom_nav_bar/presentation/screens/app_bottom_nav_bar.dart';
 import 'package:shalana07/features/onboard_screen/presentation/view/obboarding.dart';
 
@@ -39,6 +40,6 @@ class AppRoute {
     GetPage(name: forgotPasswordScreen, page: () => const ForgetPassword()),
     GetPage(name: forgetOTPScreen, page: () =>  OtpPage()),
     GetPage(name: setNewPasswordScreen, page: () => const SetNewPassword()),
-    GetPage(name: postFeedScreen, page: () =>  PostFeedScreen()),
+    GetPage(name: postFeedScreen, page: () =>  PostFeedScreen(), binding: PostBinding()),
   ];
 }
