@@ -10,6 +10,7 @@ import 'package:shalana07/core/utils/logging/logger.dart';
 import 'package:shalana07/features/home/child/controllers/child_home_screen_controller.dart';
 import 'package:shalana07/features/home/child/model/message_user_model.dart';
 import 'package:shalana07/features/home/child/presentation/view/child_chat_screen.dart';
+import 'package:shalana07/features/home/child/presentation/view/post_feed_screen.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_daily_task.dart';
 import 'package:shalana07/features/home/child/presentation/widgets/child_home_task_tab_bar.dart';
 import 'package:shalana07/features/profile/child/controller/child_profile_controller.dart';
@@ -248,9 +249,12 @@ class ChildTasks extends StatelessWidget {
                               active: true,
                             );
                             
+                            // Get.to(
+                            //   () => ChildChatScreen(),
+                            //   arguments: parentMessage,
+                            // );
                             Get.to(
-                              () => ChildChatScreen(),
-                              arguments: parentMessage,
+                              ()=>PostFeedScreen(),
                             );
                           },
                         ),
